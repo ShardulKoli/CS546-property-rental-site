@@ -1,0 +1,30 @@
+{
+  "name": "cs546-property-rental-site",
+  "version": "1.0.0",
+  "description": "A web app for renting properties",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "start-watch": "nodemon app.js",
+    "dev": "concurrently \"npm run start-watch\" \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShardulKoli/CS546-property-rental-site.git"
+  },
+  "author": "Shardul Koli 20008534",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShardulKoli/CS546-property-rental-site/issues"
+  },
+  "homepage": "https://github.com/ShardulKoli/CS546-property-rental-site#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.6"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
