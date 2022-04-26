@@ -21,7 +21,8 @@
   "homepage": "https://github.com/ShardulKoli/CS546-property-rental-site#readme",
   "dependencies": {
     "express": "^4.17.3",
-    "mongoose": "^6.2.6"
+    "mongodb": "^4.5.0",
+    "nodemailer": "^6.7.3"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
