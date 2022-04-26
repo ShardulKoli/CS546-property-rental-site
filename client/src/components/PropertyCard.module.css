@@ -1,0 +1,9 @@
+.cardStyle:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}
+
+.cardStyle {
+  width: 18rem;
+  margin: 2px;
+}

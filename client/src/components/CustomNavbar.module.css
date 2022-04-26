@@ -1,0 +1,12 @@
+.linkchange {
+  color: white;
+  text-decoration: none;
+}
+.linkchange:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.linkContainer {
+  margin-inline: 20px;
+}
