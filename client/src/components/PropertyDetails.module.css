@@ -1,0 +1,12 @@
+.cardStyle {
+  margin: 10px;
+  height: 500px;
+}
+
+.carousel {
+  align-self: center;
+  margin: 2px;
+  width: 500px;
+  height: 400px;
+  justify-content: center;
+}

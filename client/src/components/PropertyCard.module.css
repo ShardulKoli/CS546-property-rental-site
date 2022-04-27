@@ -1,0 +1,23 @@
+.cardStyle:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}
+
+.cardStyle {
+  width: 18rem;
+  margin: 2px;
+}
+
+.detailsStyle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-right: 40%;
+}
+
+.rentLabel {
+  font-size: 20px;
+  text-align: center;
+  background: green;
+  color: white;
+}
