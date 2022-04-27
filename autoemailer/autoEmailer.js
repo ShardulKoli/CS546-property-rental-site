@@ -2,16 +2,14 @@ var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,
     auth: {
         user: 'studyroomproj@gmail.com',
         pass: 'studyroom@123!'
     }
 });
 
-class EmailResponse {
-    error;
-    success;
-}
 
 function sendAccoutConfirmationEmail(user) {
 
@@ -22,22 +20,18 @@ function sendAccoutConfirmationEmail(user) {
     };
 
     if (user.userType === 1) {
-        mailOptions.text = `Hello ${user.firstName}, we are pleased to have you on board!\n Your password is: ${password}.\n Please keep this information for your further reference in a secured place. \nThousands of students are using Studyroom for their property rentals and are having a smooth sailing experience.\n You are all set to find your rental home!`;
+        mailOptions.text = `Hello ${user.firstName}, we are pleased to have you on board!\n Your password is: ${user.password}.\n Please keep this information for your further reference in a secured place. \nThousands of students are using Studyroom for their property rentals and are having a smooth sailing experience.\n You are all set to find your rental home!`;
 
-        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of students are using <b><span style="color: blue;">Studyroom</span></b> for their property rentals and are having a smooth sailing experience.<br/>You are all set to find your rental home!</div>`;
+        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${user.password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of students are using <b><span style="color: blue;">Studyroom</span></b> for their property rentals and are having a smooth sailing experience.<br/>You are all set to find your rental home!</div>`;
     } else if (user.userType === 2) {
-        mailOptions.text = `Hello ${user.firstName}, we are pleased to have you on board!\n Your password is: ${password}. \nPlease keep this information for your further reference in a secured place.\n Thousands of brokers are using Studyroom for uploading rental properties and are having a smooth sailing experience.\n You are all set to showcase your rentals!`;
+        mailOptions.text = `Hello ${user.firstName}, we are pleased to have you on board!\n Your password is: ${user.password}. \nPlease keep this information for your further reference in a secured place.\n Thousands of brokers are using Studyroom for uploading rental properties and are having a smooth sailing experience.\n You are all set to showcase your rentals!`;
 
-        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of students are using <b><span style="color: blue;">Studyroom</span></b> for uploading rental properties and are having a smooth sailing experience.<br/>You are all set to showcase your rentals!</div>`;
+        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${user.password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of students are using <b><span style="color: blue;">Studyroom</span></b> for uploading rental properties and are having a smooth sailing experience.<br/>You are all set to showcase your rentals!</div>`;
     }
 
     var emailResponse = sendEmail(mailOptions);
 
-    if (emailResponse.success) {
-        return { success: true };
-    } else {
-        throw emailResponse.error;
-    }
+    return true;
 
 }
 
@@ -57,20 +51,16 @@ function sendPropertyInterestedEmail(student, broker, property) {
 
     var emailResponse = sendEmail(mailOptions);
 
-    if (emailResponse.success) {
-        return { success: true };
-    } else {
-        throw emailResponse.error;
-    }
+    return true;
 }
 
 function sendEmail(mailOptions) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            return new EmailResponse(error, false);
+
         } else {
-            return new EmailResponse(null, true);
+            throw error;
         }
     });
 

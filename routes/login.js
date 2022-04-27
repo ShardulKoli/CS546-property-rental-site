@@ -1,19 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const userData = require("../data/users");
+const xss = require("xss");
 
-async function loginPage(req, res) {
-    //render login form/ page
-}
 
 async function login(req, res) {
 
     try {
         //check inputs here
 
-        let checkLoginRequest = await userData.login(req.body.username, req.body.password);
+        let user = await userData.login(xss(req.body.username), xss(req.body.password));
 
-        //render logged in user view with required data
+        req.session.user = { username: user.email, userType: user.userType, name: user.firstName + " " + user.lastName };
+
+        res.status(200).json(req.session.user);
+
     }
     catch (e) {
         res.status(400).json({ errorMessage: e });
@@ -22,5 +23,4 @@ async function login(req, res) {
 
 router
     .route("/")
-    .get((req, res) => loginPage(req, res))
     .post((req, res) => login(req, res));

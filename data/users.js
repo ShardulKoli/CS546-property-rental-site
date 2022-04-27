@@ -19,6 +19,7 @@ async function login(username, password) {
         if (!match)
             throw "Either the username or password is invalid!";
 
+        return user;
         //return user with necessary data -- student data / broker data           
     } else {
         throw "Either the username or password is invalid!";
@@ -46,7 +47,6 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         contact: contact,
         password: await bcrypt.hash(password, saltRounds),
         username: username.toLowerCase(),
-        password: hashedPass,
         bookmarkedProp: [],
         rentedProp: [],
         ownedProp: [],
@@ -59,6 +59,7 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         throw "Could not add user!";
 
     var insertedUser = await getUser(newUser.email);
+    insertedUser.password = password;
 
     try {
         emailer.sendAccoutConfirmationEmail(insertedUser);
@@ -87,7 +88,7 @@ async function updateUser(firstName, lastName, username, contact) {
         }
     });
 
-    if (updateUser.modifiedCount > 0) {
+    if (updatedUser.modifiedCount > 0) {
         //update successful
     } else {
         throw "Could not update!";
@@ -111,7 +112,7 @@ async function removeUser(username) {
         }
     });
 
-    if (updateUser.modifiedCount > 0) {
+    if (updatedUser.modifiedCount > 0) {
         //removed successful
     } else {
         throw "Could not update!";
@@ -128,6 +129,8 @@ async function getUser(username) {
 
     if (!user)
         throw "User not found!"
+
+    
 
     return user;
 
