@@ -1,14 +1,71 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
-import { Form, Button, FloatingLabel } from "react-bootstrap";
+import { Form, Button, FloatingLabel, Modal } from "react-bootstrap";
+import axios from "axios";
 
 export const Login = ({ setLoginToken }) => {
   const [isRegistered, setIsRegistered] = useState(true);
 
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+  const [type, setType] = useState("Student");
+
+  // Modal States
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   // TODO: Auntenticate User
 
   const authenticate = () => {
+    console.log("loggingIn");
+
+    const logginInData = {
+      username: email,
+      password: password,
+    };
+
+    axios
+      .post("/login", logginInData)
+      .then((res) => {
+        console.log(res.data);
+        setLoginToken(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setLoginToken("Encountered some error");
+      });
     setLoginToken(true);
+  };
+
+  const signup = () => {
+    console.log("signingup");
+    const signUpData = {
+      firstName: firstName,
+      lastName: lastName,
+      contact: contact,
+      email: email,
+      password: password,
+      userType: type,
+    };
+
+    console.log(signUpData);
+    // handleShow();
+    setIsRegistered(true);
+    axios
+      .post("/login", signUpData)
+      .then((res) => {
+        handleShow();
+      })
+      .catch((e) => {
+        console.log(e);
+        // setLoginToken("Encountered some error");
+      });
+    // setLoginToken(true);
   };
 
   return (
@@ -21,14 +78,9 @@ export const Login = ({ setLoginToken }) => {
               label="User Type"
               className="mb-3"
             >
-              {/* <Form.Control
-                className={styles.inputStyles}
-                type="text"
-                placeholder="Enter Username"
-              /> */}
-              <Form.Select>
-                <option>Broker</option>
-                <option>Student</option>
+              <Form.Select onChange={(e) => setType(e.target.value)}>
+                <option value="Student">Student</option>
+                <option value="Broker">Broker</option>
               </Form.Select>
             </FloatingLabel>
             {/* <Form.Label>Username</Form.Label> */}
@@ -41,27 +93,69 @@ export const Login = ({ setLoginToken }) => {
             label="Email address"
             className="mb-3"
           >
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {isRegistered ? null : (
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.....maybe
+              </Form.Text>
+            )}
           </FloatingLabel>
 
-          {isRegistered ? null : (
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.....maybe
-            </Form.Text>
-          )}
+          {!isRegistered ? (
+            <div>
+              <Form.Group className="mb-3" controlId="firstName">
+                <FloatingLabel controlId="floatingInput" label="First Name">
+                  <Form.Control
+                    type="input"
+                    placeholder="Enter First Name"
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="lastName">
+                <FloatingLabel controlId="floatingInput" label="Last Name">
+                  <Form.Control
+                    type="input"
+                    placeholder="Enter Last Name"
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="contact">
+                <FloatingLabel controlId="floatingInput" label="Contact">
+                  <Form.Control
+                    type="input"
+                    placeholder="Enter Contact Details"
+                    onChange={(e) => setContact(e.target.value)}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+            </div>
+          ) : null}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <FloatingLabel controlId="floatingPassword" label="Password">
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </FloatingLabel>
         </Form.Group>
 
         <Button
           variant="success"
-          type="submit"
           className={styles.formStyles}
-          onClick={() => authenticate()}
+          onClick={() => {
+            isRegistered ? authenticate() : signup();
+          }}
         >
           Submit
         </Button>
@@ -75,6 +169,18 @@ export const Login = ({ setLoginToken }) => {
           {isRegistered ? <div>Signup</div> : <div>Login</div>}
         </Button>
       </Form>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>Your account has been successfully created</Modal.Body>
+        <Modal.Body>
+          Please check your inbox/spam for your account details email
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

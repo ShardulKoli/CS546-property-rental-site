@@ -1,0 +1,28 @@
+.mainContainer {
+  display: flex;
+  /* flex-direction: column; */
+  margin: 2%;
+}
+
+.detailsCard {
+  width: 40%;
+  height: fit-content;
+  font-size: 25px;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.tabHolder {
+  margin-left: 2%;
+  width: 100%;
+  border-style: solid;
+  border: 10px;
+}
+
+.tab {
+  background: whitesmoke;
+}
