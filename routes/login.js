@@ -24,3 +24,5 @@ async function login(req, res) {
 router
     .route("/")
     .post((req, res) => login(req, res));
+
+module.exports = router;

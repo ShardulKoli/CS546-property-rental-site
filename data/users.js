@@ -3,7 +3,7 @@ const usersCollection = collections.users;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const { ObjectId } = require("mongodb");
-const emailer = require
+const emailer = require("../autoemailer/autoEmailer");
 
 async function login(username, password) {
 
@@ -30,9 +30,9 @@ async function login(username, password) {
 async function createUser(firstName, lastName, email, userType, contact, password) {
     //check all inputs
 
-    const users = await userCollection();
+    const users = await usersCollection();
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+    var user = await users.findOne({ email: email.toLowerCase(), isActive: true });
 
     if (user) {
         throw "User with provided email already exists!";
@@ -43,10 +43,9 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         firstName: firstName,
         lastName: lastName,
         email: email.toLowerCase(),
-        userType: userType,
+        userType: userType === "Student" ? 1 : 2,
         contact: contact,
         password: await bcrypt.hash(password, saltRounds),
-        username: username.toLowerCase(),
         bookmarkedProp: [],
         rentedProp: [],
         ownedProp: [],
@@ -72,7 +71,7 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
 async function updateUser(firstName, lastName, username, contact) {
 
     //check inputs
-    const users = await userCollection();
+    const users = await usersCollection();
 
     var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
 
@@ -98,7 +97,7 @@ async function updateUser(firstName, lastName, username, contact) {
 
 async function removeUser(username) {
     //check inputs
-    const users = await userCollection();
+    const users = await usersCollection();
 
     var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
 
@@ -123,14 +122,14 @@ async function removeUser(username) {
 async function getUser(username) {
     //check username input
 
-    const users = await userCollection();
+    const users = await usersCollection();
 
     var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
 
     if (!user)
         throw "User not found!"
 
-    
+
 
     return user;
 

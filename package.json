@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ShardulKoli/CS546-property-rental-site#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "mongodb": "^4.5.0",

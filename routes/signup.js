@@ -21,3 +21,5 @@ async function signup(req, res) {
 router
     .route("/")
     .post((req, res) => signup(req, res));
+
+module.exports = router;
