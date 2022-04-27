@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { TestComponent } from "./components/TestComponent";
+// import { TestComponent } from "./components/TestComponent";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Home } from "./components/Home";
@@ -35,7 +35,7 @@ function App() {
               <Home />
             </Route>
             <Route exact path="/account/:id">
-              <Account />
+              <Account name="qweqweqwe" />
             </Route>
             <Route exact path="/property/:id">
               <PropertyDetails />
