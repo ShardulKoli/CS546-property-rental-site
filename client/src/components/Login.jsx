@@ -39,7 +39,6 @@ export const Login = ({ setLoginToken }) => {
         console.log(e);
         // setLoginToken("Encountered some error");
       });
-    setLoginToken(true);
   };
 
   const signup = () => {
@@ -57,7 +56,7 @@ export const Login = ({ setLoginToken }) => {
     // handleShow();
     setIsRegistered(true);
     axios
-      .post("/login", signUpData)
+      .post("/signup", signUpData)
       .then((res) => {
         handleShow();
       })
