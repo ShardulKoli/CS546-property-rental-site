@@ -121,9 +121,11 @@ async function updateProperty(name, address, pincode, city, state,type,beds,bath
 
 async function getAllProperties(){
     const properties = await propertiesCollection();
+    const propertiesList = await properties.find({isActive: true}).toArray();
 
-    if (!properties)
+    if (!propertiesList)
         throw "Not found!"
+    return propertiesList;
 }
 
 async function removeProperty(name) {

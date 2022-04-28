@@ -4,6 +4,17 @@ const propertyData = require("../data/properties");
 const xss = require("xss");
 
 
+async function getAllProperties(req,res){
+    try{
+    let properties = await propertyData.getAllProperties();
+
+    res.status(200).json(properties);
+    }
+    catch (e) {
+        res.status(400).json({ errorMessage: e });
+    }
+}
+
 async function createProperty(req, res) {
 
     try {
@@ -92,6 +103,10 @@ async function removeProperty(req, res) {
         res.status(400).json({ errorMessage: e });
     }
 }
+
+router
+    .route("/getAllProperties")
+    .get((req, res) => getAllProperties(req, res));
 
 router
     .route("/createProperty")
