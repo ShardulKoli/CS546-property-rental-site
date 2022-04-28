@@ -21,6 +21,14 @@ async function showUserDetails(req, res) {
     }
 }
 
+async function editUserDetails(req,res){
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 router
     .route("/")
     .get((req, res) => showUserDetails(req, res));
