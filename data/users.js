@@ -2,7 +2,7 @@ const collections = require("../mongoCollections");
 const usersCollection = collections.users;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
-const { ObjectId } = require("mongodb");
+const { ObjectId, OrderedBulkOperation } = require("mongodb");
 const emailer = require("../autoemailer/autoEmailer");
 
 async function login(username, password) {
@@ -129,10 +129,103 @@ async function getUser(username) {
     if (!user)
         throw "User not found!"
 
+    var userObj = user;
+    if (user.userType == 1) {
+        var studentBookmarkedProperties = []//get propertiesbyid(bookmarkedProp) - should return array of properties with all detials
+        var studentRentedProperties = []//get propertiesbyid(rentedProp) -  should return array of properties with all detials
+        userObj.bookmarkedPropertyDetails = studentBookmarkedProperties;
+        userObj.rentedPropertyDetails = studentRentedProperties;
+    } else {
+        var brokerOwnedProperties = []//get propertiesbyid(rentedProp) -  should return array of properties with all detials
+        userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
+    }
+
+    return userObj;
+}
 
 
-    return user;
+//call this while student clicks bookmark/remove from property
+async function bookmarkProperty(user, property) {
+    //check inputs
+    const users = await usersCollection();
 
+    var user = await users.findOne({ email: user.email.toLowerCase(), isActive: true });
+
+    if (!user) {
+        throw "Invalid user";
+    }
+
+    var propId = property._id.toString();
+    user.bookmarkedProp.foreach(x => x._id.toString());
+
+    var bookMarkOperation = {
+        $addToSet: {
+            bookmarkedProp: property._id
+        }
+    };
+
+    if (user.bookmarkedProp.includes(propId)) {
+        bookMarkOperation = {
+            $pull: {
+                bookmarkedProp: property._id
+            }
+        };
+    }
+
+    var updatedUser = users.updateOne({ email: user.email.toLowerCase() }, bookMarkOperation);
+
+    if (updatedUser.modifiedCount > 0) {
+        return true;
+    } else {
+        throw "Could not update!";
+    }
+}
+
+//call this when a broker marks property as rented out to a student
+async function rentProperty(broker, student, property) {
+    //check inputs
+    const users = await usersCollection();
+
+    var brokerUser = await users.findOne({ email: broker.email.toLowerCase(), isActive: true });
+
+    if (!brokerUser) {
+        throw "Invalid broker";
+    }
+
+    var studentUser = await users.findOne({ email: student.email.toLowerCase(), isActive: true });
+
+    if (!studentUser) {
+        throw "Invalid student";
+    }
+
+    var propId = property._id.toString();
+    studentUser.rentedProp.foreach(x => x._id.toString());
+
+    var rentedOperation = {
+        $addToSet: {
+            rentedProp: bookmarkFlag
+        }
+    };
+
+    if (user.bookmarkedProp.includes(propId)) {
+        rentedOperation = {
+            $pull: {
+                rentedProp: bookmarkFlag
+            }
+        };
+    }
+
+    var updatedUser = users.updateOne({ email: user.email.toLowerCase() }, {
+        $addToSet: {
+            rentedProp: rentedOperation
+        }
+    });
+
+    if (updatedUser.modifiedCount > 0) {
+        return true;
+    } else {
+        throw "Could not update!";
+    }
 }
 
 
@@ -141,5 +234,7 @@ module.exports = {
     createUser,
     updateUser,
     removeUser,
-    getUser
+    getUser,
+    bookmarkProperty,
+
 }
