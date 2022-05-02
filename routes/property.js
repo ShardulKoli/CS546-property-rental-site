@@ -18,6 +18,7 @@ async function getAllProperties(req,res){
 async function createProperty(req, res) {
 
     try {
+        req.body;
         //check inputs here
         
         let createdProperty = await propertyData.createProperty(
@@ -30,14 +31,15 @@ async function createProperty(req, res) {
             xss(req.body.beds),
             xss(req.body.bath),
             xss(req.body.balcony),
-            xss(req.body.centralAir),
-            xss(req.body.petFriendly),
-            xss(req.body.partyFriendly),
-            xss(req.body.garrage),
+            req.body.centralAir,
+            req.body.petFriendly,
+            req.body.partyFriendly,
+            req.body.garrage,
             xss(req.body.nearBySchools),
             xss(req.body.nearByMedical),
             xss(req.body.nearByCommute),
             xss(req.body.rent),
+            xss(req.body.brokerage),
             xss(req.body.deposit),
             xss(req.body.minimumLeasePeriod),
             xss(req.body.images),
@@ -67,10 +69,10 @@ async function updateProperty(req, res) {
             xss(req.body.beds),
             xss(req.body.bath),
             xss(req.body.balcony),
-            xss(req.body.centralAir),
-            xss(req.body.petFriendly),
-            xss(req.body.partyFriendly),
-            xss(req.body.garrage),
+            req.body.centralAir,
+            req.body.petFriendly,
+            req.body.partyFriendly,
+            req.body.garrage,
             xss(req.body.nearBySchools),
             xss(req.body.nearByMedical),
             xss(req.body.nearByCommute),
@@ -104,6 +106,20 @@ async function removeProperty(req, res) {
     }
 }
 
+async function getProperty(req, res) {
+
+    try {
+        //check inputs here
+
+        let property = await propertyData.getPropertyById(req.params.id);
+
+        res.status(200).json(property);
+    }
+    catch (e) {
+        res.status(400).json({ errorMessage: e });
+    }
+}
+
 router
     .route("/getAllProperties")
     .get((req, res) => getAllProperties(req, res));
@@ -119,6 +135,10 @@ router
 router
     .route("/removeProperty")
     .put((req, res) => removeProperty(req, res));
+
+    router
+    .route("/getProperty/:id")
+    .get((req, res) => getProperty(req, res));
     
 
 module.exports = router;
