@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
 import { Carousel, Card } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
+// import axios from "axios";
 
 export const PropertyDetails = () => {
   const [propertyDetails, setPropertyDetails] = useState({});
@@ -10,6 +11,15 @@ export const PropertyDetails = () => {
 
   const getPropertyDetails = () => {
     // TODO: Fetch the property details based on the id of the property
+
+    // axios
+    // .post("/login", logginInData)
+    // .then((res) => {
+
+    // })
+    // .catch((e) => {
+
+    // });
 
     setPropertyDetails(property);
   };
@@ -77,7 +87,16 @@ export const PropertyDetails = () => {
               </Carousel.Caption>
             </Carousel.Item>
           </Carousel>
-          <div>qweqe</div>
+          <div className={styles.detailsHolder}>
+            <div className={styles.detailsColumn}>
+              <div>Name:</div>
+              <div>Address:</div>
+            </div>
+            <div>
+              <div>{propertyDetails.name}</div>
+              <div>{propertyDetails.address}</div>
+            </div>
+          </div>
         </Card>
       </div>
     </div>

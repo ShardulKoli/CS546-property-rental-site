@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { userBroker, userUser } from "../assets/dummyData";
+import { property, userBroker, userUser } from "../assets/dummyData";
 import { PropertyCard } from "./PropertyCard";
 import { Card, Tabs, Tab, Button } from "react-bootstrap";
 import styles from "./Account.module.css";
 import { CreateListingModal } from "./CreateListingModal";
 
-export const Account = ({ name }) => {
-  const [isBroker, setIsBroker] = useState(true);
-
-  const [userDetails, setUserDetails] = useState({});
+export const Account = ({ user }) => {
+  console.log(user);
+  const [userDetails, setUserDetails] = useState(user);
+  const [isBroker, setIsBroker] = useState(user.userType === 1 ? true : false);
 
   const getUser = () => {
     // TODO: make axios call here to set content dynamically
+    // axios
+    //   .post("/login", logginInData)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setLoginToken(res.data);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e.response.data.errorMessage);
+    //     setSaveMessage(e.response.data.errorMessage);
+    //     setLoginToken(null);
+    //     handleShow();
+    //   });
     setUserDetails(userBroker);
   };
 
@@ -24,7 +36,7 @@ export const Account = ({ name }) => {
     for (let i = 0; i < 10; i++) {
       tempList.push(
         <div key={i}>
-          <PropertyCard id={i} />
+          <PropertyCard propertyDetails={property} />
         </div>
       );
     }
@@ -44,15 +56,12 @@ export const Account = ({ name }) => {
     buildCardList();
   }, []);
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className={styles.mainContainer}>
       <Card className={styles.detailsCard}>
         <Card.Body>
-          <Card.Title className={styles.detailsCard}>{name}</Card.Title>
           <Card.Title className={styles.detailsCard}>
             {userDetails.firstName} {userDetails.lastName}
           </Card.Title>

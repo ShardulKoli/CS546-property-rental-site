@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Carousel } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { property } from "../assets/dummyData";
 import styles from "./PropertyCard.module.css";
 
-export const PropertyCard = ({ id }) => {
+export const PropertyCard = ({ propertyDetails }) => {
   const [index, setIndex] = useState(0);
-  const [propertyDetails, setPropertyDetails] = useState({});
+  // const [propertyDetails, setPropertyDetails] = useState(propertyData);
   const navigate = useHistory();
 
   const handleSelect = (selectedIndex, e) => {
@@ -14,46 +13,12 @@ export const PropertyCard = ({ id }) => {
   };
 
   const loadProperyPage = (id) => {
-    navigate.push(`/property/${id}`);
+    navigate.push(`/property/${propertyDetails._id}`);
   };
 
-  const getPropertyDetails = (id) => {
-    // TODO: Fetch the property details based on the id of the property
-
-    setPropertyDetails(property);
-  };
-
-  useEffect(() => {
-    getPropertyDetails(id);
-  }, []);
-
-  // const property = {
-  //   _id: 1,
-  //   name: "Property 1",
-  //   address: "Some Address in Heights",
-  //   pincode: "07307",
-  //   city: "Jersey City",
-  //   state: "New Jersey",
-  //   type: "Apartment",
-  //   beds: 3,
-  //   baths: 2,
-  //   balcony: 1,
-  //   centralAir: false,
-  //   petFriendly: true,
-  //   partyFriendly: true,
-  //   garrage: false,
-  //   nearBySchools: "Stevens",
-  //   nearByMedical: "Pharmacy",
-  //   nearByCommute: "Commute list",
-  //   rent: 2000,
-  //   brokerage: 500,
-  //   deposit: 500,
-  //   minimumLeasePeriod: 12,
-  //   images: [],
-  //   broker: 1,
-  //   status: true,
-  //   isActive: true,
-  // };
+  if (!propertyDetails) {
+    return <div>Error</div>;
+  }
 
   return (
     <div>
@@ -65,7 +30,7 @@ export const PropertyCard = ({ id }) => {
           variant="dark"
         >
           <Carousel.Item
-            onClick={() => loadProperyPage(id)}
+            onClick={() => loadProperyPage(propertyDetails._id)}
             // className={styles.cardStyle}
           >
             <img
@@ -78,7 +43,7 @@ export const PropertyCard = ({ id }) => {
               <p>Image one</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item onClick={() => loadProperyPage(id)}>
+          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             <img
               className="d-block w-100"
               src={require("../assets/logo192.png")}
@@ -90,7 +55,7 @@ export const PropertyCard = ({ id }) => {
               <p>Image two</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item onClick={() => loadProperyPage(id)}>
+          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             <img
               className="d-block w-100"
               src={require("../assets/logo192.png")}
@@ -104,12 +69,10 @@ export const PropertyCard = ({ id }) => {
           </Carousel.Item>
         </Carousel>
         <Card.Body
-          onClick={() => loadProperyPage(id)}
+          onClick={() => loadProperyPage(propertyDetails._id)}
           // className={styles.cardBody}
         >
-          <Card.Title>
-            {propertyDetails.name} {id}
-          </Card.Title>
+          <Card.Title>{propertyDetails.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
             {propertyDetails.address}
           </Card.Subtitle>
