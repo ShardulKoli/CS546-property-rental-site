@@ -168,6 +168,21 @@ async function getProperty(name) {
     return property;
 
 }
+async function getPropertyById(id) {
+    //check username input
+
+    const properties = await propertiesCollection();
+    const property = await properties.findOne({ _id: ObjectId(id) });
+
+    if (!property)
+        throw "Property not found!";
+
+
+
+
+    return property;
+
+}
 
 
 module.exports = {
@@ -175,5 +190,6 @@ module.exports = {
     createProperty,
     updateProperty,
     removeProperty,
-    getProperty
+    getProperty,
+    getPropertyById
 }
