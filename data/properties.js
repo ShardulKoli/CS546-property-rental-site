@@ -3,13 +3,14 @@ const propertiesCollection = collections.properties;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const { ObjectId } = require("mongodb");
+const userUtils = require("./users");
 //const emailer = require("../autoemailer/autoEmailer");
 
-async function createProperty(name, address, pincode, city, state,type,beds,bath,balcony,centralAir,
-    petFriendly,partyFriendly,garrage,nearBySchools,nearByMedical,nearByCommute,rent,brokerage,
-    deposit,minimumLeasePeriod,images,broker,status) {
+async function createProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
+    petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
+    deposit, minimumLeasePeriod, images, broker, status) {
     //check all inputs
-        //status field indicates rented or not!
+    //status field indicates rented or not!
 
     const properties = await propertiesCollection();
 
@@ -27,25 +28,25 @@ async function createProperty(name, address, pincode, city, state,type,beds,bath
         city: city,
         state: state,
         type: type,
-        beds:beds,
-        bath:bath,
-        balcony:balcony,
-        centralAir:centralAir,
-        petFriendly:petFriendly,
-        partyFriendly:partyFriendly,
-        garrage:garrage,
-        nearByMedical:nearByMedical,
-        nearBySchools:nearBySchools,
-        partyFriendly:partyFriendly,
-        partyFriendly:partyFriendly,
-        nearByCommute:nearByCommute,
-        rent:rent,
-        brokerage:brokerage,
-        deposit:deposit,
-        minimumLeasePeriod:minimumLeasePeriod,
-        images:images,
-        broker:broker,
-        status:status,
+        beds: beds,
+        bath: bath,
+        balcony: balcony,
+        centralAir: centralAir,
+        petFriendly: petFriendly,
+        partyFriendly: partyFriendly,
+        garrage: garrage,
+        nearByMedical: nearByMedical,
+        nearBySchools: nearBySchools,
+        partyFriendly: partyFriendly,
+        partyFriendly: partyFriendly,
+        nearByCommute: nearByCommute,
+        rent: rent,
+        brokerage: brokerage,
+        deposit: deposit,
+        minimumLeasePeriod: minimumLeasePeriod,
+        images: images,
+        broker: broker,
+        status: status,
         isActive: true
     }
 
@@ -54,13 +55,14 @@ async function createProperty(name, address, pincode, city, state,type,beds,bath
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add property!";
 
-    
+    let addPropertyToBroker = await userUtils.addPropertyAsOwnedByBroker(broker, newProperty._id.toStrin());
+
     //insertedUser.password = password;
 
     try {
-    var insertedUser = await getProperty(newProperty.name);
+        var insertedUser = await getProperty(newProperty.name);
 
-     return {Property:insertedUser};
+        return { Property: insertedUser };
 
     } catch (error) {
         console.log(error);
@@ -68,9 +70,9 @@ async function createProperty(name, address, pincode, city, state,type,beds,bath
     //return data if needed
 }
 
-async function updateProperty(name, address, pincode, city, state,type,beds,bath,balcony,centralAir,
-    petFriendly,partyFriendly,garrage,nearBySchools,nearByMedical,nearByCommute,rent,brokerage,
-    deposit,minimumLeasePeriod,images,broker,status) {
+async function updateProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
+    petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
+    deposit, minimumLeasePeriod, images, broker, status) {
 
     //check inputs
     const properties = await propertiesCollection();
@@ -81,47 +83,47 @@ async function updateProperty(name, address, pincode, city, state,type,beds,bath
         throw "Invalid property";
     }
 
-    var updatedProperty = users.updateOne({ name: name}, {
+    var updatedProperty = users.updateOne({ name: name }, {
         $set: {
-        address: address,
-        pincode: pincode,
-        city: city,
-        state: state,
-        type: type,
-        beds:beds,
-        bath:bath,
-        balcony:balcony,
-        centralAir:centralAir,
-        petFriendly:petFriendly,
-        partyFriendly:partyFriendly,
-        garrage:garrage,
-        nearByMedical:nearByMedical,
-        nearBySchools:nearBySchools,
-        partyFriendly:partyFriendly,
-        partyFriendly:partyFriendly,
-        nearByCommute:nearByCommute,
-        rent:rent,
-        brokerage:brokerage,
-        deposit:deposit,
-        minimumLeasePeriod:minimumLeasePeriod,
-        images:images,
-        broker:broker,
-        status:status,
+            address: address,
+            pincode: pincode,
+            city: city,
+            state: state,
+            type: type,
+            beds: beds,
+            bath: bath,
+            balcony: balcony,
+            centralAir: centralAir,
+            petFriendly: petFriendly,
+            partyFriendly: partyFriendly,
+            garrage: garrage,
+            nearByMedical: nearByMedical,
+            nearBySchools: nearBySchools,
+            partyFriendly: partyFriendly,
+            partyFriendly: partyFriendly,
+            nearByCommute: nearByCommute,
+            rent: rent,
+            brokerage: brokerage,
+            deposit: deposit,
+            minimumLeasePeriod: minimumLeasePeriod,
+            images: images,
+            broker: broker,
+            status: status,
         }
     });
 
     if (updatedProperty.modifiedCount > 0) {
         //update successful
-        return {isUpdated:true}
+        return { isUpdated: true }
     } else {
         throw "Could not update!";
     }
 
 }
 
-async function getAllProperties(){
+async function getAllProperties() {
     const properties = await propertiesCollection();
-    const propertiesList = await properties.find({isActive: true}).toArray();
+    const propertiesList = await properties.find({ isActive: true }).toArray();
 
     if (!propertiesList)
         throw "Not found!"
@@ -132,13 +134,13 @@ async function removeProperty(name) {
     //check inputs
     const properties = await propertiesCollection();
 
-    var property = await properties.findOne({ name:name, isActive: true });
+    var property = await properties.findOne({ name: name, isActive: true });
 
     if (!property) {
         throw "Invalid property";
     }
 
-    var updatedProperty = properties.updateOne({ name:name }, {
+    var updatedProperty = properties.updateOne({ name: name }, {
         $set: {
             isActive: false
         }
@@ -146,7 +148,7 @@ async function removeProperty(name) {
 
     if (updatedProperty.modifiedCount > 0) {
         //removed successful
-        return {isDeleted :true}
+        return { isDeleted: true }
     } else {
         throw "Could not update!";
     }

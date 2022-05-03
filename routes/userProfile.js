@@ -13,7 +13,7 @@ async function showUserDetails(req, res) {
             let userDetails = await userData.getUser(username);
             res.status(200).json({ user: userDetails });
         } else {
-            return res.redirect("/")
+            return res.redirect("/");
         }
     }
     catch (e) {
@@ -35,7 +35,7 @@ async function editUserDetails(req, res) {
 
             res.status(200).json({ user: updatedUser });
         } else {
-            return res.redirect("/")
+            return res.redirect("/");
         }
 
     } catch (error) {
@@ -63,7 +63,7 @@ async function removeUser(req, res) {
 }
 
 router
-    .route("/")
+    .route("/username")
     .get((req, res) => showUserDetails(req, res))
     .patch((req, res) => editUserDetails(req, res))
     .delete((req, res) => removeUser(req, res));

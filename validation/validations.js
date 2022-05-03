@@ -69,9 +69,9 @@ module.exports = {
     validateUserType(userType) {
         if (!userType)
             throw "User type is not present.";
-        if (typeof addr !== 'string')
+        if (typeof userType !== 'string')
             throw "User type must be a string";
-        if (addr.trim().length === 0)
+        if (userType.trim().length === 0)
             throw "User type cannot be an empty string or string with just spaces";
         if (userType !== "Student" && userType !== "Broker")
             throw "Invalid User type!";

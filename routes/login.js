@@ -8,7 +8,7 @@ const validation = require("../validation/validations");
 async function login(req, res) {
 
     try {
-
+        
         let email = validation.validateEmail(xss(req.body.username));
         let password = validation.validatePassword(xss(req.body.password));
 
