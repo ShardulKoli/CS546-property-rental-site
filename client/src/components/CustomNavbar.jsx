@@ -4,7 +4,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import styles from "./CustomNavbar.module.css";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-export const CustomNavbar = () => {
+export const CustomNavbar = ({ deleteToken }) => {
   return (
     <div>
       <Navbar bg="dark" expand="lg">
@@ -33,9 +33,13 @@ export const CustomNavbar = () => {
             </div> */}
             <div className={styles.linkContainer}>
               <FilterListIcon sx={{ color: "white" }}></FilterListIcon>
-              <Link to="/account/1" className={styles.linkchange}>
+              <Link to="/account/" className={styles.linkchange}>
                 Account
               </Link>
+            </div>
+
+            <div className={styles.linkchange}>
+              <div onClick={() => deleteToken()}> Logout</div>
             </div>
           </Nav>
           {/* </Navbar.Collapse> */}
