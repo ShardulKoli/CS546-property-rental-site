@@ -53,7 +53,7 @@ function App() {
               <Home user={loginToken} />
             </Route>
             <Route exact path="/account/">
-              <Account user={loginToken} />
+              <Account loginToken={loginToken} />
             </Route>
             <Route exact path="/property/:id">
               <PropertyDetails />

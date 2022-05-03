@@ -4,28 +4,38 @@ import { PropertyCard } from "./PropertyCard";
 import { Card, Tabs, Tab, Button } from "react-bootstrap";
 import styles from "./Account.module.css";
 import { CreateListingModal } from "./CreateListingModal";
+import axios from "axios";
+import { ErrorCommon } from "./ErrorCommon";
 
-export const Account = ({ user }) => {
-  console.log(user);
-  const [userDetails, setUserDetails] = useState(user);
-  const [isBroker, setIsBroker] = useState(user.userType === 1 ? true : false);
+export const Account = ({ loginToken }) => {
+  console.log(loginToken);
+  const [userDetails, setUserDetails] = useState(null);
+  const [isBroker, setIsBroker] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const getUser = () => {
+  const getUser = (username) => {
     // TODO: make axios call here to set content dynamically
-    // axios
-    //   .post("/login", logginInData)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setLoginToken(res.data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e.response.data.errorMessage);
-    //     setSaveMessage(e.response.data.errorMessage);
-    //     setLoginToken(null);
-    //     handleShow();
-    //   });
-    setUserDetails(userBroker);
+    console.log(username);
+    axios
+      .get(`/user/${username}`)
+      .then((res) => {
+        setUserDetails(res.data);
+        setIsBroker(res.data.userType === 1 ? true : false);
+        isLoading(false);
+      })
+      .catch((e) => {
+        console.log(e.response.data.errorMessage);
+        isLoading(false);
+        setError(true);
+      });
+    // setUserDetails(userBroker);
   };
+
+  useEffect(() => {
+    getUser(loginToken.username);
+    buildCardList();
+  }, []);
 
   const [bookMarkedProp, setBookMarkedProp] = useState([]);
   const [ownedProp, setOwnedProp] = useState([]);
@@ -52,80 +62,84 @@ export const Account = ({ user }) => {
   const handleShow = () => setShow(true);
   //
 
-  useEffect(() => {
-    buildCardList();
-  }, []);
-
   useEffect(() => {}, []);
 
-  return (
-    <div className={styles.mainContainer}>
-      <Card className={styles.detailsCard}>
-        <Card.Body>
-          <Card.Title className={styles.detailsCard}>
-            {userDetails.firstName} {userDetails.lastName}
-          </Card.Title>
-          {/* <Card.Subtitle className="mb-2 text-muted">
-            Card Subtitle
-          </Card.Subtitle> */}
-          <Card.Text>Email : {userDetails.email}</Card.Text>
-          <Card.Text>User Type : {userDetails.userType}</Card.Text>
-          <Card.Text>Contact : {userDetails.contact}</Card.Text>
-          {isBroker ? (
-            <Button variant="primary" onClick={handleShow}>
-              Create Listing{" "}
-            </Button>
-          ) : null}
-        </Card.Body>
-      </Card>
+  if (error) {
+    return <ErrorCommon></ErrorCommon>;
+  }
 
-      <div className={styles.tabHolder}>
-        {isBroker ? (
-          <div>
-            <Tabs
-              defaultActiveKey="home"
-              id="uncontrolled-tab-example"
-              className="mb-3"
-            >
-              <Tab
-                eventKey="home"
-                title="Owned Properties"
-                className={styles.tab}
+  if (!isLoading) {
+    return (
+      <div className={styles.mainContainer}>
+        <Card className={styles.detailsCard}>
+          <Card.Body>
+            <Card.Title className={styles.detailsCard}>
+              {userDetails.firstName} {userDetails.lastName}
+            </Card.Title>
+            {/* <Card.Subtitle className="mb-2 text-muted">
+              Card Subtitle
+            </Card.Subtitle> */}
+            <Card.Text>Email : {userDetails.email}</Card.Text>
+            <Card.Text>User Type : {userDetails.userType}</Card.Text>
+            <Card.Text>Contact : {userDetails.contact}</Card.Text>
+            {isBroker ? (
+              <Button variant="primary" onClick={handleShow}>
+                Create Listing{" "}
+              </Button>
+            ) : null}
+          </Card.Body>
+        </Card>
+
+        <div className={styles.tabHolder}>
+          {isBroker ? (
+            <div>
+              <Tabs
+                defaultActiveKey="home"
+                id="uncontrolled-tab-example"
+                className="mb-3"
               >
-                <div className={styles.cardContainer}>{ownedProp}</div>
-              </Tab>
-            </Tabs>
-          </div>
-        ) : (
-          <div>
-            <Tabs
-              defaultActiveKey="home"
-              id="uncontrolled-tab-example"
-              className="mb-3"
-            >
-              <Tab
-                eventKey="home"
-                title="Rented Properties"
-                className={styles.tab}
+                <Tab
+                  eventKey="home"
+                  title="Owned Properties"
+                  className={styles.tab}
+                >
+                  <div className={styles.cardContainer}>{ownedProp}</div>
+                </Tab>
+              </Tabs>
+            </div>
+          ) : (
+            <div>
+              <Tabs
+                defaultActiveKey="home"
+                id="uncontrolled-tab-example"
+                className="mb-3"
               >
-                <div className={styles.cardContainer}>{rentedProp}</div>
-              </Tab>
-              <Tab
-                eventKey="profile"
-                title="Book Marked Properties"
-                className={styles.tab}
-              >
-                <div className={styles.cardContainer}>{bookMarkedProp}</div>
-              </Tab>
-            </Tabs>
-          </div>
-        )}
+                <Tab
+                  eventKey="home"
+                  title="Rented Properties"
+                  className={styles.tab}
+                >
+                  <div className={styles.cardContainer}>{rentedProp}</div>
+                </Tab>
+                <Tab
+                  eventKey="profile"
+                  title="Book Marked Properties"
+                  className={styles.tab}
+                >
+                  <div className={styles.cardContainer}>{bookMarkedProp}</div>
+                </Tab>
+              </Tabs>
+            </div>
+          )}
+        </div>
+        <CreateListingModal
+          show={show}
+          handleClose={handleClose}
+          loginToken={loginToken}
+        />
       </div>
-      <CreateListingModal
-        show={show}
-        handleClose={handleClose}
-        loginToken={user}
-      />
-    </div>
-  );
+    );
+  } else {
+    return <div>Loading User Data</div>;
+  }
 };

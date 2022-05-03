@@ -8,6 +8,7 @@ import axios from "axios";
 
 export const PropertyDetails = () => {
   const [propertyDetails, setPropertyDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const { id } = useParams();
@@ -42,88 +43,92 @@ export const PropertyDetails = () => {
     return <ErrorCommon></ErrorCommon>;
   }
 
-  return (
-    <div>
+  if (!isLoading) {
+    return (
       <div>
-        <Card className={styles.cardStyle}>
-          <Carousel
-            interval={null}
-            activeIndex={index}
-            onSelect={handleSelect}
-            // variant="dark"
-            className={styles.carousel}
-          >
-            <Carousel.Item>
-              {propertyDetails.images && propertyDetails.images[0] ? (
-                // console.log(propertyDetails.images)
-                <img
-                  alt="not fount"
-                  width={500}
-                  height={400}
-                  src={propertyDetails.images[0]}
-                />
-              ) : (
-                // <img
-                //   alt="First slide"
-                //   width={"500"}
-                //   height={400}
-                //   src={URL.createObjectURL(propertyDetails.images[0])}
-                // />
+        <div>
+          <Card className={styles.cardStyle}>
+            <Carousel
+              interval={null}
+              activeIndex={index}
+              onSelect={handleSelect}
+              // variant="dark"
+              className={styles.carousel}
+            >
+              <Carousel.Item>
+                {propertyDetails.images && propertyDetails.images[0] ? (
+                  // console.log(propertyDetails.images)
+                  <img
+                    alt="not fount"
+                    width={500}
+                    height={400}
+                    src={propertyDetails.images[0]}
+                  />
+                ) : (
+                  // <img
+                  //   alt="First slide"
+                  //   width={"500"}
+                  //   height={400}
+                  //   src={URL.createObjectURL(propertyDetails.images[0])}
+                  // />
 
+                  <img
+                    className="d-block w-100"
+                    width={500}
+                    height={400}
+                    src={require("../assets/logo192.png")}
+                  />
+                )}
+
+                <Carousel.Caption>
+                  {/* <h3>First slide label</h3> */}
+                  <p>Image one</p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
                 <img
-                  className="d-block w-100"
+                  // className="d-block w-100"
                   width={500}
                   height={400}
                   src={require("../assets/logo192.png")}
+                  alt="Second slide"
                 />
-              )}
 
-              <Carousel.Caption>
-                {/* <h3>First slide label</h3> */}
-                <p>Image one</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                // className="d-block w-100"
-                width={500}
-                height={400}
-                src={require("../assets/logo192.png")}
-                alt="Second slide"
-              />
+                <Carousel.Caption>
+                  {/* <h3>Second slide label</h3> */}
+                  <p>Image two</p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  // className="d-block w-100"
+                  width={500}
+                  height={400}
+                  src={require("../assets/logo192.png")}
+                  alt="Third slide"
+                />
 
-              <Carousel.Caption>
-                {/* <h3>Second slide label</h3> */}
-                <p>Image two</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                // className="d-block w-100"
-                width={500}
-                height={400}
-                src={require("../assets/logo192.png")}
-                alt="Third slide"
-              />
-
-              <Carousel.Caption>
-                {/* <h3>Third slide label</h3> */}
-                <p>Image Three</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-          <div className={styles.detailsHolder}>
-            <div className={styles.detailsColumn}>
-              <div>Name:</div>
-              <div>Address:</div>
+                <Carousel.Caption>
+                  {/* <h3>Third slide label</h3> */}
+                  <p>Image Three</p>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
+            <div className={styles.detailsHolder}>
+              <div className={styles.detailsColumn}>
+                <div>Name:</div>
+                <div>Address:</div>
+              </div>
+              <div>
+                <div>{propertyDetails.name}</div>
+                <div>{propertyDetails.address}</div>
+              </div>
             </div>
-            <div>
-              <div>{propertyDetails.name}</div>
-              <div>{propertyDetails.address}</div>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <div>Loading User Data</div>;
+  }
 };
