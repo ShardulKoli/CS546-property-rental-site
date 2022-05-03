@@ -189,6 +189,11 @@ async function getUser(username) {
       brokerOwnedProperties.push(propFromDb);
     }
 
+    for (const prop of user.ownedProp) {
+      var propFromDb = await propertyUtils.getPropertyById(prop);
+      brokerOwnedProperties.push(propFromDb);
+    }
+
     userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
   }
 
@@ -253,14 +258,14 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
     throw "Invalid user";
   }
 
-  var bookMarkOperation = {
+  var addToOwnedOperation = {
     $addToSet: {
       ownedProp: propertyId,
     },
   };
 
-  if (user.bookmarkedProp.includes(propertyId)) {
-    bookMarkOperation = {
+  if (user.ownedProp.includes(propertyId)) {
+    addToOwnedOperation = {
       $pull: {
         ownedProp: propertyId,
       },
@@ -269,7 +274,7 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
 
   var updatedUser = users.updateOne(
     { email: brokerEmail.toLowerCase() },
-    bookMarkOperation
+    addToOwnedOperation
   );
 
   if (updatedUser.modifiedCount > 0) {
