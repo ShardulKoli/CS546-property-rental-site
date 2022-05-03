@@ -4,6 +4,7 @@ const testRoutes = require("./test");
 const loginRoutes = require("./login");
 const signUpRoutes = require("./signup");
 const propertyRoutes = require("./property");
+const userProfileRoutes = require("./userProfile");
 
 const constructorMethod = (app) => {
   app.use("/test", testRoutes);
