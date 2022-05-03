@@ -2,12 +2,15 @@ const collections = require("../mongoCollections");
 const usersCollection = collections.users;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
-const { ObjectId, OrderedBulkOperation } = require("mongodb");
+const { ObjectId } = require("mongodb");
 const emailer = require("../autoemailer/autoEmailer");
+const validation = require("../validation/validations");
+
 
 async function login(username, password) {
 
-    //check inputs
+    username = validation.validateEmail(username);
+    password = validation.validatePassword(password);
 
     var users = await usersCollection();
 
@@ -28,7 +31,14 @@ async function login(username, password) {
 }
 
 async function createUser(firstName, lastName, email, userType, contact, password) {
-    //check all inputs
+
+    firstName = validation.validateFirstName(firstName);
+    lastName = validation.validateLastName(lastName);
+    email = validation.validateEmail(email);
+    userType = validation.validateUserType(userType);
+    contact = validation.validateContact(contact);
+    password = validation.validatePassword(password);
+
 
     const users = await usersCollection();
 
@@ -38,12 +48,19 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         throw "User with provided email already exists!";
     }
 
+    let userTypeNum = userType === "Student" ? 1 : 2;
+
+    if (userTypeNum === 1) {
+        if (email.split(".").slice(-1)[0] !== "edu")
+            throw "A student email address/username must end with a registered '.edu' domain!";
+    }
+
     let newUser = {
         _id: ObjectId(),
         firstName: firstName,
         lastName: lastName,
         email: email.toLowerCase(),
-        userType: userType === "Student" ? 1 : 2,
+        userType: user,
         contact: contact,
         password: await bcrypt.hash(password, saltRounds),
         bookmarkedProp: [],
@@ -70,7 +87,11 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
 
 async function updateUser(firstName, lastName, username, contact) {
 
-    //check inputs
+    firstName = validation.validateFirstName(firstName);
+    lastName = validation.validateLastName(lastName);
+    username = validation.validateEmail(username);
+    contact = validation.validateContact(contact);
+
     const users = await usersCollection();
 
     var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
@@ -96,7 +117,9 @@ async function updateUser(firstName, lastName, username, contact) {
 }
 
 async function removeUser(username) {
-    //check inputs
+
+    username = validation.validateEmail(username);
+
     const users = await usersCollection();
 
     var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
@@ -120,7 +143,8 @@ async function removeUser(username) {
 }
 
 async function getUser(username) {
-    //check username input
+
+    username = validation.validateEmail(username);
 
     const users = await usersCollection();
 
@@ -181,45 +205,35 @@ async function bookmarkProperty(user, property) {
     }
 }
 
-//call this when a broker marks property as rented out to a student
-async function rentProperty(broker, student, property) {
+//call this while broker adds new property
+async function addPropertyAsOwnedByBroker(user, property) {
     //check inputs
     const users = await usersCollection();
 
-    var brokerUser = await users.findOne({ email: broker.email.toLowerCase(), isActive: true });
+    var user = await users.findOne({ email: user.email.toLowerCase(), isActive: true });
 
-    if (!brokerUser) {
-        throw "Invalid broker";
-    }
-
-    var studentUser = await users.findOne({ email: student.email.toLowerCase(), isActive: true });
-
-    if (!studentUser) {
-        throw "Invalid student";
+    if (!user) {
+        throw "Invalid user";
     }
 
     var propId = property._id.toString();
-    studentUser.rentedProp.foreach(x => x._id.toString());
+    user.bookmarkedProp.foreach(x => x._id.toString());
 
-    var rentedOperation = {
+    var bookMarkOperation = {
         $addToSet: {
-            rentedProp: bookmarkFlag
+            ownedProp: property._id
         }
     };
 
     if (user.bookmarkedProp.includes(propId)) {
-        rentedOperation = {
+        bookMarkOperation = {
             $pull: {
-                rentedProp: bookmarkFlag
+                bookmarkedProp: property._id
             }
         };
     }
 
-    var updatedUser = users.updateOne({ email: user.email.toLowerCase() }, {
-        $addToSet: {
-            rentedProp: rentedOperation
-        }
-    });
+    var updatedUser = users.updateOne({ email: user.email.toLowerCase() }, bookMarkOperation);
 
     if (updatedUser.modifiedCount > 0) {
         return true;
@@ -227,6 +241,53 @@ async function rentProperty(broker, student, property) {
         throw "Could not update!";
     }
 }
+
+//call this when a broker marks property as rented out to a student
+// async function rentProperty(broker, student, property) {
+//     //check inputs
+//     const users = await usersCollection();
+
+//     var brokerUser = await users.findOne({ email: broker.email.toLowerCase(), isActive: true });
+
+//     if (!brokerUser) {
+//         throw "Invalid broker";
+//     }
+
+//     var studentUser = await users.findOne({ email: student.email.toLowerCase(), isActive: true });
+
+//     if (!studentUser) {
+//         throw "Invalid student";
+//     }
+
+//     var propId = property._id.toString();
+//     studentUser.rentedProp.foreach(x => x._id.toString());
+
+//     var rentedOperation = {
+//         $addToSet: {
+//             rentedProp: bookmarkFlag
+//         }
+//     };
+
+//     if (user.bookmarkedProp.includes(propId)) {
+//         rentedOperation = {
+//             $pull: {
+//                 rentedProp: bookmarkFlag
+//             }
+//         };
+//     }
+
+//     var updatedUser = users.updateOne({ email: user.email.toLowerCase() }, {
+//         $addToSet: {
+//             rentedProp: rentedOperation
+//         }
+//     });
+
+//     if (updatedUser.modifiedCount > 0) {
+//         return true;
+//     } else {
+//         throw "Could not update!";
+//     }
+// }
 
 
 module.exports = {
