@@ -3,7 +3,7 @@ import { PropertyCard } from "./PropertyCard";
 import styles from "./Home.module.css";
 import axios from "axios";
 
-export const Home = () => {
+export const Home = ({ loginToken }) => {
   const [cardList, setCardlist] = useState([]);
   const [properties, setProperties] = useState([]);
 
@@ -25,7 +25,7 @@ export const Home = () => {
     properties.forEach((property) => {
       tempList.push(
         <div key={property._id}>
-          <PropertyCard propertyDetails={property} />
+          <PropertyCard propertyDetails={property} loginToken={loginToken} />
         </div>
       );
     });

@@ -16,6 +16,18 @@ function App() {
     sessionStorage.setItem("token", JSON.stringify(data));
   };
 
+  const getToken = () => {
+    const tokenString = sessionStorage.getItem("token");
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+  };
+
+  const deleteToken = () => {
+    sessionStorage.removeItem("token");
+  };
+
+  console.log(getToken());
+
   if (!loginToken) {
     return (
       <div>
@@ -24,18 +36,12 @@ function App() {
     );
   }
 
-  const getToken = () => {
-    const tokenString = sessionStorage.getItem("token");
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  };
-
   console.log(getToken());
 
   return (
     <Router>
       <div>
-        <CustomNavbar />
+        <CustomNavbar deleteToken={deleteToken} />
         <Filters />
         {/* <TestComponent /> */}
         <div>
@@ -44,9 +50,9 @@ function App() {
               <Login />
             </Route> */}
             <Route exact path="/">
-              <Home />
+              <Home user={loginToken} />
             </Route>
-            <Route exact path="/account/:id">
+            <Route exact path="/account/">
               <Account user={loginToken} />
             </Route>
             <Route exact path="/property/:id">

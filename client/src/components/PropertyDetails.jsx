@@ -3,23 +3,27 @@ import { useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
 import { Carousel, Card } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
-// import axios from "axios";
+import { ErrorCommon } from "./ErrorCommon";
+import axios from "axios";
 
 export const PropertyDetails = () => {
   const [propertyDetails, setPropertyDetails] = useState({});
+  const [error, setError] = useState(null);
+
   const { id } = useParams();
 
   const getPropertyDetails = () => {
     // TODO: Fetch the property details based on the id of the property
 
-    // axios
-    // .post("/login", logginInData)
-    // .then((res) => {
-
-    // })
-    // .catch((e) => {
-
-    // });
+    axios
+      .get(`/property/getProperty/${id}`)
+      .then((res) => {
+        setPropertyDetails(res.data);
+        setError(null);
+      })
+      .catch((e) => {
+        setError(e.response);
+      });
 
     setPropertyDetails(property);
   };
@@ -34,6 +38,10 @@ export const PropertyDetails = () => {
   };
   const [index, setIndex] = useState(0);
 
+  if (error) {
+    return <ErrorCommon></ErrorCommon>;
+  }
+
   return (
     <div>
       <div>
@@ -42,17 +50,34 @@ export const PropertyDetails = () => {
             interval={null}
             activeIndex={index}
             onSelect={handleSelect}
-            variant="dark"
+            // variant="dark"
             className={styles.carousel}
           >
             <Carousel.Item>
-              <img
-                // className="d-block w-100"
-                width={500}
-                height={400}
-                src={require("../assets/logo192.png")}
-                alt="First slide"
-              />
+              {propertyDetails.images && propertyDetails.images[0] ? (
+                // console.log(propertyDetails.images)
+                <img
+                  alt="not fount"
+                  width={500}
+                  height={400}
+                  src={propertyDetails.images[0]}
+                />
+              ) : (
+                // <img
+                //   alt="First slide"
+                //   width={"500"}
+                //   height={400}
+                //   src={URL.createObjectURL(propertyDetails.images[0])}
+                // />
+
+                <img
+                  className="d-block w-100"
+                  width={500}
+                  height={400}
+                  src={require("../assets/logo192.png")}
+                />
+              )}
+
               <Carousel.Caption>
                 {/* <h3>First slide label</h3> */}
                 <p>Image one</p>

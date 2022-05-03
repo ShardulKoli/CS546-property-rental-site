@@ -121,7 +121,11 @@ export const Account = ({ user }) => {
           </div>
         )}
       </div>
-      <CreateListingModal show={show} handleClose={handleClose} />
+      <CreateListingModal
+        show={show}
+        handleClose={handleClose}
+        loginToken={user}
+      />
     </div>
   );
 };

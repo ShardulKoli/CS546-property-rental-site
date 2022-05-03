@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Card, Carousel } from "react-bootstrap";
+import { Button, Card, Carousel } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import styles from "./PropertyCard.module.css";
 
-export const PropertyCard = ({ propertyDetails }) => {
+export const PropertyCard = ({ propertyDetails, loginToken }) => {
   const [index, setIndex] = useState(0);
   // const [propertyDetails, setPropertyDetails] = useState(propertyData);
   const navigate = useHistory();
@@ -15,6 +15,8 @@ export const PropertyCard = ({ propertyDetails }) => {
   const loadProperyPage = (id) => {
     navigate.push(`/property/${propertyDetails._id}`);
   };
+
+  const bookmarkProperty = () => {};
 
   if (!propertyDetails) {
     return <div>Error</div>;
@@ -87,6 +89,10 @@ export const PropertyCard = ({ propertyDetails }) => {
               ${propertyDetails.rent}/month
             </div>
           </Card>
+
+          {}
+
+          <Button onClick={() => bookmarkProperty()}>BookMark</Button>
 
           <Card.Text></Card.Text>
           <Card.Text></Card.Text>

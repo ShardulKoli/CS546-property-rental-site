@@ -6,7 +6,9 @@ import {
   FloatingLabel,
   ButtonGroup,
   ToggleButton,
+  Alert,
 } from "react-bootstrap";
+import axios from "axios";
 
 // const property = {
 //     _id: 1,
@@ -36,7 +38,7 @@ import {
 //     isActive: true,
 //   };
 
-export const CreateListingModal = ({ show, handleClose }) => {
+export const CreateListingModal = ({ show, handleClose, loginToken }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
@@ -57,13 +59,16 @@ export const CreateListingModal = ({ show, handleClose }) => {
   const [brokerage, setBrokerage] = useState("");
   const [deposit, setDeposit] = useState("");
   const [minimumLeasePeriod, setMinimumLeasePeriod] = useState("");
-  const [images, setImages] = useState("");
+  // const [images, setImages] = useState(null);
+  const [imageOne, setImageOne] = useState(null);
+  const [imageTwo, setImageTwo] = useState(null);
+  const [imageThree, setImageThree] = useState(null);
   const [broker, setBroker] = useState("");
   const [status, setStatus] = useState(true);
-  const [isActive, setisActive] = useState(true);
 
   // handle errors
   const [errors, setErrors] = useState(null);
+  const [requestMessage, setRequestMessage] = useState(null);
 
   const checkPropertyDetails = (check) => {
     if (check) {
@@ -75,7 +80,43 @@ export const CreateListingModal = ({ show, handleClose }) => {
     }
   };
 
+  const getBase64 = (file) => {
+    return new Promise((resolve) => {
+      let fileInfo;
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        // console.log("Called", reader);
+        baseURL = reader.result;
+        // console.log(baseURL);
+        resolve(baseURL);
+      };
+      // console.log(fileInfo);
+    });
+  };
+
+  const setImageToBase64 = (file, imageSetter) => {
+    getBase64(file).then((res) => {
+      imageSetter(res);
+    });
+  };
+
   const createPropertyDetails = () => {
+    // convert images to base 64 to store in the db
+
+    // getBase64(imageOne).then((res) => {
+    //   console.log("Base 64");
+    //   console.log(res);
+    //   setImageOne(res);
+    // });
+
     const propertyDetails = {
       name: name,
       address: address,
@@ -97,7 +138,7 @@ export const CreateListingModal = ({ show, handleClose }) => {
       brokerage: brokerage,
       deposit: deposit,
       minimumLeasePeriod: minimumLeasePeriod,
-      images: [],
+      images: [imageOne, imageTwo, imageThree],
       broker: broker,
       status: status,
       isActive: true,
@@ -113,6 +154,18 @@ export const CreateListingModal = ({ show, handleClose }) => {
     // }
 
     console.log(propertyDetails);
+    console.log(propertyDetails.images);
+
+    axios
+      .post("/property/createProperty", propertyDetails)
+      .then((res) => {
+        console.log(res.data);
+        setRequestMessage("Property created successfully");
+      })
+      .catch((e) => {
+        console.log(e);
+        setRequestMessage(e);
+      });
   };
 
   // const [radioValue, setRadioValue] = useState("1");
@@ -130,6 +183,23 @@ export const CreateListingModal = ({ show, handleClose }) => {
         </Modal.Header>
         <Modal.Body>
           {/* Form stuff */}
+          {requestMessage ? (
+            <Alert key="primary" variant="primary">
+              {requestMessage}
+            </Alert>
+          ) : null}
+
+          {/* {imageOne ? (
+            <img
+              alt="not fount"
+              width={"250px"}
+              src={URL.createObjectURL(imageOne)}
+            />
+          ) : null} */}
+
+          {/* {imageOne ? (
+            <img alt="not fount" width={"250px"} src={imageOne} />
+          ) : null} */}
 
           <Form>
             <div>{name}</div>
@@ -473,6 +543,41 @@ export const CreateListingModal = ({ show, handleClose }) => {
                     </ToggleButton>
                   ))}
                 </ButtonGroup>
+              </div>
+
+              <div>
+                <div>Image One</div>
+                <input
+                  type="file"
+                  name="ImageOne"
+                  onChange={(e) => {
+                    // console.log(e.target.files[0]);
+                    setImageToBase64(e.target.files[0], setImageOne);
+                    // console.log(imageOne);
+                  }}
+                />
+              </div>
+
+              <div>
+                <div>Image Two</div>
+                <input
+                  type="file"
+                  name="ImageTwo"
+                  onChange={(e) => {
+                    setImageToBase64(e.target.files[0], setImageTwo);
+                  }}
+                />
+              </div>
+
+              <div>
+                <div>Image Three</div>
+                <input
+                  type="file"
+                  name="ImageThree"
+                  onChange={(e) => {
+                    setImageToBase64(e.target.files[0], setImageThree);
+                  }}
+                />
               </div>
             </Form.Group>
 
