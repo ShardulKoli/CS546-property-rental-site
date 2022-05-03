@@ -21,6 +21,7 @@ export const PropertyDetails = () => {
       .then((res) => {
         setPropertyDetails(res.data);
         setError(null);
+        setIsLoading(false);
       })
       .catch((e) => {
         setError(e.response);

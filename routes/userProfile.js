@@ -7,7 +7,7 @@ const validation = require("../validation/validations");
 async function showUserDetails(req, res) {
   try {
     // if (req.session.user) {
-    let username = validation.validateEmail(xss(req.body.username));
+    let username = validation.validateEmail(xss(req.params.username));
     let userDetails = await userData.getUser(username);
     res.status(200).json({ user: userDetails });
     // } else {

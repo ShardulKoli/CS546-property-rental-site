@@ -7,260 +7,289 @@ const emailer = require("../autoemailer/autoEmailer");
 const validation = require("../validation/validations");
 const propertyUtils = require("./properties");
 
-
 async function login(username, password) {
+  username = validation.validateEmail(username);
+  password = validation.validatePassword(password);
 
-    username = validation.validateEmail(username);
-    password = validation.validatePassword(password);
+  var users = await usersCollection();
 
-    var users = await usersCollection();
+  var user = await users.findOne({
+    email: username.toLowerCase(),
+    isActive: true,
+  });
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+  if (user) {
+    let match = await bcrypt.compare(password, user.password);
 
-    if (user) {
-        let match = await bcrypt.compare(password, user.password);
+    if (!match) throw "Either the username or password is invalid!";
 
-        if (!match)
-            throw "Either the username or password is invalid!";
-
-        return user;
-        //return user with necessary data -- student data / broker data           
-    } else {
-        throw "Either the username or password is invalid!";
-    }
-
+    return user;
+    //return user with necessary data -- student data / broker data
+  } else {
+    throw "Either the username or password is invalid!";
+  }
 }
 
-async function createUser(firstName, lastName, email, userType, contact, password) {
+async function createUser(
+  firstName,
+  lastName,
+  email,
+  userType,
+  contact,
+  password
+) {
+  firstName = validation.validateFirstName(firstName);
+  lastName = validation.validateLastName(lastName);
+  email = validation.validateEmail(email);
+  userType = validation.validateUserType(userType);
+  contact = validation.validateContact(contact);
+  password = validation.validatePassword(password);
 
-    firstName = validation.validateFirstName(firstName);
-    lastName = validation.validateLastName(lastName);
-    email = validation.validateEmail(email);
-    userType = validation.validateUserType(userType);
-    contact = validation.validateContact(contact);
-    password = validation.validatePassword(password);
+  const users = await usersCollection();
 
+  var user = await users.findOne({
+    email: email.toLowerCase(),
+    isActive: true,
+  });
 
-    const users = await usersCollection();
+  if (user) {
+    throw "User with provided email already exists!";
+  }
 
-    var user = await users.findOne({ email: email.toLowerCase(), isActive: true });
+  let userTypeNum = userType === "Student" ? 1 : 2;
 
-    if (user) {
-        throw "User with provided email already exists!";
-    }
+  if (userTypeNum === 1) {
+    if (email.split(".").slice(-1)[0] !== "edu")
+      throw "A student email address/username must end with a registered '.edu' domain!";
+  }
 
-    let userTypeNum = userType === "Student" ? 1 : 2;
+  let newUser = {
+    _id: ObjectId(),
+    firstName: firstName,
+    lastName: lastName,
+    email: email.toLowerCase(),
+    userType: userTypeNum,
+    contact: contact,
+    password: await bcrypt.hash(password, saltRounds),
+    bookmarkedProp: [],
+    rentedProp: [],
+    ownedProp: [],
+    isActive: true,
+  };
 
-    if (userTypeNum === 1) {
-        if (email.split(".").slice(-1)[0] !== "edu")
-            throw "A student email address/username must end with a registered '.edu' domain!";
-    }
+  const insertInfo = await users.insertOne(newUser);
 
-    let newUser = {
-        _id: ObjectId(),
-        firstName: firstName,
-        lastName: lastName,
-        email: email.toLowerCase(),
-        userType: user,
-        contact: contact,
-        password: await bcrypt.hash(password, saltRounds),
-        bookmarkedProp: [],
-        rentedProp: [],
-        ownedProp: [],
-        isActive: true
-    }
+  if (!insertInfo.acknowledged || !insertInfo.insertedId)
+    throw "Could not add user!";
 
-    const insertInfo = await users.insertOne(newUser);
+  var insertedUser = await getUser(newUser.email);
+  insertedUser.password = password;
 
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-        throw "Could not add user!";
-
-    var insertedUser = await getUser(newUser.email);
-    insertedUser.password = password;
-
-    //commented when run seed file
-    // try {
-    //     emailer.sendAccoutConfirmationEmail(insertedUser);
-    // } catch (error) {
-    //     console.log(error);
-    // }
-    //return data if needed
+  //commented when run seed file
+  // try {
+  //     emailer.sendAccoutConfirmationEmail(insertedUser);
+  // } catch (error) {
+  //     console.log(error);
+  // }
+  //return data if needed
 }
 
 async function updateUser(firstName, lastName, username, contact) {
+  firstName = validation.validateFirstName(firstName);
+  lastName = validation.validateLastName(lastName);
+  username = validation.validateEmail(username);
+  contact = validation.validateContact(contact);
 
-    firstName = validation.validateFirstName(firstName);
-    lastName = validation.validateLastName(lastName);
-    username = validation.validateEmail(username);
-    contact = validation.validateContact(contact);
+  const users = await usersCollection();
 
-    const users = await usersCollection();
+  var user = await users.findOne({
+    email: username.toLowerCase(),
+    isActive: true,
+  });
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+  if (!user) {
+    throw "Invalid user";
+  }
 
-    if (!user) {
-        throw "Invalid user";
+  var updatedUser = users.updateOne(
+    { email: username.toLowerCase() },
+    {
+      $set: {
+        firstName: firstName,
+        lastName: lastName,
+        contact: contact,
+      },
     }
+  );
 
-    var updatedUser = users.updateOne({ email: username.toLowerCase() }, {
-        $set: {
-            firstName: firstName,
-            lastName: lastName,
-            contact: contact
-        }
-    });
-
-    if (updatedUser.modifiedCount > 0) {
-        //update successful
-    } else {
-        throw "Could not update!";
-    }
-
+  if (updatedUser.modifiedCount > 0) {
+    //update successful
+  } else {
+    throw "Could not update!";
+  }
 }
 
 async function removeUser(username) {
+  username = validation.validateEmail(username);
 
-    username = validation.validateEmail(username);
+  const users = await usersCollection();
 
-    const users = await usersCollection();
+  var user = await users.findOne({
+    email: username.toLowerCase(),
+    isActive: true,
+  });
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+  if (!user) {
+    throw "Invalid user";
+  }
 
-    if (!user) {
-        throw "Invalid user";
+  var updatedUser = users.updateOne(
+    { email: username.toLowerCase() },
+    {
+      $set: {
+        isActive: false,
+      },
     }
+  );
 
-    var updatedUser = users.updateOne({ email: username.toLowerCase() }, {
-        $set: {
-            isActive: false
-        }
-    });
-
-    if (updatedUser.modifiedCount > 0) {
-        //removed successful
-    } else {
-        throw "Could not update!";
-    }
-
+  if (updatedUser.modifiedCount > 0) {
+    //removed successful
+  } else {
+    throw "Could not update!";
+  }
 }
 
 async function getUser(username) {
+  username = validation.validateEmail(username);
 
-    username = validation.validateEmail(username);
+  const users = await usersCollection();
 
-    const users = await usersCollection();
+  var user = await users.findOne({
+    email: username.toLowerCase(),
+    isActive: true,
+  });
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+  if (!user) throw "User not found!";
 
-    if (!user)
-        throw "User not found!"
+  var userObj = user;
+  if (user.userType == 1) {
+    var studentBookmarkedProperties = [];
 
-    var userObj = user;
-    if (user.userType == 1) {
-
-        var studentBookmarkedProperties = [];
-
-        for (const prop of user.bookmarkedProp) {
-            var propFromDb = await propertyUtils.getPropertyById(prop);
-            studentBookmarkedProperties.push(propFromDb);
-        }
-
-        userObj.bookmarkedPropertyDetails = studentBookmarkedProperties;
-    } else {
-        var brokerOwnedProperties = [];
-
-        for (const prop of user.ownedProp) {
-            var propFromDb = await propertyUtils.getPropertyById(prop);
-            brokerOwnedProperties.push(propFromDb);
-        }
-
-        userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
+    for (const prop of user.bookmarkedProp) {
+      var propFromDb = await propertyUtils.getPropertyById(prop);
+      studentBookmarkedProperties.push(propFromDb);
     }
 
-    return userObj;
-}
+    userObj.bookmarkedPropertyDetails = studentBookmarkedProperties;
+  } else {
+    var brokerOwnedProperties = [];
 
+    for (const prop of user.ownedProp) {
+      var propFromDb = await propertyUtils.getPropertyById(prop);
+      brokerOwnedProperties.push(propFromDb);
+    }
+
+    for (const prop of user.ownedProp) {
+      var propFromDb = await propertyUtils.getPropertyById(prop);
+      brokerOwnedProperties.push(propFromDb);
+    }
+
+    userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
+  }
+
+  return userObj;
+}
 
 //call this while student clicks bookmark/remove from property
 async function bookmarkProperty(studentEmail, propertyId) {
-    studentEmail = validation.validateEmail(studentEmail);
-    //validate properid
+  studentEmail = validation.validateEmail(studentEmail);
+  //validate properid
 
-    const users = await usersCollection();
+  const users = await usersCollection();
 
-    var user = await users.findOne({ email: studentEmail.toLowerCase(), isActive: true });
+  var user = await users.findOne({
+    email: studentEmail.toLowerCase(),
+    isActive: true,
+  });
 
-    if (!user) {
-        throw "Invalid user";
-    }
+  if (!user) {
+    throw "Invalid user";
+  }
 
-    var bookMarkOperation = {
-        $addToSet: {
-            bookmarkedProp: propertyId
-        }
+  var bookMarkOperation = {
+    $addToSet: {
+      bookmarkedProp: propertyId,
+    },
+  };
+
+  if (user.bookmarkedProp.includes(propertyId)) {
+    bookMarkOperation = {
+      $pull: {
+        bookmarkedProp: propertyId,
+      },
     };
+  }
 
-    if (user.bookmarkedProp.includes(propertyId)) {
-        bookMarkOperation = {
-            $pull: {
-                bookmarkedProp: propertyId
-            }
-        };
-    }
+  var updatedUser = users.updateOne(
+    { email: studentEmail.toLowerCase() },
+    bookMarkOperation
+  );
 
-    var updatedUser = users.updateOne({ email: studentEmail.toLowerCase() }, bookMarkOperation);
-
-    if (updatedUser.modifiedCount > 0) {
-        return true;
-    } else {
-        throw "Could not update!";
-    }
+  if (updatedUser.modifiedCount > 0) {
+    return true;
+  } else {
+    throw "Could not update!";
+  }
 }
 
 //call this while broker adds new property
 async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
-    //check inputs
-    brokerEmail = validation.validateEmail(brokerEmail);
+  //check inputs
+  brokerEmail = validation.validateEmail(brokerEmail);
 
-    const users = await usersCollection();
+  const users = await usersCollection();
 
-    var user = await users.findOne({ email: brokerEmail.toLowerCase(), isActive: true });
+  var user = await users.findOne({
+    email: brokerEmail.toLowerCase(),
+    isActive: true,
+  });
 
-    if (!user) {
-        throw "Invalid user";
-    }
+  if (!user) {
+    throw "Invalid user";
+  }
 
-    var addToOwnedOperation = {
-        $addToSet: {
-            ownedProp: propertyId
-        }
+  var addToOwnedOperation = {
+    $addToSet: {
+      ownedProp: propertyId,
+    },
+  };
+
+  if (user.ownedProp.includes(propertyId)) {
+    addToOwnedOperation = {
+      $pull: {
+        ownedProp: propertyId,
+      },
     };
+  }
 
-    if (user.ownedProp.includes(propertyId)) {
-        addToOwnedOperation = {
-            $pull: {
-                ownedProp: propertyId
-            }
-        };
-    }
+  var updatedUser = users.updateOne(
+    { email: brokerEmail.toLowerCase() },
+    addToOwnedOperation
+  );
 
-    var updatedUser = users.updateOne({ email: brokerEmail.toLowerCase() }, addToOwnedOperation);
-
-    if (updatedUser.modifiedCount > 0) {
-        return true;
-    } else {
-        throw "Could not update!";
-    }
+  if (updatedUser.modifiedCount > 0) {
+    return true;
+  } else {
+    throw "Could not update!";
+  }
 }
-
 
 module.exports = {
-    login,
-    createUser,
-    updateUser,
-    removeUser,
-    getUser,
-    bookmarkProperty,
-    addPropertyAsOwnedByBroker
-
-}
+  login,
+  createUser,
+  updateUser,
+  removeUser,
+  getUser,
+  bookmarkProperty,
+  addPropertyAsOwnedByBroker,
+};
