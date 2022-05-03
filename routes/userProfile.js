@@ -8,13 +8,13 @@ const validation = require("../validation/validations");
 async function showUserDetails(req, res) {
 
     try {
-        // if (req.session.user) {
+        if (req.session.user) {
             let username = validation.validateEmail(xss(req.body.username))
             let userDetails = await userData.getUser(username);
             res.status(200).json({ user: userDetails });
-        // } else {
-        //     return res.redirect("/");
-        // }
+        } else {
+            return res.redirect("/");
+        }
     }
     catch (e) {
         res.status(400).json({ errorMessage: e });
