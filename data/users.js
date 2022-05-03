@@ -77,11 +77,12 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
     var insertedUser = await getUser(newUser.email);
     insertedUser.password = password;
 
-    try {
-        emailer.sendAccoutConfirmationEmail(insertedUser);
-    } catch (error) {
-        console.log(error);
-    }
+        //commented when run seed file
+    // try {
+    //     emailer.sendAccoutConfirmationEmail(insertedUser);
+    // } catch (error) {
+    //     console.log(error);
+    // }
     //return data if needed
 }
 

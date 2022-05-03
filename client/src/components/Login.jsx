@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import styles from "./Login.module.css";
 import { Form, Button, FloatingLabel, Modal } from "react-bootstrap";
 import axios from "axios";
+import {
+  validateContact,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validatePassword,
+  validateUserType,
+} from "../assets/validation/validations";
 
 export const Login = ({ setLoginToken }) => {
   const [isRegistered, setIsRegistered] = useState(true);
@@ -19,7 +27,8 @@ export const Login = ({ setLoginToken }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // TODO: Auntenticate User
+  // error or success modal
+  const [saveMessage, setSaveMessage] = useState({});
 
   const authenticate = () => {
     console.log("loggingIn");
@@ -29,16 +38,27 @@ export const Login = ({ setLoginToken }) => {
       password: password,
     };
 
-    axios
-      .post("/login", logginInData)
-      .then((res) => {
-        console.log(res.data);
-        setLoginToken(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-        // setLoginToken("Encountered some error");
-      });
+    try {
+      logginInData.username = validateEmail(logginInData.username);
+      logginInData.password = validatePassword(logginInData.password);
+
+      axios
+        .post("/login", logginInData)
+        .then((res) => {
+          console.log(res.data);
+          setLoginToken(res.data);
+        })
+        .catch((e) => {
+          console.log(e.response.data.errorMessage);
+          setSaveMessage(e.response.data.errorMessage);
+          setLoginToken(null);
+          handleShow();
+        });
+    } catch (error) {
+      console.log(error);
+      setSaveMessage(error);
+      handleShow();
+    }
   };
 
   const signup = () => {
@@ -53,17 +73,36 @@ export const Login = ({ setLoginToken }) => {
     };
 
     console.log(signUpData);
-    // handleShow();
-    setIsRegistered(true);
-    axios
-      .post("/signup", signUpData)
-      .then((res) => {
-        handleShow();
-      })
-      .catch((e) => {
-        console.log(e);
-        // setLoginToken("Encountered some error");
-      });
+
+    try {
+      signUpData.email = validateEmail(signUpData.email);
+      signUpData.firstName = validateFirstName(signUpData.firstName);
+      signUpData.lastName = validateLastName(signUpData.lastName);
+      signUpData.userType = validateUserType(signUpData.userType);
+      signUpData.contact = validateContact(signUpData.contact);
+      signUpData.password = validatePassword(signUpData.password);
+
+      axios
+        .post("/signup", signUpData)
+        .then((res) => {
+          console.log("Done");
+          setSaveMessage("Your account has been successfully created");
+          handleShow();
+          setIsRegistered();
+        })
+        .catch((e) => {
+          console.log(e.response.data.errorMessage);
+          setSaveMessage(e.response.data.errorMessage);
+          handleShow();
+          // setLoginToken("Encountered some error");
+        });
+      handleShow();
+      // setIsRegistered(true);
+    } catch (error) {
+      setSaveMessage(error);
+      handleShow();
+    }
+
     // setLoginToken(true);
   };
 
@@ -170,10 +209,10 @@ export const Login = ({ setLoginToken }) => {
       </Form>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>Your account has been successfully created</Modal.Body>
-        <Modal.Body>
+        <Modal.Body>{saveMessage}</Modal.Body>
+        {/* <Modal.Body>
           Please check your inbox/spam for your account details email
-        </Modal.Body>
+        </Modal.Body> */}
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
