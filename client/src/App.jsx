@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // import { TestComponent } from "./components/TestComponent";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -12,18 +12,36 @@ import { Account } from "./components/Account";
 function App() {
   const [loginToken, setLoginToken] = useState(null);
 
+  const setToken = (data) => {
+    sessionStorage.setItem("token", JSON.stringify(data));
+  };
+
+  const getToken = () => {
+    const tokenString = sessionStorage.getItem("token");
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+  };
+
+  const deleteToken = () => {
+    sessionStorage.removeItem("token");
+  };
+
+  console.log(getToken());
+
   if (!loginToken) {
     return (
       <div>
-        <Login setLoginToken={setLoginToken} />
+        <Login setLoginToken={setLoginToken} setToken={setToken} />
       </div>
     );
   }
 
+  console.log(getToken());
+
   return (
     <Router>
       <div>
-        <CustomNavbar />
+        <CustomNavbar deleteToken={deleteToken} />
         <Filters />
         {/* <TestComponent /> */}
         <div>
@@ -32,10 +50,10 @@ function App() {
               <Login />
             </Route> */}
             <Route exact path="/">
-              <Home />
+              <Home user={loginToken} />
             </Route>
-            <Route exact path="/account/:id">
-              <Account name="qweqweqwe" />
+            <Route exact path="/account/">
+              <Account loginToken={loginToken} />
             </Route>
             <Route exact path="/property/:id">
               <PropertyDetails />

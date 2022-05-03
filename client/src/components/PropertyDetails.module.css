@@ -10,3 +10,12 @@
   height: 400px;
   justify-content: center;
 }
+
+.detailsHolder {
+  display: flex;
+  flex-direction: row;
+}
+
+.detailsColumn {
+  margin-right: 10px;
+}

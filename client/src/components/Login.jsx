@@ -11,7 +11,7 @@ import {
   validateUserType,
 } from "../assets/validation/validations";
 
-export const Login = ({ setLoginToken }) => {
+export const Login = ({ setLoginToken, setToken }) => {
   const [isRegistered, setIsRegistered] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -47,10 +47,14 @@ export const Login = ({ setLoginToken }) => {
         .then((res) => {
           console.log(res.data);
           setLoginToken(res.data);
+          setToken(res.data);
+          // sessionStorage.setItem("token", JSON.stringify(res.data));
         })
         .catch((e) => {
           console.log(e.response.data.errorMessage);
           setSaveMessage(e.response.data.errorMessage);
+          // sessionStorage.setItem("token", "null");
+          // sessionStorage.clear()
           setLoginToken(null);
           handleShow();
         });

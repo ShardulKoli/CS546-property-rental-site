@@ -3,7 +3,7 @@ const app = express();
 const configRoutes = require("./routes/index");
 const session = require("express-session");
 
-app.use(express.json());
+app.use(express.json({ limit: "25mb" }));
 
 const port = process.env.PORT || 4000;
 
@@ -13,7 +13,7 @@ app.use(
     secret: "JbBSyig2rC",
     saveUninitialized: true,
     resave: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 60000 },
   })
 );
 
