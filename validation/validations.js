@@ -67,13 +67,13 @@ module.exports = {
         return email.trim();
     },
     validateUserType(userType) {
-        if (!addr)
+        if (!userType)
             throw "User type is not present.";
-        if (typeof addr !== 'string')
+        if (typeof userType !== 'string')
             throw "User type must be a string";
-        if (addr.trim().length === 0)
+        if (userType.trim().length === 0)
             throw "User type cannot be an empty string or string with just spaces";
-        if (userType !== "Student" || userType !== "Broker")
+        if (userType !== "Student" && userType !== "Broker")
             throw "Invalid User type!";
 
         return userType.trim();
@@ -82,10 +82,12 @@ module.exports = {
         contact = Number(contact);
         if (Number.isInteger(contact) && contact > 0) {
             if (!contact || contact === "" || contact === undefined || contact.length === 0) throw 'Error: You must provide contact information';
+            if (contact.toString().length !== 10) throw "Contact number should be 10 digits!";
             return contact;
         } else {
             throw 'Error: Contact information must be a positive whole number';
         }
+
     },
     validatePassword(password) {
         if (!password)
@@ -97,7 +99,7 @@ module.exports = {
         if (password.trim().length < 6)
             throw "Password should be atleast 6 characters long.";
 
-        return password.trim();
+        return password;
     }
 
 };
