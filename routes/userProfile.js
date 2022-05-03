@@ -6,13 +6,13 @@ const validation = require("../validation/validations");
 
 async function showUserDetails(req, res) {
   try {
-    if (req.session.user) {
-      let username = validation.validateEmail(xss(req.body.username));
-      let userDetails = await userData.getUser(username);
-      res.status(200).json({ user: userDetails });
-    } else {
-      return res.redirect("/");
-    }
+    // if (req.session.user) {
+    let username = validation.validateEmail(xss(req.body.username));
+    let userDetails = await userData.getUser(username);
+    res.status(200).json({ user: userDetails });
+    // } else {
+    //     return res.redirect("/");
+    // }
   } catch (e) {
     res.status(400).json({ errorMessage: e });
   }
@@ -54,7 +54,7 @@ async function removeUser(req, res) {
 }
 
 router
-  .route("/username")
+  .route("/:username")
   .get((req, res) => showUserDetails(req, res))
   .patch((req, res) => editUserDetails(req, res))
   .delete((req, res) => removeUser(req, res));

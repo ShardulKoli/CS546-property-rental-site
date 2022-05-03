@@ -158,12 +158,22 @@ async function getUser(username) {
     var userObj = user;
     if (user.userType == 1) {
 
-        var studentBookmarkedProperties = [];//get propertiesbyid(bookmarkedProp) - should return array of properties with all detials
-        user.bookmarkedProp.foreach(x => studentBookmarkedProperties.push(propertyUtils.getPropertyById(x)));
+        var studentBookmarkedProperties = [];
+
+        for (const prop of user.bookmarkedProp) {
+            var propFromDb = await propertyUtils.getPropertyById(prop);
+            studentBookmarkedProperties.push(propFromDb);
+        }
+
         userObj.bookmarkedPropertyDetails = studentBookmarkedProperties;
     } else {
-        var brokerOwnedProperties = []//get propertiesbyid(rentedProp) -  should return array of properties with all detials
-        user.ownedProp.foreach(x => brokerOwnedProperties.push(propertyUtils.getPropertyById(x)));
+        var brokerOwnedProperties = [];
+        
+        for (const prop of user.ownedProp) {
+            var propFromDb = await propertyUtils.getPropertyById(prop);
+            brokerOwnedProperties.push(propFromDb);
+        }
+
         userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
     }
 
