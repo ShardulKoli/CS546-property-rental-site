@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
-import { Carousel, Card } from "react-bootstrap";
+import { Carousel, Card, Button } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
 import { ErrorCommon } from "./ErrorCommon";
 import axios from "axios";
 
-export const PropertyDetails = () => {
+export const PropertyDetails = ({ loginToken }) => {
   const [propertyDetails, setPropertyDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
+  const [isBroker, setIsBroker] = useState(null);
+  // const isBroker = loginToken.userType === 2 ? true : false;
 
   const { id } = useParams();
 
@@ -30,8 +33,51 @@ export const PropertyDetails = () => {
     setPropertyDetails(property);
   };
 
+  const getUser = (username) => {
+    // TODO: make axios call here to set content dynamically
+    // console.log(username);
+    axios
+      .get(`/user/${username}`)
+      .then((res) => {
+        console.log(res.data.user);
+        setUserDetails(res.data.user);
+        setIsBroker(res.data.user.userType === 2 ? true : false);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        // console.log(e.response.data.errorMessage);
+        setIsLoading(false);
+        setError(true);
+      });
+    // setUserDetails(userBroker);
+  };
+
+  const bookmarkProperty = () => {
+    const bookmarkDetails = {
+      username: userDetails.email,
+      propertyId: id,
+    };
+
+    console.log(bookmarkDetails);
+
+    // axios
+    //   .get(`/user/${username}`)
+    //   .then((res) => {
+    //     console.log(res.data.user);
+    //     setUserDetails(res.data.user);
+    //     setIsBroker(res.data.user.userType === 2 ? true : false);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     // console.log(e.response.data.errorMessage);
+    //     setIsLoading(false);
+    //     setError(true);
+    //   });
+  };
+
   useEffect(() => {
     getPropertyDetails(id);
+    getUser(loginToken.username);
   }, []);
 
   // Carousel index
@@ -125,6 +171,10 @@ export const PropertyDetails = () => {
                 <div>{propertyDetails.address}</div>
               </div>
             </div>
+
+            {isBroker ? null : (
+              <Button onClick={() => bookmarkProperty()}>BookMark</Button>
+            )}
           </Card>
         </div>
       </div>

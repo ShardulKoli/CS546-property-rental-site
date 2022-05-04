@@ -1,10 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import styles from "./CustomNavbar.module.css";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { Login } from "./Login";
 
-export const CustomNavbar = ({ deleteToken }) => {
+export const CustomNavbar = ({ loginToken, setLoginToken }) => {
   return (
     <div>
       <Navbar bg="dark" expand="lg">
@@ -39,7 +40,9 @@ export const CustomNavbar = ({ deleteToken }) => {
             </div>
 
             <div className={styles.linkchange}>
-              <div onClick={() => deleteToken()}> Logout</div>
+              <Link to="/logout/" className={styles.linkchange}>
+                Logout
+              </Link>
             </div>
           </Nav>
           {/* </Navbar.Collapse> */}

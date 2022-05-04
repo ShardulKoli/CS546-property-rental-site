@@ -16,8 +16,6 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
     navigate.push(`/property/${propertyDetails._id}`);
   };
 
-  const bookmarkProperty = () => {};
-
   if (!propertyDetails) {
     return <div>Error</div>;
   }
@@ -91,8 +89,6 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
           </Card>
 
           {}
-
-          <Button onClick={() => bookmarkProperty()}>BookMark</Button>
 
           <Card.Text></Card.Text>
           <Card.Text></Card.Text>

@@ -20,13 +20,13 @@ export const Account = ({ loginToken }) => {
     axios
       .get(`/user/${username}`)
       .then((res) => {
-        console.log(res.data.user);
+        // console.log(res.data.user);
         setUserDetails(res.data.user);
         setIsBroker(res.data.user.userType === 2 ? true : false);
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(e.response.data.errorMessage);
+        // console.log(e.response.data.errorMessage);
         setIsLoading(false);
         setError(true);
       });
