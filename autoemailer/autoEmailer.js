@@ -43,9 +43,9 @@ function sendPropertyInterestedEmail(student, broker, property) {
         to: broker.email
     };
 
-    mailOptions.text = `Hello ${user.firstName}, a student has shown interest in a property that you have uploaded.\n Property Details \n Name : ${property.name} \n Address : ${property.address}\n Pin : ${property.pincode} \n City : ${property.city} \n State : ${property.state} \n Student Details \n Name : ${student.firstName} ${student.lastName} \n Contact : ${student.contact} \n Email: ${student.email}`;
+    mailOptions.text = `Hello ${broker.firstName}, a student has shown interest in a property that you have uploaded.\n Property Details \n Name : ${property.name} \n Address : ${property.address}\n Pin : ${property.pincode} \n City : ${property.city} \n State : ${property.state} \n Student Details \n Name : ${student.firstName} ${student.lastName} \n Contact : ${student.contact} \n Email: ${student.email}`;
 
-    mailOptions.html = `<div style="text-align: center;">Hello ${user.firstName}, a student has shown interest in a property that you have uploaded.<br/><br/><strong>Property Details <strong><br/> 
+    mailOptions.html = `<div style="text-align: center;">Hello ${broker.firstName}, a student has shown interest in a property that you have uploaded.<br/><br/><strong>Property Details <strong><br/> 
     Name : ${property.name} <br/> Address : ${property.address} <br/> Pin : ${property.pincode} <br/>
     City : ${property.city} <br/> State : ${property.state} <br/><br/> <strong>Student Details </strong><br/> Name : ${student.firstName} ${student.lastName} <br/> Contact : ${student.contact} <br/> Email: ${student.email}</div>`;
 
