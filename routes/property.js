@@ -46,7 +46,10 @@ async function createProperty(req, res) {
       xss(req.body.status)
     );
 
-    let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(createdProperty.Property.broker, createdProperty.Property._id.toString());
+    let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(
+      createdProperty.Property.broker,
+      createdProperty.Property._id.toString()
+    );
 
     res.status(200).json({ status: true });
   } catch (e) {
@@ -95,7 +98,10 @@ async function removeProperty(req, res) {
 
     let isRemoved = await propertyData.removeProperty(xss(req.body.name));
 
-    let removeOwnedFromBroker = await userData.addPropertyAsOwnedByBroker(isRemoved.broker, isRemoved.propertyId);
+    let removeOwnedFromBroker = await userData.addPropertyAsOwnedByBroker(
+      isRemoved.broker,
+      isRemoved.propertyId
+    );
 
     res.status(200).json({ status: true });
   } catch (e) {
@@ -120,14 +126,16 @@ async function bookmarkProp(req, res) {
     var studentemail = validations.validateEmail(xss(req.body.username));
     var propertyId = validations.validatePropertyId(xss(req.body.propertyId));
 
-    let bookmarkedProp = await userData.bookmarkProperty(studentemail, propertyId);
+    let bookmarkedProp = await userData.bookmarkProperty(
+      studentemail,
+      propertyId
+    );
 
     res.status(200).json({ status: true });
   } catch (e) {
     res.status(400).json({ errorMessage: e });
   }
 }
-
 
 async function showInterestInProperty(req, res) {
   try {
@@ -135,14 +143,17 @@ async function showInterestInProperty(req, res) {
     var brokeremail = validations.validateEmail(xss(req.body.broker));
     var propertyId = validations.validatePropertyId(xss(req.body.propertyId));
 
-    let interestedProperty = await userData.showInterestInProperty(studentemail, brokeremail, propertyId);
+    let interestedProperty = await userData.showInterestInProperty(
+      studentemail,
+      brokeremail,
+      propertyId
+    );
 
     res.status(200).json({ status: true });
   } catch (e) {
     res.status(400).json({ errorMessage: e });
   }
 }
-
 
 router.route("/getAllProperties").get((req, res) => getAllProperties(req, res));
 
@@ -156,6 +167,8 @@ router.route("/getProperty/:id").get((req, res) => getProperty(req, res));
 
 router.route("/bookmark").post((req, res) => bookmarkProp(req, res));
 
-router.route("/showInterestInProperty").post((req, res) => showInterestInProperty(req, res));
+router
+  .route("/showInterestInProperty")
+  .post((req, res) => showInterestInProperty(req, res));
 
 module.exports = router;

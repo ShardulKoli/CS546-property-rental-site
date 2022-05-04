@@ -38,7 +38,12 @@ import axios from "axios";
 //     isActive: true,
 //   };
 
-export const CreateListingModal = ({ show, handleClose, loginToken }) => {
+export const CreateListingModal = ({
+  show,
+  handleClose,
+  loginToken,
+  getUser,
+}) => {
   // console.log(loginToken);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -141,7 +146,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
       minimumLeasePeriod: minimumLeasePeriod,
       images: [imageOne, imageTwo, imageThree],
       broker: broker,
-      status: status,
+      status: false,
       isActive: true,
     };
 
@@ -160,12 +165,12 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
     axios
       .post("/property/createProperty", propertyDetails)
       .then((res) => {
-        console.log(res.data);
         // setRequestMessage("Property created successfully");
+        getUser(loginToken.username);
+        handleClose();
       })
       .catch((e) => {
-        console.log(e);
-        // setRequestMessage(e);
+        setRequestMessage(e.response.data.errorMessage);
       });
   };
 
@@ -184,11 +189,6 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
         </Modal.Header>
         <Modal.Body>
           {/* Form stuff */}
-          {requestMessage ? (
-            <Alert key="primary" variant="primary">
-              {requestMessage}
-            </Alert>
-          ) : null}
 
           {/* {imageOne ? (
             <img
@@ -506,7 +506,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
                   {errors ? errors.minimumLeasePeriod : null}
                 </Form.Text>
               </FloatingLabel>
-
+              {/* 
               <div style={{ marginTop: "20px" }}>
                 <div>Status</div>
                 <ButtonGroup id="status">
@@ -529,7 +529,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
                     </ToggleButton>
                   ))}
                 </ButtonGroup>
-              </div>
+              </div> */}
 
               <div>
                 <div>Image One</div>
@@ -570,6 +570,15 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
             <Button variant="success" onClick={() => createPropertyDetails()}>
               Submit
             </Button>
+            {requestMessage ? (
+              <Alert
+                key="primary"
+                variant="primary"
+                style={{ marginTop: "10px" }}
+              >
+                {requestMessage}
+              </Alert>
+            ) : null}
           </Form>
         </Modal.Body>
         <Modal.Footer>

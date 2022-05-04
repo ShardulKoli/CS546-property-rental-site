@@ -26,7 +26,7 @@ export const Account = ({ loginToken }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(e.response.data.errorMessage);
+        // console.log(e.response.data.errorMessage);
         setIsLoading(false);
         setError(true);
       });
@@ -35,8 +35,24 @@ export const Account = ({ loginToken }) => {
 
   useEffect(() => {
     getUser(loginToken.username);
-    buildCardList();
+    // buildCardList();
   }, []);
+
+  useEffect(() => {
+    if (userDetails && userDetails.bookmarkedPropertyDetails) {
+      console.log(userDetails.bookmarkedPropertyDetails);
+      setBookMarkedProp(
+        buildPropertyCardList(userDetails.bookmarkedPropertyDetails)
+      );
+    }
+
+    if (userDetails && userDetails.brokerOwnedPropertyDetails) {
+      console.log(userDetails.brokerOwnedPropertyDetails);
+      setOwnedProp(
+        buildPropertyCardList(userDetails.brokerOwnedPropertyDetails)
+      );
+    }
+  }, [userDetails]);
 
   const [bookMarkedProp, setBookMarkedProp] = useState([]);
   const [ownedProp, setOwnedProp] = useState([]);
@@ -54,6 +70,20 @@ export const Account = ({ loginToken }) => {
     setOwnedProp(tempList);
     setBookMarkedProp(tempList);
     setRentedProp(tempList);
+  };
+
+  const buildPropertyCardList = (properties) => {
+    const tempList = [];
+
+    properties.forEach((property) => {
+      tempList.push(
+        <div key={property._id}>
+          <PropertyCard propertyDetails={property} />
+        </div>
+      );
+    });
+
+    return tempList;
   };
 
   // modal states
@@ -114,17 +144,17 @@ export const Account = ({ loginToken }) => {
           ) : (
             <div>
               <Tabs
-                defaultActiveKey="home"
+                defaultActiveKey="profile"
                 id="uncontrolled-tab-example"
                 className="mb-3"
               >
-                <Tab
+                {/* <Tab
                   eventKey="home"
                   title="Rented Properties"
                   className={styles.tab}
                 >
                   <div className={styles.cardContainer}>{rentedProp}</div>
-                </Tab>
+                </Tab> */}
                 <Tab
                   eventKey="profile"
                   title="Book Marked Properties"
@@ -140,6 +170,7 @@ export const Account = ({ loginToken }) => {
           show={show}
           handleClose={handleClose}
           loginToken={loginToken}
+          getUser={getUser}
         />
       </div>
     );

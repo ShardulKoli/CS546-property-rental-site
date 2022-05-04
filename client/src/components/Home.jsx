@@ -11,8 +11,8 @@ export const Home = ({ loginToken }) => {
     axios
       .get("/property/getAllProperties")
       .then((res) => {
-        console.log("Properties");
-        console.log(res.data);
+        // console.log("Properties");
+        // console.log(res.data);
         setProperties(res.data);
       })
       .catch((e) => {

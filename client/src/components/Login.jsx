@@ -11,7 +11,7 @@ import {
   validateUserType,
 } from "../assets/validation/validations";
 
-export const Login = ({ setLoginToken, setToken }) => {
+export const Login = ({ setLoginToken }) => {
   const [isRegistered, setIsRegistered] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -20,6 +20,10 @@ export const Login = ({ setLoginToken, setToken }) => {
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("Student");
+
+  const setToken = (data) => {
+    localStorage.setItem("token", JSON.stringify(data));
+  };
 
   // Modal States
   const [show, setShow] = useState(false);
@@ -31,8 +35,6 @@ export const Login = ({ setLoginToken, setToken }) => {
   const [saveMessage, setSaveMessage] = useState({});
 
   const authenticate = () => {
-    console.log("loggingIn");
-
     const logginInData = {
       username: email,
       password: password,
@@ -46,15 +48,12 @@ export const Login = ({ setLoginToken, setToken }) => {
         .post("/login", logginInData)
         .then((res) => {
           console.log(res.data);
-          setLoginToken(res.data);
           setToken(res.data);
-          // sessionStorage.setItem("token", JSON.stringify(res.data));
+          setLoginToken(res.data);
         })
         .catch((e) => {
           console.log(e.response.data.errorMessage);
           setSaveMessage(e.response.data.errorMessage);
-          // sessionStorage.setItem("token", "null");
-          // sessionStorage.clear()
           setLoginToken(null);
           handleShow();
         });
