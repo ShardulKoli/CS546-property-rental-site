@@ -86,6 +86,7 @@ export const PropertyDetails = ({ loginToken }) => {
 
   const deleteListing = (propertyName) => {
     console.log("Deleting listing");
+    console.log(propertyName);
     // loadHomepage();
     axios
       .put(`/property/removeProperty`, { name: propertyName })
