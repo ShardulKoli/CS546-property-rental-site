@@ -262,6 +262,49 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
     }
 }
 
+async function showInterestInProperty(studentEmail, brokerEmail, propertyId) {
+    brokerEmail = validation.validateEmail(brokerEmail);
+    studentEmail = validation.validateEmail(studentEmail);
+    propertyId = validation.validatePropertyId(propertyId);
+
+    const users = await usersCollection();
+
+    var broker = await users.findOne({
+        email: brokerEmail.toLowerCase(),
+        isActive: true,
+    });
+
+    if (!broker) {
+        throw "Invalid broker user";
+    }
+
+    var student = await users.findOne({
+        email: studentEmail.toLowerCase(),
+        isActive: true,
+    });
+
+    if (!student) {
+        throw "Invalid student user";
+    }
+
+    var property = await propertyUtils.getPropertyById(propertyId);
+
+    if (!property) {
+        throw "Invalid property";
+    }
+
+    if (property.broker.toLowerCase() !== brokerEmail.toLowerCase()) {
+        throw `This property is not owned by broker ${brokerEmail}`;
+    }
+
+    try {
+        emailer.sendPropertyInterestedEmail(student, broker, property);
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 module.exports = {
     login,
     createUser,
@@ -269,5 +312,6 @@ module.exports = {
     removeUser,
     getUser,
     bookmarkProperty,
-    addPropertyAsOwnedByBroker
+    addPropertyAsOwnedByBroker,
+    showInterestInProperty
 };

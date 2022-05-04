@@ -137,6 +137,24 @@ async function bookmarkProp(req, res) {
   }
 }
 
+async function showInterestInProperty(req, res) {
+  try {
+    var studentemail = validations.validateEmail(xss(req.body.username));
+    var brokeremail = validations.validateEmail(xss(req.body.broker));
+    var propertyId = validations.validatePropertyId(xss(req.body.propertyId));
+
+    let interestedProperty = await userData.showInterestInProperty(
+      studentemail,
+      brokeremail,
+      propertyId
+    );
+
+    res.status(200).json({ status: true });
+  } catch (e) {
+    res.status(400).json({ errorMessage: e });
+  }
+}
+
 router.route("/getAllProperties").get((req, res) => getAllProperties(req, res));
 
 router.route("/createProperty").post((req, res) => createProperty(req, res));
@@ -148,5 +166,9 @@ router.route("/removeProperty").put((req, res) => removeProperty(req, res));
 router.route("/getProperty/:id").get((req, res) => getProperty(req, res));
 
 router.route("/bookmark").post((req, res) => bookmarkProp(req, res));
+
+router
+  .route("/showInterestInProperty")
+  .post((req, res) => showInterestInProperty(req, res));
 
 module.exports = router;
