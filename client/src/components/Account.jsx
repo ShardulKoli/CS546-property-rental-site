@@ -20,7 +20,7 @@ export const Account = ({ loginToken }) => {
     axios
       .get(`/user/${username}`)
       .then((res) => {
-        // console.log(res.data.user);
+        console.log(res.data.user);
         setUserDetails(res.data.user);
         setIsBroker(res.data.user.userType === 2 ? true : false);
         setIsLoading(false);
@@ -38,6 +38,22 @@ export const Account = ({ loginToken }) => {
     buildCardList();
   }, []);
 
+  useEffect(() => {
+    if (userDetails && userDetails.bookmarkedPropertyDetails) {
+      console.log(userDetails.bookmarkedPropertyDetails);
+      setRentedProp(
+        buildPropertyCardList(userDetails.bookmarkedPropertyDetails)
+      );
+    }
+
+    if (userDetails && userDetails.brokerOwnedPropertyDetails) {
+      console.log(userDetails.brokerOwnedPropertyDetails);
+      setOwnedProp(
+        buildPropertyCardList(userDetails.brokerOwnedPropertyDetails)
+      );
+    }
+  }, [userDetails]);
+
   const [bookMarkedProp, setBookMarkedProp] = useState([]);
   const [ownedProp, setOwnedProp] = useState([]);
   const [rentedProp, setRentedProp] = useState([]);
@@ -54,6 +70,20 @@ export const Account = ({ loginToken }) => {
     setOwnedProp(tempList);
     setBookMarkedProp(tempList);
     setRentedProp(tempList);
+  };
+
+  const buildPropertyCardList = (properties) => {
+    const tempList = [];
+
+    properties.forEach((property) => {
+      tempList.push(
+        <div key={property._id}>
+          <PropertyCard propertyDetails={property} />
+        </div>
+      );
+    });
+
+    return tempList;
   };
 
   // modal states
@@ -114,17 +144,17 @@ export const Account = ({ loginToken }) => {
           ) : (
             <div>
               <Tabs
-                defaultActiveKey="home"
+                defaultActiveKey="profile"
                 id="uncontrolled-tab-example"
                 className="mb-3"
               >
-                <Tab
+                {/* <Tab
                   eventKey="home"
                   title="Rented Properties"
                   className={styles.tab}
                 >
                   <div className={styles.cardContainer}>{rentedProp}</div>
-                </Tab>
+                </Tab> */}
                 <Tab
                   eventKey="profile"
                   title="Book Marked Properties"

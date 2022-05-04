@@ -141,7 +141,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
       minimumLeasePeriod: minimumLeasePeriod,
       images: [imageOne, imageTwo, imageThree],
       broker: broker,
-      status: status,
+      status: false,
       isActive: true,
     };
 
@@ -506,7 +506,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
                   {errors ? errors.minimumLeasePeriod : null}
                 </Form.Text>
               </FloatingLabel>
-
+              {/* 
               <div style={{ marginTop: "20px" }}>
                 <div>Status</div>
                 <ButtonGroup id="status">
@@ -529,7 +529,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
                     </ToggleButton>
                   ))}
                 </ButtonGroup>
-              </div>
+              </div> */}
 
               <div>
                 <div>Image One</div>

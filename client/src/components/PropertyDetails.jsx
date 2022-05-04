@@ -4,6 +4,8 @@ import { property } from "../assets/dummyData";
 import { Carousel, Card, Button } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
 import { ErrorCommon } from "./ErrorCommon";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import axios from "axios";
 
 export const PropertyDetails = ({ loginToken }) => {
@@ -24,7 +26,7 @@ export const PropertyDetails = ({ loginToken }) => {
       .then((res) => {
         setPropertyDetails(res.data);
         setError(null);
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((e) => {
         setError(e.response);
@@ -60,19 +62,20 @@ export const PropertyDetails = ({ loginToken }) => {
 
     console.log(bookmarkDetails);
 
-    // axios
-    //   .get(`/user/${username}`)
-    //   .then((res) => {
-    //     console.log(res.data.user);
-    //     setUserDetails(res.data.user);
-    //     setIsBroker(res.data.user.userType === 2 ? true : false);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     // console.log(e.response.data.errorMessage);
-    //     setIsLoading(false);
-    //     setError(true);
-    //   });
+    axios
+      .post(`/property/bookmark`, bookmarkDetails)
+      .then((res) => {
+        console.log(res.data);
+        getUser(userDetails.email);
+        // setUserDetails(res.data.user);
+        // setIsBroker(res.data.user.userType === 2 ? true : false);
+        // setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setIsLoading(false);
+        // setError(true);
+      });
   };
 
   useEffect(() => {
@@ -133,13 +136,30 @@ export const PropertyDetails = ({ loginToken }) => {
                 </Carousel.Caption>
               </Carousel.Item>
               <Carousel.Item>
-                <img
+                {propertyDetails.images && propertyDetails.images[1] ? (
+                  // console.log(propertyDetails.images)
+                  <img
+                    alt="not fount"
+                    width={500}
+                    height={400}
+                    src={propertyDetails.images[1]}
+                  />
+                ) : (
+                  <img
+                    className="d-block w-100"
+                    width={500}
+                    height={400}
+                    src={require("../assets/logo192.png")}
+                  />
+                )}
+
+                {/* <img
                   // className="d-block w-100"
                   width={500}
                   height={400}
                   src={require("../assets/logo192.png")}
                   alt="Second slide"
-                />
+                /> */}
 
                 <Carousel.Caption>
                   {/* <h3>Second slide label</h3> */}
@@ -147,13 +167,30 @@ export const PropertyDetails = ({ loginToken }) => {
                 </Carousel.Caption>
               </Carousel.Item>
               <Carousel.Item>
-                <img
+                {propertyDetails.images && propertyDetails.images[2] ? (
+                  // console.log(propertyDetails.images)
+                  <img
+                    alt="not fount"
+                    width={500}
+                    height={400}
+                    src={propertyDetails.images[2]}
+                  />
+                ) : (
+                  <img
+                    className="d-block w-100"
+                    width={500}
+                    height={400}
+                    src={require("../assets/logo192.png")}
+                  />
+                )}
+
+                {/* <img
                   // className="d-block w-100"
                   width={500}
                   height={400}
                   src={require("../assets/logo192.png")}
                   alt="Third slide"
-                />
+                /> */}
 
                 <Carousel.Caption>
                   {/* <h3>Third slide label</h3> */}
@@ -172,9 +209,26 @@ export const PropertyDetails = ({ loginToken }) => {
               </div>
             </div>
 
-            {isBroker ? null : (
+            {/* {isBroker ? null : (
               <Button onClick={() => bookmarkProperty()}>BookMark</Button>
+            )} */}
+
+            <div>Click to toggle bookmark</div>
+            {userDetails.bookmarkedProp.includes(id) ? (
+              <BookmarkBorderIcon
+                style={{ fontSize: "40px" }}
+                onClick={() => bookmarkProperty()}
+              ></BookmarkBorderIcon>
+            ) : (
+              <BookmarkIcon
+                style={{ fontSize: "40px" }}
+                onClick={() => bookmarkProperty()}
+              ></BookmarkIcon>
             )}
+
+            {/* {userDetails.bookmarkedProp.includes(id) ? (
+              <div>isBookmarked</div>
+            ) : null} */}
           </Card>
         </div>
       </div>
