@@ -80,7 +80,7 @@ async function updateProperty(name, address, pincode, city, state, type, beds, b
         throw "Invalid property";
     }
 
-    var updatedProperty = users.updateOne({ name: name }, {
+    var updatedProperty = await properties.updateOne({ name: name }, {
         $set: {
             address: address,
             pincode: pincode,
@@ -137,7 +137,7 @@ async function removeProperty(name) {
         throw "Invalid property";
     }
 
-    var updatedProperty = properties.updateOne({ name: name }, {
+    var updatedProperty = await properties.updateOne({ name: name }, {
         $set: {
             isActive: false
         }
@@ -175,9 +175,6 @@ async function getPropertyById(id) {
 
     if (!property)
         throw "Property not found!";
-
-
-
 
     return property;
 
