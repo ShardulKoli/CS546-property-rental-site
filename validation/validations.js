@@ -100,6 +100,16 @@ module.exports = {
             throw "Password should be atleast 6 characters long.";
 
         return password;
+    },
+    validatePropertyId(propId) {
+        if (!propId)
+            throw "Property id is not present.";
+        if (typeof propId !== 'string')
+            throw "Property id must be a string";
+        if (propId.trim().length === 0)
+            throw "Property id cannot be an empty string or string with just spaces";
+
+        return propId.trim();
     }
 
 };
