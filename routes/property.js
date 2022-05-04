@@ -95,6 +95,8 @@ async function removeProperty(req, res) {
 
     let isRemoved = await propertyData.removeProperty(xss(req.body.name));
 
+    let removeOwnedFromBroker = await userData.addPropertyAsOwnedByBroker(isRemoved.broker, isRemoved.propertyId);
+
     res.status(200).json({ status: true });
   } catch (e) {
     res.status(400).json({ errorMessage: e });

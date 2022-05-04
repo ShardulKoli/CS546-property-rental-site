@@ -145,7 +145,7 @@ async function removeProperty(name) {
 
     if (updatedProperty.modifiedCount > 0) {
         //removed successful
-        return { isDeleted: true }
+        return { isDeleted: true, propertyId: property._id.toString(), broker: property.broker }
     } else {
         throw "Could not update!";
     }
