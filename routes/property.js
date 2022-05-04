@@ -46,6 +46,8 @@ async function createProperty(req, res) {
       xss(req.body.status)
     );
 
+    let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(createdProperty.Property.broker, createdProperty.Property._id.toString());
+
     res.status(200).json({ status: true });
   } catch (e) {
     res.status(400).json({ errorMessage: e });
