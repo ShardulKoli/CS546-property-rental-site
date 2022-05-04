@@ -8,7 +8,7 @@ import axios from "axios";
 import { ErrorCommon } from "./ErrorCommon";
 
 export const Account = ({ loginToken }) => {
-  console.log(loginToken);
+  // console.log(loginToken);
   const [userDetails, setUserDetails] = useState(null);
   const [isBroker, setIsBroker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,17 +16,18 @@ export const Account = ({ loginToken }) => {
 
   const getUser = (username) => {
     // TODO: make axios call here to set content dynamically
-    console.log(username);
+    // console.log(username);
     axios
       .get(`/user/${username}`)
       .then((res) => {
-        setUserDetails(res.data);
-        setIsBroker(res.data.userType === 1 ? true : false);
-        isLoading(false);
+        console.log(res.data.user);
+        setUserDetails(res.data.user);
+        setIsBroker(res.data.user.userType === 2 ? true : false);
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e.response.data.errorMessage);
-        isLoading(false);
+        setIsLoading(false);
         setError(true);
       });
     // setUserDetails(userBroker);
@@ -69,6 +70,7 @@ export const Account = ({ loginToken }) => {
   }
 
   if (!isLoading) {
+    console.log(userDetails);
     return (
       <div className={styles.mainContainer}>
         <Card className={styles.detailsCard}>
@@ -80,7 +82,9 @@ export const Account = ({ loginToken }) => {
               Card Subtitle
             </Card.Subtitle> */}
             <Card.Text>Email : {userDetails.email}</Card.Text>
-            <Card.Text>User Type : {userDetails.userType}</Card.Text>
+            <Card.Text>
+              User Type : {userDetails.userType === 1 ? "Student" : "Broker"}
+            </Card.Text>
             <Card.Text>Contact : {userDetails.contact}</Card.Text>
             {isBroker ? (
               <Button variant="primary" onClick={handleShow}>

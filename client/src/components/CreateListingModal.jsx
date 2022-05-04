@@ -39,6 +39,7 @@ import axios from "axios";
 //   };
 
 export const CreateListingModal = ({ show, handleClose, loginToken }) => {
+  // console.log(loginToken);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
@@ -63,7 +64,7 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
   const [imageOne, setImageOne] = useState(null);
   const [imageTwo, setImageTwo] = useState(null);
   const [imageThree, setImageThree] = useState(null);
-  const [broker, setBroker] = useState("");
+  const [broker, setBroker] = useState(loginToken.username);
   const [status, setStatus] = useState(true);
 
   // handle errors
@@ -160,11 +161,11 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
       .post("/property/createProperty", propertyDetails)
       .then((res) => {
         console.log(res.data);
-        setRequestMessage("Property created successfully");
+        // setRequestMessage("Property created successfully");
       })
       .catch((e) => {
         console.log(e);
-        setRequestMessage(e);
+        // setRequestMessage(e);
       });
   };
 
@@ -503,21 +504,6 @@ export const CreateListingModal = ({ show, handleClose, loginToken }) => {
                 />
                 <Form.Text className="text-muted">
                   {errors ? errors.minimumLeasePeriod : null}
-                </Form.Text>
-              </FloatingLabel>
-
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Broker who owns the property"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  onChange={(e) => setBroker(e.target.value)}
-                  placeholder="Enter Broker"
-                />
-                <Form.Text className="text-muted">
-                  {errors ? errors.broker : null}
                 </Form.Text>
               </FloatingLabel>
 

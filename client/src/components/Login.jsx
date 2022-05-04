@@ -76,8 +76,6 @@ export const Login = ({ setLoginToken, setToken }) => {
       userType: type,
     };
 
-    console.log(signUpData);
-
     try {
       signUpData.email = validateEmail(signUpData.email);
       signUpData.firstName = validateFirstName(signUpData.firstName);
@@ -86,28 +84,26 @@ export const Login = ({ setLoginToken, setToken }) => {
       signUpData.contact = validateContact(signUpData.contact);
       signUpData.password = validatePassword(signUpData.password);
 
+      console.log(signUpData);
+
       axios
         .post("/signup", signUpData)
         .then((res) => {
           console.log("Done");
           setSaveMessage("Your account has been successfully created");
           handleShow();
-          setIsRegistered();
+          setIsRegistered(true);
         })
         .catch((e) => {
           console.log(e.response.data.errorMessage);
           setSaveMessage(e.response.data.errorMessage);
           handleShow();
-          // setLoginToken("Encountered some error");
         });
-      handleShow();
-      // setIsRegistered(true);
     } catch (error) {
+      console.log(error);
       setSaveMessage(error);
       handleShow();
     }
-
-    // setLoginToken(true);
   };
 
   return (
@@ -212,17 +208,19 @@ export const Login = ({ setLoginToken, setToken }) => {
         </Button>
       </Form>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>{saveMessage}</Modal.Body>
-        {/* <Modal.Body>
+      <div>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Body>{saveMessage}</Modal.Body>
+          {/* <Modal.Body>
           Please check your inbox/spam for your account details email
         </Modal.Body> */}
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 };

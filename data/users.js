@@ -7,32 +7,30 @@ const emailer = require("../autoemailer/autoEmailer");
 const validation = require("../validation/validations");
 const propertyUtils = require("./properties");
 
-
 async function login(username, password) {
-
     username = validation.validateEmail(username);
     password = validation.validatePassword(password);
 
     var users = await usersCollection();
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: username.toLowerCase(),
+        isActive: true,
+    });
 
     if (user) {
         let match = await bcrypt.compare(password, user.password);
 
-        if (!match)
-            throw "Either the username or password is invalid!";
+        if (!match) throw "Either the username or password is invalid!";
 
         return user;
-        //return user with necessary data -- student data / broker data           
+        //return user with necessary data -- student data / broker data
     } else {
         throw "Either the username or password is invalid!";
     }
-
 }
 
 async function createUser(firstName, lastName, email, userType, contact, password) {
-
     firstName = validation.validateFirstName(firstName);
     lastName = validation.validateLastName(lastName);
     email = validation.validateEmail(email);
@@ -40,10 +38,12 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
     contact = validation.validateContact(contact);
     password = validation.validatePassword(password);
 
-
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: email.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: email.toLowerCase(),
+        isActive: true,
+    });
 
     if (user) {
         throw "User with provided email already exists!";
@@ -61,13 +61,13 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         firstName: firstName,
         lastName: lastName,
         email: email.toLowerCase(),
-        userType: user,
+        userType: userTypeNum,
         contact: contact,
         password: await bcrypt.hash(password, saltRounds),
         bookmarkedProp: [],
         ownedProp: [],
         isActive: true
-    }
+    };
 
     const insertInfo = await users.insertOne(newUser);
 
@@ -86,7 +86,6 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
 }
 
 async function updateUser(firstName, lastName, username, contact) {
-
     firstName = validation.validateFirstName(firstName);
     lastName = validation.validateLastName(lastName);
     username = validation.validateEmail(username);
@@ -94,7 +93,10 @@ async function updateUser(firstName, lastName, username, contact) {
 
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: username.toLowerCase(),
+        isActive: true,
+    });
 
     if (!user) {
         throw "Invalid user";
@@ -113,16 +115,17 @@ async function updateUser(firstName, lastName, username, contact) {
     } else {
         throw "Could not update!";
     }
-
 }
 
 async function removeUser(username) {
-
     username = validation.validateEmail(username);
 
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: username.toLowerCase(),
+        isActive: true,
+    });
 
     if (!user) {
         throw "Invalid user";
@@ -143,17 +146,19 @@ async function removeUser(username) {
 }
 
 async function getUser(username) {
-
     username = validation.validateEmail(username);
 
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: username.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: username.toLowerCase(),
+        isActive: true,
+    });
 
-    if (!user)
-        throw "User not found!"
+    if (!user) throw "User not found!";
 
     var userObj = user;
+
     if (user.userType == 1) {
 
         var studentBookmarkedProperties = [];
@@ -178,7 +183,6 @@ async function getUser(username) {
     return userObj;
 }
 
-
 //call this while student clicks bookmark/remove from property
 async function bookmarkProperty(studentEmail, propertyId) {
     studentEmail = validation.validateEmail(studentEmail);
@@ -186,7 +190,10 @@ async function bookmarkProperty(studentEmail, propertyId) {
 
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: studentEmail.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: studentEmail.toLowerCase(),
+        isActive: true,
+    });
 
     if (!user) {
         throw "Invalid user";
@@ -194,15 +201,15 @@ async function bookmarkProperty(studentEmail, propertyId) {
 
     var bookMarkOperation = {
         $addToSet: {
-            bookmarkedProp: propertyId
-        }
+            bookmarkedProp: propertyId,
+        },
     };
 
     if (user.bookmarkedProp.includes(propertyId)) {
         bookMarkOperation = {
             $pull: {
-                bookmarkedProp: propertyId
-            }
+                bookmarkedProp: propertyId,
+            },
         };
     }
 
@@ -223,7 +230,10 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
 
     const users = await usersCollection();
 
-    var user = await users.findOne({ email: brokerEmail.toLowerCase(), isActive: true });
+    var user = await users.findOne({
+        email: brokerEmail.toLowerCase(),
+        isActive: true,
+    });
 
     if (!user) {
         throw "Invalid user";
@@ -231,15 +241,15 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
 
     var addToOwnedOperation = {
         $addToSet: {
-            ownedProp: propertyId
-        }
+            ownedProp: propertyId,
+        },
     };
 
     if (user.ownedProp.includes(propertyId)) {
         addToOwnedOperation = {
             $pull: {
-                ownedProp: propertyId
-            }
+                ownedProp: propertyId,
+            },
         };
     }
 
@@ -252,7 +262,6 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
     }
 }
 
-
 module.exports = {
     login,
     createUser,
@@ -260,6 +269,5 @@ module.exports = {
     removeUser,
     getUser,
     bookmarkProperty,
-    addPropertyAsOwnedByBroker
-
-}
+    addPropertyAsOwnedByBroker,
+};

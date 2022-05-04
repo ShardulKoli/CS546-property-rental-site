@@ -43,13 +43,13 @@ async function editUserDetails(req, res) {
 async function removeUser(req, res) {
     try {
         // if (req.session.user) {
-            let email = validation.validateEmail(xss(req.params.username));
+        let email = validation.validateEmail(xss(req.params.username));
 
-            let removedUser = await userData.removeUser(email);
+        let removedUser = await userData.removeUser(email);
 
-            req.session.destroy();
+        req.session.destroy();
 
-            return res.redirect("/");
+        return res.redirect("/");
         // } else {
         //     return res.redirect("/");
         // }
