@@ -65,7 +65,6 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         contact: contact,
         password: await bcrypt.hash(password, saltRounds),
         bookmarkedProp: [],
-        rentedProp: [],
         ownedProp: [],
         isActive: true
     }
@@ -78,12 +77,11 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
     var insertedUser = await getUser(newUser.email);
     insertedUser.password = password;
 
-    //commented when run seed file
-    // try {
-    //     emailer.sendAccoutConfirmationEmail(insertedUser);
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    try {
+        emailer.sendAccoutConfirmationEmail(insertedUser);
+    } catch (error) {
+        console.log(error);
+    }
     //return data if needed
 }
 
@@ -102,7 +100,7 @@ async function updateUser(firstName, lastName, username, contact) {
         throw "Invalid user";
     }
 
-    var updatedUser = users.updateOne({ email: username.toLowerCase() }, {
+    var updatedUser = await users.updateOne({ email: username.toLowerCase() }, {
         $set: {
             firstName: firstName,
             lastName: lastName,
@@ -130,7 +128,7 @@ async function removeUser(username) {
         throw "Invalid user";
     }
 
-    var updatedUser = users.updateOne({ email: username.toLowerCase() }, {
+    var updatedUser = await users.updateOne({ email: username.toLowerCase() }, {
         $set: {
             isActive: false
         }
@@ -174,7 +172,7 @@ async function getUser(username) {
             brokerOwnedProperties.push(propFromDb);
         }
 
-        userObj.bookmarkedPropertyDetails = brokerOwnedProperties;
+        userObj.brokerOwnedPropertyDetails = brokerOwnedProperties;
     }
 
     return userObj;
@@ -184,7 +182,7 @@ async function getUser(username) {
 //call this while student clicks bookmark/remove from property
 async function bookmarkProperty(studentEmail, propertyId) {
     studentEmail = validation.validateEmail(studentEmail);
-    //validate properid
+    propertyId = validation.validatePropertyId(propertyId);
 
     const users = await usersCollection();
 
@@ -208,7 +206,7 @@ async function bookmarkProperty(studentEmail, propertyId) {
         };
     }
 
-    var updatedUser = users.updateOne({ email: studentEmail.toLowerCase() }, bookMarkOperation);
+    var updatedUser = await users.updateOne({ email: studentEmail.toLowerCase() }, bookMarkOperation);
 
     if (updatedUser.modifiedCount > 0) {
         return true;
@@ -221,6 +219,7 @@ async function bookmarkProperty(studentEmail, propertyId) {
 async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
     //check inputs
     brokerEmail = validation.validateEmail(brokerEmail);
+    propertyId = validation.validatePropertyId(propertyId);
 
     const users = await usersCollection();
 
@@ -244,7 +243,7 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
         };
     }
 
-    var updatedUser = users.updateOne({ email: brokerEmail.toLowerCase() }, addToOwnedOperation);
+    var updatedUser = await users.updateOne({ email: brokerEmail.toLowerCase() }, addToOwnedOperation);
 
     if (updatedUser.modifiedCount > 0) {
         return true;
