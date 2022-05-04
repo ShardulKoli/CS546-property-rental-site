@@ -14,6 +14,7 @@ export const PropertyDetails = ({ loginToken }) => {
   const [error, setError] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [isBroker, setIsBroker] = useState(null);
+  const [interestShown, setInterestShown] = useState(false);
   // const isBroker = loginToken.userType === 2 ? true : false;
 
   const { id } = useParams();
@@ -78,6 +79,24 @@ export const PropertyDetails = ({ loginToken }) => {
       });
   };
 
+  const showInterest = () => {
+    setInterestShown(true);
+    // axios
+    // .post(`/property/bookmark`, bookmarkDetails)
+    // .then((res) => {
+    //   console.log(res.data);
+    //   getUser(userDetails.email);
+    //   // setUserDetails(res.data.user);
+    //   // setIsBroker(res.data.user.userType === 2 ? true : false);
+    //   // setIsLoading(false);
+    // })
+    // .catch((e) => {
+    //   console.log(e);
+    //   // setIsLoading(false);
+    //   // setError(true);
+    // });
+  };
+
   const navigate = useHistory();
 
   const loadHomepage = () => {
@@ -87,12 +106,12 @@ export const PropertyDetails = ({ loginToken }) => {
   const deleteListing = (propertyName) => {
     console.log("Deleting listing");
     console.log(propertyName);
-    // loadHomepage();
+
     axios
       .put(`/property/removeProperty`, { name: propertyName })
       .then((res) => {
         console.log(res.data);
-        // loadHomepage();
+        loadHomepage();
         // setIsLoading(false);
       })
       .catch((e) => {
@@ -250,6 +269,22 @@ export const PropertyDetails = ({ loginToken }) => {
                     style={{ fontSize: "40px" }}
                     onClick={() => bookmarkProperty()}
                   ></BookmarkBorderIcon>
+                )}
+              </div>
+            )}
+
+            {isBroker ? null : (
+              <div>
+                {interestShown ? (
+                  <div>An email has been sent to the broker</div>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      showInterest();
+                    }}
+                  >
+                    Show interest by sendind a mail!
+                  </Button>
                 )}
               </div>
             )}

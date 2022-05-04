@@ -170,6 +170,7 @@ export const Account = ({ loginToken }) => {
           show={show}
           handleClose={handleClose}
           loginToken={loginToken}
+          getUser={getUser}
         />
       </div>
     );
