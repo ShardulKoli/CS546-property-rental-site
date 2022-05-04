@@ -35,13 +35,13 @@ export const Account = ({ loginToken }) => {
 
   useEffect(() => {
     getUser(loginToken.username);
-    buildCardList();
+    // buildCardList();
   }, []);
 
   useEffect(() => {
     if (userDetails && userDetails.bookmarkedPropertyDetails) {
       console.log(userDetails.bookmarkedPropertyDetails);
-      setRentedProp(
+      setBookMarkedProp(
         buildPropertyCardList(userDetails.bookmarkedPropertyDetails)
       );
     }

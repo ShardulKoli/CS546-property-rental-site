@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
 import { Carousel, Card, Button } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
@@ -69,6 +69,29 @@ export const PropertyDetails = ({ loginToken }) => {
         getUser(userDetails.email);
         // setUserDetails(res.data.user);
         // setIsBroker(res.data.user.userType === 2 ? true : false);
+        // setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setIsLoading(false);
+        // setError(true);
+      });
+  };
+
+  const navigate = useHistory();
+
+  const loadHomepage = () => {
+    navigate.push(`/`);
+  };
+
+  const deleteListing = (propertyName) => {
+    console.log("Deleting listing");
+    // loadHomepage();
+    axios
+      .put(`/property/removeProperty`, { name: propertyName })
+      .then((res) => {
+        console.log(res.data);
+        // loadHomepage();
         // setIsLoading(false);
       })
       .catch((e) => {
@@ -213,18 +236,37 @@ export const PropertyDetails = ({ loginToken }) => {
               <Button onClick={() => bookmarkProperty()}>BookMark</Button>
             )} */}
 
-            <div>Click to toggle bookmark</div>
-            {userDetails.bookmarkedProp.includes(id) ? (
-              <BookmarkBorderIcon
-                style={{ fontSize: "40px" }}
-                onClick={() => bookmarkProperty()}
-              ></BookmarkBorderIcon>
-            ) : (
-              <BookmarkIcon
-                style={{ fontSize: "40px" }}
-                onClick={() => bookmarkProperty()}
-              ></BookmarkIcon>
+            {isBroker ? null : (
+              <div>
+                <div>Click to toggle bookmark</div>
+                {userDetails.bookmarkedProp.includes(id) ? (
+                  <BookmarkIcon
+                    style={{ fontSize: "40px" }}
+                    onClick={() => bookmarkProperty()}
+                  ></BookmarkIcon>
+                ) : (
+                  <BookmarkBorderIcon
+                    style={{ fontSize: "40px" }}
+                    onClick={() => bookmarkProperty()}
+                  ></BookmarkBorderIcon>
+                )}
+              </div>
             )}
+
+            {isBroker ? (
+              <div>
+                <div>Click to delete property listing</div>
+                {userDetails.ownedProp.includes(id) ? (
+                  <Button
+                    onClick={() => {
+                      deleteListing(propertyDetails.name);
+                    }}
+                  >
+                    Delete This Listing
+                  </Button>
+                ) : null}
+              </div>
+            ) : null}
 
             {/* {userDetails.bookmarkedProp.includes(id) ? (
               <div>isBookmarked</div>
