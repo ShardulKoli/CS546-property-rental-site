@@ -3,7 +3,6 @@ const propertiesCollection = collections.properties;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const { ObjectId } = require("mongodb");
-const userUtils = require("./users");
 //const emailer = require("../autoemailer/autoEmailer");
 
 async function createProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
@@ -54,8 +53,6 @@ async function createProperty(name, address, pincode, city, state, type, beds, b
 
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add property!";
-
-    let addPropertyToBroker = await userUtils.addPropertyAsOwnedByBroker(broker, newProperty._id.toString());
 
     //insertedUser.password = password;
 

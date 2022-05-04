@@ -269,5 +269,5 @@ module.exports = {
     removeUser,
     getUser,
     bookmarkProperty,
-    addPropertyAsOwnedByBroker,
+    addPropertyAsOwnedByBroker
 };
