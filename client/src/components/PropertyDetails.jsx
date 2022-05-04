@@ -80,21 +80,26 @@ export const PropertyDetails = ({ loginToken }) => {
   };
 
   const showInterest = () => {
-    setInterestShown(true);
-    // axios
-    // .post(`/property/bookmark`, bookmarkDetails)
-    // .then((res) => {
-    //   console.log(res.data);
-    //   getUser(userDetails.email);
-    //   // setUserDetails(res.data.user);
-    //   // setIsBroker(res.data.user.userType === 2 ? true : false);
-    //   // setIsLoading(false);
-    // })
-    // .catch((e) => {
-    //   console.log(e);
-    //   // setIsLoading(false);
-    //   // setError(true);
-    // });
+    const showInterestDetails = {
+      username: userDetails.email,
+      propertyId: id,
+      broker: propertyDetails.broker,
+    };
+
+    axios
+      .post(`/property/showInterestInProperty`, showInterestDetails)
+      .then((res) => {
+        console.log(res.data);
+        setInterestShown(true);
+        // setUserDetails(res.data.user);
+        // setIsBroker(res.data.user.userType === 2 ? true : false);
+        // setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e.response.data.errorMessage);
+        // setIsLoading(false);
+        // setError(true);
+      });
   };
 
   const navigate = useHistory();
