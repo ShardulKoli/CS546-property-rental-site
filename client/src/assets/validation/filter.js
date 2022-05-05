@@ -1,139 +1,134 @@
-const userBroker = {
-    _id: 1,
-    firstName: "Eren",
-    lastName: "Yeager",
-    email: "email@gmail.com",
-    userType: "Broker",
-    contact: 123123123,
-    ownedProp: [],
-    isActive: true,
-  };
+function filterData(propArr,map1) {
+  console.log("In validation :");
+  console.log(propArr);
+  console.log(map1);
+
+
+  let idFlag=false;
+  let filteredList = [];
+  let addrFlag=false,balconyFlag=false,bathFlag=false,bedFlag=false,airFlag=false,cityFlag=false,garrageFlag=false,leaseFlag=false,
+    commuteFlag=false,medicalFlag=false,schoolFlag=false,partyFlag=false,petFlag=false,pinFlag=false,stateFlag=false,rentFlag=false;
+
+  for (let i = 0; i < propArr.length; i++) {
+    //Setting values of respective flags true if filters are present for those values.
+    const filterMap = new Map();
+    // if(null!= map1.get('address')){
+    //     addrFlag=true;
+    //     filterMap.set('address',map1.get('address'));
+    // } 
+    if(null!= map1.get('balcony')){
+        balconyFlag=true;
+        filterMap.set('balcony',map1.get('balcony'));
+    } 
+    if(null!= map1.get('baths')){
+        bathFlag=true;
+        filterMap.set('baths',map1.get('baths'));
+    } 
+    if(null!= map1.get('beds')){
+        bedFlag=true;
+        filterMap.set('beds',map1.get('beds'));
+    } 
+    if(null!= map1.get('centralAir')){
+        airFlag=true;
+        filterMap.set('centralAir',map1.get('centralAir'));
+    } 
+    if(null!= map1.get('city')){
+        cityFlag=true;
+        filterMap.set('city',map1.get('city'));
+    } 
+    if(null!= map1.get('garrage')){
+        garrageFlag=true;
+        filterMap.set('garrage',map1.get('garrage'));
+    } 
+    if(null!= map1.get('nearByCommute')){
+        commuteFlag=true;
+        filterMap.set('nearByCommute',map1.get('nearByCommute'));
+    } 
+    if(null!= map1.get('nearByMedical')){
+        medicalFlag=true;
+        filterMap.set('nearByMedical',map1.get('nearByMedical'));
+    } 
+    if(null!= map1.get('nearBySchools')){
+        schoolFlag=true;
+        filterMap.set('nearBySchools',map1.get('nearBySchools'));
+    } 
+    if(null!= map1.get('partyFriendly')){
+        partyFlag=true;
+        filterMap.set('partyFriendly',map1.get('partyFriendly'));
+    } 
+    if(null!= map1.get('petFriendly')){
+        petFlag=true;
+        filterMap.set('petFriendly',map1.get('petFriendly'));
+    } 
+    if(null!= map1.get('pincode')){
+        pinFlag=true;
+        filterMap.set('pincode',map1.get('pincode'));
+    } 
+    if(null!= map1.get('state')){
+        stateFlag=true;
+        filterMap.set('state',map1.get('state'));
+    }
+    if(null!= map1.get('rent')){
+      rentFlag=true;
+      filterMap.set('rent',map1.get('rent'));
+  }
+    //console.log("filterMap"); 
+    console.log(filterMap);
+    let count1= 0, count2=0;
+    for (let [key, value] of filterMap) {
+        //console.log(key + " :: "+ value);
+        //console.log(propArr[i].address + " :: "+propArr[i].centralAir + " :: "+ propArr[i].city+ " :: "+ propArr[i].nearBySchools);
+        count1++;
+        // if(key==="address"){
+        //     if(JSON.stringify(value) === JSON.stringify(propArr[i].address)) count2++;
+        // }else
+         if(key==="balcony"){
+            if(value === JSON.stringify(propArr[i].balcony)) count2++;
+        }else if(key==="baths"){
+            if(value === JSON.stringify(propArr[i].bath)) count2++;
+        }else if(key==="beds"){
+            if(value=== JSON.stringify(propArr[i].beds)) count2++;
+        }else if(key==="centralAir"){
+            if(value=== JSON.stringify(propArr[i].centralAir)) count2++;
+        }else if(key==="city"){
+            if(value === JSON.stringify(propArr[i].city)) count2++;
+        }else if(key==="garrage"){
+            if(value === JSON.stringify(propArr[i].garrage)) count2++;
+        }else if(key==="nearByCommute"){
+            if(value=== JSON.stringify(propArr[i].nearByCommute)) count2++;
+        }else if(key==="nearByMedical"){
+            if(value === JSON.stringify(propArr[i].nearByMedical)) count2++;
+        }else if(key==="nearBySchools"){
+            if(value === JSON.stringify(propArr[i].nearBySchools)) count2++;
+        }else if(key ==="partyFriendly"){
+            if(value === JSON.stringify(propArr[i].partyFriendly)) count2++;
+        }else if(key==="petFriendly"){
+            if(value === JSON.stringify(propArr[i].petFriendly)) count2++;
+        }else if(key==="pincode"){
+            if(value === JSON.stringify(propArr[i].pincode)) count2++;
+        }else if(key==="state"){
+            if(value === JSON.stringify(propArr[i].state)) count2++;
+        }else if(key==="rent"){
+          if(value === JSON.stringify(propArr[i].rent)) count2++;
+      }
+    }
+    if(count1==count2){
+        //console.log("PUSHING INTO FILTERED LIST");
+        filteredList.push(propArr[i]);
+    } 
+    // else{
+    //   console.log("FILTERED LIST EMPTY");
+    // }
+     console.log(count1 + " = " + count2);
+  }
+   return filteredList;
   
-  const userUser = {
-    _id: 1,
-    firstName: "Eren",
-    lastName: "Yeager",
-    email: "email@gmail.com",
-    userType: "Broker",
-    contact: 123123123,
-    bookMarkedProp: [],
-    rentedProp: [],
-  };
   
-  const property1 = {
-    _id: 1,
-    name: "Property 1",
-    address: "Some Address in Heights 1",
-    pincode: "07307",
-    city: "Jersey City",
-    state: "New Jersey",
-    type: "Apartment",
-    beds: 3,
-    baths: 2,
-    balcony: 1,
-    centralAir: false,
-    petFriendly: true,
-    partyFriendly: true,
-    garrage: false,
-    nearBySchools: "Stevens",
-    nearByMedical: "Pharmacy",
-    nearByCommute: "Commute list",
-    rent: 2000,
-    brokerage: 500,
-    deposit: 500,
-    minimumLeasePeriod: 12,
-    images: [],
-    broker: 1,
-    status: true,
-    isActive: true,
-  };
 
-  const property2 = {
-    _id: 2,
-    name: "Property 2",
-    address: "Some Address in Heights 2",
-    pincode: "07307",
-    city: "Jersey City",
-    state: "New Jersey",
-    type: "Apartment",
-    beds: 2,
-    baths: 1,
-    balcony: 0,
-    centralAir: false,
-    petFriendly: false,
-    partyFriendly: true,
-    garrage: false,
-    nearBySchools: "Stevens",
-    nearByMedical: "Pharmacy",
-    nearByCommute: "Commute list",
-    rent: 150,
-    brokerage: 0,
-    deposit: 100,
-    minimumLeasePeriod: 12,
-    images: [],
-    broker: 1,
-    status: true,
-    isActive: true,
-  };
-
-  const property3 = {
-    _id: 3,
-    name: "Property 3",
-    address: "Some Address in Heights 3",
-    pincode: "07307",
-    city: "Hoboken",
-    state: "New Jersey",
-    type: "Apartment",
-    beds: 3,
-    baths: 2,
-    balcony: 1,
-    centralAir: false,
-    petFriendly: true,
-    partyFriendly: true,
-    garrage: false,
-    nearBySchools: "Stevens",
-    nearByMedical: "Pharmacy",
-    nearByCommute: "Commute list",
-    rent: 2500,
-    brokerage: 1000,
-    deposit: 1000,
-    minimumLeasePeriod: 6,
-    images: [],
-    broker: 2,
-    status: true,
-    isActive: true,
-  };
-
-  const property4 = {
-    _id: 4,
-    name: "Property 4",
-    address: "Some Address in Heights 4",
-    pincode: "07307",
-    city: "Hoboken",
-    state: "New Jersey",
-    type: "Apartment",
-    beds: 3,
-    baths: 1,
-    balcony: 1,
-    centralAir: true,
-    petFriendly: true,
-    partyFriendly: true,
-    garrage: true,
-    nearBySchools: "Stevens",
-    nearByMedical: "Pharmacy",
-    nearByCommute: "Commute list",
-    rent: 1500,
-    brokerage: 500,
-    deposit: 500,
-    minimumLeasePeriod: 12,
-    images: [],
-    broker: 1,
-    status: true,
-    isActive: true,
-  };
-
-var propArr = [];
-propArr.push(property1);
-propArr.push(property2);
-propArr.push(property3);
-propArr.push(property4);
+  // /*for (let i = 0; i < filteredList.length; i++) {
+  //   console.log(filteredList[i]);
+  // }*/
+}
+module.exports = {
+  filterData
+}
