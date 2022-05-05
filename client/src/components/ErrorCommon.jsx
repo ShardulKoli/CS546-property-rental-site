@@ -1,5 +1,5 @@
 import React from "react";
 
-export const ErrorCommon = () => {
-  return <div>ErrorCommon</div>;
+export const ErrorCommon = ({ message }) => {
+  return <div>{message}</div>;
 };
