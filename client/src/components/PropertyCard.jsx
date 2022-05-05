@@ -50,6 +50,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 className="d-block w-100"
                 width={500}
                 height={400}
+                alt="not found"
                 src={require("../assets/logo192.png")}
               />
             )}
@@ -63,7 +64,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
             {propertyDetails.images && propertyDetails.images[1] ? (
               // console.log(propertyDetails.images)
               <img
-                alt="not fount"
+                alt="not found"
                 width={500}
                 height={400}
                 src={propertyDetails.images[1]}
@@ -73,6 +74,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 className="d-block w-100"
                 width={500}
                 height={400}
+                alt="not found"
                 src={require("../assets/logo192.png")}
               />
             )}
@@ -104,6 +106,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 className="d-block w-100"
                 width={500}
                 height={400}
+                alt="not found"
                 src={require("../assets/logo192.png")}
               />
             )}
