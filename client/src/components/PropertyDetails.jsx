@@ -126,6 +126,20 @@ export const PropertyDetails = ({ loginToken }) => {
       });
   };
 
+  const markedAsRentedOut = (propertyName) => {
+    // axios
+    //   .put(`/property/removeProperty`, { name: propertyName })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     // setIsLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //     // setIsLoading(false);
+    //     // setError(true);
+    //   });
+  };
+
   useEffect(() => {
     getPropertyDetails(id);
     getUser(loginToken.username);
@@ -250,10 +264,16 @@ export const PropertyDetails = ({ loginToken }) => {
               <div className={styles.detailsColumn}>
                 <div>Name:</div>
                 <div>Address:</div>
+                <div>Status:</div>
               </div>
               <div>
                 <div>{propertyDetails.name}</div>
                 <div>{propertyDetails.address}</div>
+                {propertyDetails.status ? (
+                  <div>This Property is rented out</div>
+                ) : (
+                  <div>Available</div>
+                )}
               </div>
             </div>
 
@@ -278,7 +298,7 @@ export const PropertyDetails = ({ loginToken }) => {
               </div>
             )}
 
-            {isBroker ? null : (
+            {isBroker || propertyDetails.status ? null : (
               <div>
                 {interestShown ? (
                   <div>An email has been sent to the broker</div>
@@ -304,6 +324,21 @@ export const PropertyDetails = ({ loginToken }) => {
                     }}
                   >
                     Delete This Listing
+                  </Button>
+                ) : null}
+              </div>
+            ) : null}
+
+            {isBroker ? (
+              <div>
+                <div>Click mark the property as Rented out</div>
+                {userDetails.ownedProp.includes(id) ? (
+                  <Button
+                    onClick={() => {
+                      markedAsRentedOut(propertyDetails.name);
+                    }}
+                  >
+                    Mark this property as rented out
                   </Button>
                 ) : null}
               </div>

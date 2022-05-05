@@ -21,3 +21,10 @@
   background: green;
   color: white;
 }
+
+.rentedOutLabel {
+  font-size: 20px;
+  text-align: center;
+  background: red;
+  color: white;
+}
