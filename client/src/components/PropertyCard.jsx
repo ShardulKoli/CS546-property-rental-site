@@ -132,7 +132,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
           </Card.Subtitle>
           <div className={styles.detailsStyle}>
             <div>Beds: {propertyDetails.beds}</div>
-            <div>Baths: {propertyDetails.baths}</div>
+            <div>Baths: {propertyDetails.bath}</div>
           </div>
           <div>Type: {propertyDetails.type}</div>
 

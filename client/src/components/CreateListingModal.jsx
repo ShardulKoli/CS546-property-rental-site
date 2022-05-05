@@ -162,16 +162,16 @@ export const CreateListingModal = ({
     console.log(propertyDetails);
     console.log(propertyDetails.images);
 
-    // axios
-    //   .post("/property/createProperty", propertyDetails)
-    //   .then((res) => {
-    //     // setRequestMessage("Property created successfully");
-    //     getUser(loginToken.username);
-    //     handleClose();
-    //   })
-    //   .catch((e) => {
-    //     setRequestMessage(e.response.data.errorMessage);
-    //   });
+    axios
+      .post("/property/createProperty", propertyDetails)
+      .then((res) => {
+        // setRequestMessage("Property created successfully");
+        getUser(loginToken.username);
+        handleClose();
+      })
+      .catch((e) => {
+        setRequestMessage(e.response.data.errorMessage);
+      });
   };
 
   // const [radioValue, setRadioValue] = useState("1");

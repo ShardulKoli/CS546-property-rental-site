@@ -407,8 +407,9 @@ export const PropertyDetails = ({ loginToken }) => {
           show={show}
           handleClose={handleClose}
           loginToken={loginToken}
-          getUser={getUser}
+          getPropertyDetails={getPropertyDetails}
           propertyDetails={propertyDetails}
+          id={id}
         />
       </div>
     );

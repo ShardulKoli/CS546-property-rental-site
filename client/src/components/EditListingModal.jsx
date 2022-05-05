@@ -14,8 +14,9 @@ export const EditListingModal = ({
   show,
   handleClose,
   loginToken,
-  getUser,
+  getPropertyDetails,
   propertyDetails,
+  id,
 }) => {
   // console.log(loginToken);
   const [name, setName] = useState(propertyDetails.name);
@@ -116,10 +117,10 @@ export const EditListingModal = ({
       beds: beds,
       bath: baths,
       balcony: balcony,
-      centralAir: centralAir,
-      petFriendly: petFriendly,
-      partyFriendly: partyFriendly,
-      garrage: garrage,
+      centralAir: centralAir ? "Y" : "N",
+      petFriendly: petFriendly ? "Y" : "N",
+      partyFriendly: partyFriendly ? "Y" : "N",
+      garrage: garrage ? "Y" : "N",
       nearBySchools: nearBySchools,
       nearByMedical: nearByMedical,
       nearByCommute: nearByCommute,
@@ -145,16 +146,15 @@ export const EditListingModal = ({
     console.log(propertyDetails);
     console.log(propertyDetails.images);
 
-    // axios
-    //   .post("/property/createProperty", propertyDetails)
-    //   .then((res) => {
-    //     // setRequestMessage("Property created successfully");
-    //     getUser(loginToken.username);
-    //     handleClose();
-    //   })
-    //   .catch((e) => {
-    //     setRequestMessage(e.response.data.errorMessage);
-    //   });
+    axios
+      .put(`/property/updateProperty/${id}`, propertyDetails)
+      .then((res) => {
+        getPropertyDetails();
+        handleClose();
+      })
+      .catch((e) => {
+        setRequestMessage(e.response.data.errorMessage);
+      });
   };
 
   // const [radioValue, setRadioValue] = useState("1");
