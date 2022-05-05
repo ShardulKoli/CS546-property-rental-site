@@ -75,7 +75,7 @@ export const Account = ({ loginToken }) => {
 
     properties.forEach((property) => {
       tempList.push(
-        <div key={property._id}>
+        <div key={property._id} id={`div_${property._id}`}>
           <PropertyCard propertyDetails={property} />
         </div>
       );
