@@ -50,7 +50,11 @@ export const Home = ({ loginToken }) => {
 
   return (
     <div>
-      <Filters />
+      <Filters
+        getAllProperties={getAllProperties}
+        properties={properties}
+        setProperties={setProperties}
+      />
       <div className={styles.cardContainer}>{cardList}</div>
     </div>
   );
