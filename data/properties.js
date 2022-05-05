@@ -9,7 +9,7 @@ const validations = require("../validation/validations");
 
 async function createProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
     petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
-    deposit, minimumLeasePeriod, images, broker, status) {
+    deposit, minimumLeasePeriod, images, broker) {
     //check all inputs
     //status field indicates rented or not!
 
@@ -47,7 +47,7 @@ async function createProperty(name, address, pincode, city, state, type, beds, b
         minimumLeasePeriod: minimumLeasePeriod,
         images: images,
         broker: broker,
-        status: status,
+        status: false,
         isActive: true
     }
 
@@ -69,21 +69,23 @@ async function createProperty(name, address, pincode, city, state, type, beds, b
     //return data if needed
 }
 
-async function updateProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
+async function updateProperty(id, name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
     petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
-    deposit, minimumLeasePeriod, images, broker, status) {
+    deposit, minimumLeasePeriod, images, broker) {
 
     //check inputs
     const properties = await propertiesCollection();
 
-    var property = await properties.findOne({ name: name, isActive: true });
+    var property = await properties.findOne({ _id: ObjectId(id), isActive: true });
 
     if (!property) {
         throw "Invalid property";
     }
 
-    var updatedProperty = await properties.updateOne({ name: name }, {
+    var updatedProperty = await properties.updateOne({ _id: ObjectId(id) }, {
+
         $set: {
+            name: name,
             address: address,
             pincode: pincode,
             city: city,
@@ -106,8 +108,7 @@ async function updateProperty(name, address, pincode, city, state, type, beds, b
             deposit: deposit,
             minimumLeasePeriod: minimumLeasePeriod,
             images: images,
-            broker: broker,
-            status: status,
+            broker: broker
         }
     });
 

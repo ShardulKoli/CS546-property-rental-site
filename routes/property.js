@@ -20,6 +20,17 @@ async function createProperty(req, res) {
     req.body;
     //check inputs here
 
+    var images = [];
+
+    req.body.images.forEach(x => {
+      images.push(xss(x));
+    });
+
+    let centralA = xss(req.body.centralAir);
+    let petF = xss(req.body.petFriendly);
+    let partyF = xss(req.body.partyFriendly);
+    let garage = xss(req.body.garrage);
+
     let createdProperty = await propertyData.createProperty(
       xss(req.body.name),
       xss(req.body.address),
@@ -30,10 +41,10 @@ async function createProperty(req, res) {
       xss(req.body.beds),
       xss(req.body.bath),
       xss(req.body.balcony),
-      req.body.centralAir,
-      req.body.petFriendly,
-      req.body.partyFriendly,
-      req.body.garrage,
+      centralA === "Y" ? true : false,
+      petF === "Y" ? true : false,
+      partyF === "Y" ? true : false,
+      garage === "Y" ? true : false,
       xss(req.body.nearBySchools),
       xss(req.body.nearByMedical),
       xss(req.body.nearByCommute),
@@ -41,9 +52,8 @@ async function createProperty(req, res) {
       xss(req.body.brokerage),
       xss(req.body.deposit),
       xss(req.body.minimumLeasePeriod),
-      req.body.images,
-      xss(req.body.broker),
-      req.body.status
+      images,
+      xss(req.body.broker)
     );
 
     let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(
@@ -61,7 +71,19 @@ async function updateProperty(req, res) {
   try {
     //check inputs here
 
+    var images = [];
+
+    req.body.images.forEach(x => {
+      images.push(xss(x));
+    });
+
+    let centralA = xss(req.body.centralAir);
+    let petF = xss(req.body.petFriendly);
+    let partyF = xss(req.body.partyFriendly);
+    let garage = xss(req.body.garrage);
+
     let updatedProperty = await propertyData.updateProperty(
+      xss(req.params.id),
       xss(req.body.name),
       xss(req.body.address),
       xss(req.body.pincode),
@@ -71,19 +93,19 @@ async function updateProperty(req, res) {
       xss(req.body.beds),
       xss(req.body.bath),
       xss(req.body.balcony),
-      req.body.centralAir,
-      req.body.petFriendly,
-      req.body.partyFriendly,
-      req.body.garrage,
+      centralA === "Y" ? true : false,
+      petF === "Y" ? true : false,
+      partyF === "Y" ? true : false,
+      garage === "Y" ? true : false,
       xss(req.body.nearBySchools),
       xss(req.body.nearByMedical),
       xss(req.body.nearByCommute),
       xss(req.body.rent),
+      xss(req.body.brokerage),
       xss(req.body.deposit),
       xss(req.body.minimumLeasePeriod),
-      req.body.images,
-      xss(req.body.broker),
-      req.body.status
+      images,
+      xss(req.body.broker)
     );
 
     res.status(200).json({ status: true });
@@ -113,7 +135,7 @@ async function getProperty(req, res) {
   try {
     //check inputs here
 
-    let property = await propertyData.getPropertyById(req.params.id);
+    let property = await propertyData.getPropertyById(xss(req.params.id));
 
     res.status(200).json(property);
   } catch (e) {
@@ -175,7 +197,7 @@ router.route("/getAllProperties").get((req, res) => getAllProperties(req, res));
 
 router.route("/createProperty").post((req, res) => createProperty(req, res));
 
-router.route("/updateProperty").put((req, res) => updateProperty(req, res));
+router.route("/updateProperty/:id").put((req, res) => updateProperty(req, res));
 
 router.route("/removeProperty").put((req, res) => removeProperty(req, res));
 
