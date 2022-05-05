@@ -138,6 +138,7 @@ export const PropertyDetails = ({ loginToken }) => {
       .post(`/property/markPropertyAsRentedOut`, markedAsRentedDetails)
       .then((res) => {
         console.log(res.data);
+        getPropertyDetails(id);
         // setIsLoading(false);
       })
       .catch((e) => {
@@ -168,7 +169,7 @@ export const PropertyDetails = ({ loginToken }) => {
         <div>
           <Card className={styles.cardStyle}>
             <Carousel
-              interval={null}
+              // interval={null}
               activeIndex={index}
               onSelect={handleSelect}
               // variant="dark"
@@ -338,17 +339,22 @@ export const PropertyDetails = ({ loginToken }) => {
               </div>
             ) : null}
 
-            {isBroker && propertyDetails.status === false ? (
+            {isBroker ? (
               <div>
-                <div>Click mark the property as Rented out</div>
                 {userDetails.ownedProp.includes(id) ? (
-                  <Button
-                    onClick={() => {
-                      markedAsRentedOut();
-                    }}
-                  >
-                    Mark this property as rented out
-                  </Button>
+                  <div>
+                    {/* <div>Mark the property as Rented out/Available</div> */}
+                    <Button
+                      onClick={() => {
+                        markedAsRentedOut();
+                      }}
+                      variant={propertyDetails.status ? "success" : "danger"}
+                    >
+                      {propertyDetails.status
+                        ? "Mark as Available"
+                        : "Mark as rented out"}
+                    </Button>
+                  </div>
                 ) : null}
               </div>
             ) : null}
