@@ -1,8 +1,10 @@
 const collections = require("../mongoCollections");
 const propertiesCollection = collections.properties;
+const usersCollection = collections.users;
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const { ObjectId } = require("mongodb");
+const validations = require("../validation/validations");
 //const emailer = require("../autoemailer/autoEmailer");
 
 async function createProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
@@ -180,6 +182,43 @@ async function getPropertyById(id) {
 
 }
 
+async function markAsRentedOut(brokerEmail, propertyId) {
+    brokerEmail = validations.validateEmail(brokerEmail);
+    propertyId = validations.validatePropertyId(propertyId);
+
+    const properties = await propertiesCollection();
+    var property = await properties.findOne({ _id: ObjectId(propertyId) });
+
+    if (!property)
+        throw "Property not found!";
+
+    const users = await usersCollection();
+
+    var user = await users.findOne({
+        email: brokerEmail.toLowerCase(),
+        isActive: true,
+    });
+
+    if (!user) {
+        throw "Invalid user";
+    }
+
+    if (property.broker.toLowerCase() !== brokerEmail.toLowerCase())
+        throw `This property does not belong to broker ${brokerEmail}`;
+
+    var updatedProperty = await properties.updateOne({ _id: ObjectId(propertyId) }, {
+        $set: {
+            status: true
+        }
+    });
+
+    if (updatedProperty.modifiedCount > 0) {
+        return true;
+    } else {
+        throw "Could not update to rented out!";
+    }
+}
+
 
 module.exports = {
     getAllProperties,
@@ -187,5 +226,6 @@ module.exports = {
     updateProperty,
     removeProperty,
     getProperty,
-    getPropertyById
+    getPropertyById,
+    markAsRentedOut
 }

@@ -58,9 +58,9 @@ function sendEmail(mailOptions) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-
-        } else {
             throw error;
+        } else {
+
         }
     });
 
