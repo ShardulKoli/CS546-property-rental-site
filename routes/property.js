@@ -43,7 +43,7 @@ async function createProperty(req, res) {
       xss(req.body.minimumLeasePeriod),
       req.body.images,
       xss(req.body.broker),
-      xss(req.body.status)
+      req.body.status
     );
 
     let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(
@@ -83,7 +83,7 @@ async function updateProperty(req, res) {
       xss(req.body.minimumLeasePeriod),
       req.body.images,
       xss(req.body.broker),
-      xss(req.body.status)
+      req.body.status
     );
 
     res.status(200).json({ status: true });
@@ -155,6 +155,22 @@ async function showInterestInProperty(req, res) {
   }
 }
 
+async function markPropertyAsRentedOut(req, res) {
+  try {
+    var brokeremail = validations.validateEmail(xss(req.body.username));
+    var propertyId = validations.validatePropertyId(xss(req.body.propertyId));
+
+    let rentedOutProp = await propertyData.markAsRentedOut(
+      brokeremail,
+      propertyId
+    );
+
+    res.status(200).json({ status: rentedOutProp });
+  } catch (e) {
+    res.status(400).json({ errorMessage: e });
+  }
+}
+
 router.route("/getAllProperties").get((req, res) => getAllProperties(req, res));
 
 router.route("/createProperty").post((req, res) => createProperty(req, res));
@@ -167,8 +183,8 @@ router.route("/getProperty/:id").get((req, res) => getProperty(req, res));
 
 router.route("/bookmark").post((req, res) => bookmarkProp(req, res));
 
-router
-  .route("/showInterestInProperty")
-  .post((req, res) => showInterestInProperty(req, res));
+router.route("/showInterestInProperty").post((req, res) => showInterestInProperty(req, res));
+
+router.route("/markPropertyAsRentedOut").post((req, res) => markPropertyAsRentedOut(req, res));
 
 module.exports = router;
