@@ -206,11 +206,21 @@ async function markAsRentedOut(brokerEmail, propertyId) {
     if (property.broker.toLowerCase() !== brokerEmail.toLowerCase())
         throw `This property does not belong to broker ${brokerEmail}`;
 
-    var updatedProperty = await properties.updateOne({ _id: ObjectId(propertyId) }, {
+    var markAsRentedOutOperation = {
         $set: {
             status: true
         }
-    });
+    };
+
+    if (property.status) {
+        markAsRentedOutOperation = {
+            $set: {
+                status: false
+            }
+        }
+    }
+
+    var updatedProperty = await properties.updateOne({ _id: ObjectId(propertyId) }, markAsRentedOutOperation);
 
     if (updatedProperty.modifiedCount > 0) {
         return true;
