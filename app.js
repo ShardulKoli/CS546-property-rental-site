@@ -2,8 +2,13 @@ const express = require("express");
 const app = express();
 const configRoutes = require("./routes/index");
 const session = require("express-session");
+const static = express.static(__dirname + "/public");
+var bodyParser = require('body-parser')
 
-app.use(express.json({ limit: "25mb" }));
+app.use(bodyParser.json({ limit: "50mb" }))
+app.use(bodyParser.urlencoded({ extended: false }, { limit: "50mb" }))
+
+app.use("/public", static);
 
 const port = process.env.PORT || 4000;
 

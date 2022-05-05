@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Dashboard</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+
+<body>
+    <!-- input password -- validate on server --- show mainDiv -->
+    <!-- main div contains 3 links 1 for student list, 1 for broker list, 1 for property list
+    on click fetch from server and create on list div 
+    if lists are fetched, make them clickable to show a detail div in which details of user/property are shown and can be deleted -->
+    <div id="passDiv">
+        <label for="txtPass">Password : </label>
+        <input type="password" id="txtPass" />
+        <button id="btnPassSubmit" onclick="verifyPassword()">Submit</button>
+        <div id="errorPassDiv" hidden>Wrong Password!</div>
+    </div>
+
+
+    <div id="mainDiv" hidden>
+        <h1>Admin Dashboard</h1>
+
+        <div>
+            <a href="#" onclick="showHomeDiv(event)">Home</a> |
+            <a href="#" onclick="showChartsDiv(event)">Insights</a> |
+            <a href="#" onclick="logout(event)">Logout</a>
+        </div>
+
+        <div id="homeDiv">
+            <h2>All data</h2>
+            <div id="dataLinks">
+                <ul id="dataList">
+                    <li><a href="#" onclick="getUsers(event,'student')">Student Users</a></li>
+                    <li><a href="#" onclick="getUsers(event,'broker')">Broker Users</a></li>
+                    <li><a href="#" onclick="getProperties(event)">Property Listings</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="chartsDiv" hidden>
+            <h2>Insights</h2>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="detailsDiv" hidden>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/public/adminscript.js"></script>
+</body>
+
+</html>
