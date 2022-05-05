@@ -126,18 +126,25 @@ export const PropertyDetails = ({ loginToken }) => {
       });
   };
 
-  const markedAsRentedOut = (propertyName) => {
-    // axios
-    //   .put(`/property/removeProperty`, { name: propertyName })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     // setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     // setIsLoading(false);
-    //     // setError(true);
-    //   });
+  const markedAsRentedOut = () => {
+    const markedAsRentedDetails = {
+      username: userDetails.email,
+      propertyId: id,
+    };
+
+    // console.log(markedAsRentedDetails);
+
+    axios
+      .post(`/property/markPropertyAsRentedOut`, markedAsRentedDetails)
+      .then((res) => {
+        console.log(res.data);
+        // setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setIsLoading(false);
+        // setError(true);
+      });
   };
 
   useEffect(() => {
@@ -316,26 +323,28 @@ export const PropertyDetails = ({ loginToken }) => {
 
             {isBroker ? (
               <div>
-                <div>Click to delete property listing</div>
                 {userDetails.ownedProp.includes(id) ? (
-                  <Button
-                    onClick={() => {
-                      deleteListing(propertyDetails.name);
-                    }}
-                  >
-                    Delete This Listing
-                  </Button>
+                  <div>
+                    <div>Click to delete property listing</div>
+                    <Button
+                      onClick={() => {
+                        deleteListing(propertyDetails.name);
+                      }}
+                    >
+                      Delete This Listing
+                    </Button>
+                  </div>
                 ) : null}
               </div>
             ) : null}
 
-            {isBroker ? (
+            {isBroker && propertyDetails.status === false ? (
               <div>
                 <div>Click mark the property as Rented out</div>
                 {userDetails.ownedProp.includes(id) ? (
                   <Button
                     onClick={() => {
-                      markedAsRentedOut(propertyDetails.name);
+                      markedAsRentedOut();
                     }}
                   >
                     Mark this property as rented out

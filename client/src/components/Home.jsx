@@ -12,7 +12,7 @@ export const Home = ({ loginToken }) => {
       .get("/property/getAllProperties")
       .then((res) => {
         // console.log("Properties");
-        // console.log(res.data);
+        console.log(res.data);
         setProperties(res.data);
       })
       .catch((e) => {
