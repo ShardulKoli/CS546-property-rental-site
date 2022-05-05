@@ -1,3 +1,5 @@
+const { Double } = require("mongodb");
+const dummyData  = require("../client/src/assets/dummyData");
 module.exports = {
     checkId(id) {
         console.log("TYPE 1 OF ID :: " + typeof id);
@@ -110,6 +112,31 @@ module.exports = {
             throw "Property id cannot be an empty string or string with just spaces";
 
         return propId.trim();
-    }
-
+    },
+    validateProperties(dummyData){
+          checkId(dummyData.property._id)
+          validateFirstName(dummyData.userUser.firstName)
+          validateLastName(dummyData.userUser.lastName)
+          validateName(dummyData.property.name)
+          validateAddress(dummyData.property.address)
+          validateEmail(dummyData.userUser.email)
+          validateUserType(dummyData.userUser.userType)
+          validateContact(dummyData.userUser.contact)
+          validatePassword(dummyData.userUser.password)
+          validatePincode(dummyData.property.pincode)
+          validateCity(dummyData.property.city)
+          validateState(dummyData.property.state)
+          validatePropertyType(dummyData.property.propType)
+          validateBeds(dummyData.property.beds)
+          validateBaths(dummyData.property.baths)
+          validateBalcony(dummyData.property.balcony)
+          validateRent(dummyData.property.rent)
+          validateBrokerage(dummyData.property.broker)
+          validateDeposit(dummyData.property.deposit)
+          validateCentralAir(dummyData.property.centralAir)
+          validatePetFriendly(dummyData.property.petFriendly)
+          validatePartyFriendly(dummyData.property.partyFriendly)
+          validateGarrage(dummyData.property.garrage)
+        return true;
+  },
 };
