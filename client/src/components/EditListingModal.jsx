@@ -10,67 +10,50 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 
-// const property = {
-//     _id: 1,
-//     name: "Property 1",
-//     address: "Some Address in Heights",
-//     pincode: "07307",
-//     city: "Jersey City",
-//     state: "New Jersey",
-//     type: "Apartment",
-//     beds: 3,
-//     baths: 2,
-//     balcony: 1,
-//     centralAir: false,
-//     petFriendly: true,
-//     partyFriendly: true,
-//     garrage: false,
-//     nearBySchools: "Stevens",
-//     nearByMedical: "Pharmacy",
-//     nearByCommute: "Commute list",
-//     rent: 2000,
-//     brokerage: 500,
-//     deposit: 500,
-//     minimumLeasePeriod: 12,
-//     images: [],
-//     broker: 1,
-//     status: true,
-//     isActive: true,
-//   };
-
-export const CreateListingModal = ({
+export const EditListingModal = ({
   show,
   handleClose,
   loginToken,
   getUser,
+  propertyDetails,
 }) => {
   // console.log(loginToken);
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [type, setType] = useState("");
-  const [beds, setBeds] = useState("");
-  const [baths, setBaths] = useState("");
-  const [balcony, setBalcony] = useState("");
-  const [centralAir, setCentralAir] = useState(false);
-  const [petFriendly, setPetFriendly] = useState(false);
-  const [partyFriendly, setPartyFriendly] = useState(false);
-  const [garrage, setGarrage] = useState(false);
-  const [nearBySchools, setNearBySchools] = useState("");
-  const [nearByMedical, setNearByMedical] = useState("");
-  const [nearByCommute, setNearByCommute] = useState("");
-  const [rent, setRent] = useState("");
-  const [brokerage, setBrokerage] = useState("");
-  const [deposit, setDeposit] = useState("");
-  const [minimumLeasePeriod, setMinimumLeasePeriod] = useState("");
+  const [name, setName] = useState(propertyDetails.name);
+  const [address, setAddress] = useState(propertyDetails.address);
+  const [pincode, setPincode] = useState(propertyDetails.pincode);
+  const [city, setCity] = useState(propertyDetails.city);
+  const [state, setState] = useState(propertyDetails.state);
+  const [type, setType] = useState(propertyDetails.type);
+  const [beds, setBeds] = useState(propertyDetails.beds);
+  const [baths, setBaths] = useState(propertyDetails.bath);
+  const [balcony, setBalcony] = useState(propertyDetails.balcony);
+  const [centralAir, setCentralAir] = useState(propertyDetails.centralAir);
+  const [petFriendly, setPetFriendly] = useState(propertyDetails.petFriendly);
+  const [partyFriendly, setPartyFriendly] = useState(
+    propertyDetails.partyFriendly
+  );
+  const [garrage, setGarrage] = useState(propertyDetails.garrage);
+  const [nearBySchools, setNearBySchools] = useState(
+    propertyDetails.nearBySchools
+  );
+  const [nearByMedical, setNearByMedical] = useState(
+    propertyDetails.nearByMedical
+  );
+  const [nearByCommute, setNearByCommute] = useState(
+    propertyDetails.nearByCommute
+  );
+  const [rent, setRent] = useState(propertyDetails.rent);
+  const [brokerage, setBrokerage] = useState(propertyDetails.brokerage);
+  const [deposit, setDeposit] = useState(propertyDetails.deposit);
+  const [minimumLeasePeriod, setMinimumLeasePeriod] = useState(
+    propertyDetails.minimumLeasePeriod
+  );
   // const [images, setImages] = useState(null);
-  const [imageOne, setImageOne] = useState(null);
-  const [imageTwo, setImageTwo] = useState(null);
-  const [imageThree, setImageThree] = useState(null);
+  const [imageOne, setImageOne] = useState(propertyDetails.images[0]);
+  const [imageTwo, setImageTwo] = useState(propertyDetails.images[1]);
+  const [imageThree, setImageThree] = useState(propertyDetails.images[2]);
   const [broker, setBroker] = useState(loginToken.username);
-  const [status, setStatus] = useState(true);
+  //   const [status, setStatus] = useState(true);
 
   // handle errors
   const [errors, setErrors] = useState(null);
@@ -114,7 +97,7 @@ export const CreateListingModal = ({
     });
   };
 
-  const createPropertyDetails = () => {
+  const editPropertyDetails = () => {
     // convert images to base 64 to store in the db
 
     // getBase64(imageOne).then((res) => {
@@ -133,10 +116,10 @@ export const CreateListingModal = ({
       beds: beds,
       bath: baths,
       balcony: balcony,
-      centralAir: centralAir ? "Y" : "N",
-      petFriendly: petFriendly ? "Y" : "N",
-      partyFriendly: partyFriendly ? "Y" : "N",
-      garrage: garrage ? "Y" : "N",
+      centralAir: centralAir,
+      petFriendly: petFriendly,
+      partyFriendly: partyFriendly,
+      garrage: garrage,
       nearBySchools: nearBySchools,
       nearByMedical: nearByMedical,
       nearByCommute: nearByCommute,
@@ -146,8 +129,8 @@ export const CreateListingModal = ({
       minimumLeasePeriod: minimumLeasePeriod,
       images: [imageOne, imageTwo, imageThree],
       broker: broker,
-      // status: false,
-      // isActive: true,
+      status: false,
+      isActive: true,
     };
 
     // TODO: check for errors here with a valid function
@@ -185,7 +168,7 @@ export const CreateListingModal = ({
     <div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create a New Listing</Modal.Title>
+          <Modal.Title> Edit the Listing</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Form stuff */}
@@ -212,6 +195,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter Property Name"
                 />
@@ -226,6 +210,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter Property Address"
                 />
@@ -237,6 +222,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
                   placeholder="Enter Pincode"
                 />
@@ -248,6 +234,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Enter City"
                 />
@@ -259,6 +246,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={state}
                   onChange={(e) => setState(e.target.value)}
                   placeholder="Enter State"
                 />
@@ -270,6 +258,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={type}
                   onChange={(e) => setType(e.target.value)}
                   placeholder="Enter Type"
                 />
@@ -281,6 +270,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={beds}
                   onChange={(e) => setBeds(e.target.value)}
                   placeholder="Enter Number of Beds"
                 />
@@ -292,6 +282,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={baths}
                   onChange={(e) => setBaths(e.target.value)}
                   placeholder="Enter Number of Baths"
                 />
@@ -303,6 +294,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={balcony}
                   onChange={(e) => setBalcony(e.target.value)}
                   placeholder="Enter Number of Balconies"
                 />
@@ -411,6 +403,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearBySchools}
                   onChange={(e) => setNearBySchools(e.target.value)}
                   placeholder="Enter Nearby Schools"
                 />
@@ -425,6 +418,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearByMedical}
                   onChange={(e) => setNearByMedical(e.target.value)}
                   placeholder="Enter Nearby Medical"
                 />
@@ -440,6 +434,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearByCommute}
                   onChange={(e) => setNearByCommute(e.target.value)}
                   placeholder="Enter Nearby Commute"
                 />
@@ -454,6 +449,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={rent}
                   onChange={(e) => setRent(e.target.value)}
                   placeholder="Enter Rent"
                 />
@@ -469,6 +465,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={brokerage}
                   onChange={(e) => setBrokerage(e.target.value)}
                   placeholder="Enter Brokerage"
                 />
@@ -484,6 +481,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={deposit}
                   onChange={(e) => setDeposit(e.target.value)}
                   placeholder="Enter Deposit"
                 />
@@ -499,6 +497,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={minimumLeasePeriod}
                   onChange={(e) => setMinimumLeasePeriod(e.target.value)}
                   placeholder="Enter Minimum Lease Period"
                 />
@@ -567,7 +566,7 @@ export const CreateListingModal = ({
               </div>
             </Form.Group>
 
-            <Button variant="success" onClick={() => createPropertyDetails()}>
+            <Button variant="success" onClick={() => editPropertyDetails()}>
               Submit
             </Button>
             {requestMessage ? (
