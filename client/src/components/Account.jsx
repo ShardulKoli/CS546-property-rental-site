@@ -27,8 +27,8 @@ export const Account = ({ loginToken }) => {
       })
       .catch((e) => {
         // console.log(e.response.data.errorMessage);
-        setIsLoading(false);
         setError(true);
+        setIsLoading(false);
       });
     // setUserDetails(userBroker);
   };

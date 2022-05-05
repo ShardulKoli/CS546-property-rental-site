@@ -126,6 +126,28 @@ export const PropertyDetails = ({ loginToken }) => {
       });
   };
 
+  const markedAsRentedOut = () => {
+    const markedAsRentedDetails = {
+      username: userDetails.email,
+      propertyId: id,
+    };
+
+    // console.log(markedAsRentedDetails);
+
+    axios
+      .post(`/property/markPropertyAsRentedOut`, markedAsRentedDetails)
+      .then((res) => {
+        console.log(res.data);
+        getPropertyDetails(id);
+        // setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        // setIsLoading(false);
+        // setError(true);
+      });
+  };
+
   useEffect(() => {
     getPropertyDetails(id);
     getUser(loginToken.username);
@@ -147,7 +169,7 @@ export const PropertyDetails = ({ loginToken }) => {
         <div>
           <Card className={styles.cardStyle}>
             <Carousel
-              interval={null}
+              // interval={null}
               activeIndex={index}
               onSelect={handleSelect}
               // variant="dark"
@@ -250,10 +272,16 @@ export const PropertyDetails = ({ loginToken }) => {
               <div className={styles.detailsColumn}>
                 <div>Name:</div>
                 <div>Address:</div>
+                <div>Status:</div>
               </div>
               <div>
                 <div>{propertyDetails.name}</div>
                 <div>{propertyDetails.address}</div>
+                {propertyDetails.status ? (
+                  <div>This Property is rented out</div>
+                ) : (
+                  <div>Available</div>
+                )}
               </div>
             </div>
 
@@ -278,7 +306,7 @@ export const PropertyDetails = ({ loginToken }) => {
               </div>
             )}
 
-            {isBroker ? null : (
+            {isBroker || propertyDetails.status ? null : (
               <div>
                 {interestShown ? (
                   <div>An email has been sent to the broker</div>
@@ -296,15 +324,37 @@ export const PropertyDetails = ({ loginToken }) => {
 
             {isBroker ? (
               <div>
-                <div>Click to delete property listing</div>
                 {userDetails.ownedProp.includes(id) ? (
-                  <Button
-                    onClick={() => {
-                      deleteListing(propertyDetails.name);
-                    }}
-                  >
-                    Delete This Listing
-                  </Button>
+                  <div>
+                    <div>Click to delete property listing</div>
+                    <Button
+                      onClick={() => {
+                        deleteListing(propertyDetails.name);
+                      }}
+                    >
+                      Delete This Listing
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
+            {isBroker ? (
+              <div>
+                {userDetails.ownedProp.includes(id) ? (
+                  <div>
+                    {/* <div>Mark the property as Rented out/Available</div> */}
+                    <Button
+                      onClick={() => {
+                        markedAsRentedOut();
+                      }}
+                      variant={propertyDetails.status ? "success" : "danger"}
+                    >
+                      {propertyDetails.status
+                        ? "Mark as Available"
+                        : "Mark as rented out"}
+                    </Button>
+                  </div>
                 ) : null}
               </div>
             ) : null}
