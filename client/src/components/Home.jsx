@@ -28,7 +28,7 @@ export const Home = ({ loginToken }) => {
     const tempList = [];
     properties.forEach((property) => {
       tempList.push(
-        <div key={property._id}>
+        <div key={property._id} id={`div_${property._id}`}>
           <PropertyCard propertyDetails={property} loginToken={loginToken} />
         </div>
       );
@@ -50,7 +50,11 @@ export const Home = ({ loginToken }) => {
 
   return (
     <div>
-      <Filters />
+      <Filters
+        getAllProperties={getAllProperties}
+        properties={properties}
+        setProperties={setProperties}
+      />
       <div className={styles.cardContainer}>{cardList}</div>
     </div>
   );

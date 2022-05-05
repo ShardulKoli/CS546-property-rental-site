@@ -184,7 +184,7 @@ export const PropertyDetails = ({ loginToken }) => {
               // interval={null}
               activeIndex={index}
               onSelect={handleSelect}
-              // variant="dark"
+              variant="dark"
               className={styles.carousel}
             >
               <Carousel.Item>
@@ -208,6 +208,7 @@ export const PropertyDetails = ({ loginToken }) => {
                     className="d-block w-100"
                     width={500}
                     height={400}
+                    alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
@@ -231,6 +232,7 @@ export const PropertyDetails = ({ loginToken }) => {
                     className="d-block w-100"
                     width={500}
                     height={400}
+                    alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
@@ -262,6 +264,7 @@ export const PropertyDetails = ({ loginToken }) => {
                     className="d-block w-100"
                     width={500}
                     height={400}
+                    alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
