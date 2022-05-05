@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { PropertyCard } from "./PropertyCard";
 import styles from "./Home.module.css";
 import axios from "axios";
+import { ErrorCommon } from "./ErrorCommon";
+import { Filters } from "./Filters";
 
 export const Home = ({ loginToken }) => {
   const [cardList, setCardlist] = useState([]);
   const [properties, setProperties] = useState([]);
+  const [error, setError] = useState(null);
 
   const getAllProperties = () => {
     axios
@@ -17,6 +20,7 @@ export const Home = ({ loginToken }) => {
       })
       .catch((e) => {
         console.log(e.response.data.errorMessage);
+        setError(e.response.data.errorMessage);
       });
   };
 
@@ -40,5 +44,14 @@ export const Home = ({ loginToken }) => {
     buildCardList();
   }, [properties]);
 
-  return <div className={styles.cardContainer}>{cardList}</div>;
+  if (error) {
+    return <ErrorCommon message={error}></ErrorCommon>;
+  }
+
+  return (
+    <div>
+      <Filters />
+      <div className={styles.cardContainer}>{cardList}</div>
+    </div>
+  );
 };

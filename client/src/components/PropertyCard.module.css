@@ -4,8 +4,9 @@
 }
 
 .cardStyle {
-  width: 18rem;
-  margin: 2px;
+  width: 350px;
+  height: 620px;
+  margin: 5px;
 }
 
 .detailsStyle {

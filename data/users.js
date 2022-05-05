@@ -18,7 +18,7 @@ async function login(username, password) {
         isActive: true,
     });
 
-    if (user) {
+    if (user && (user.userType == 1 || user.userType == 2)) {
         let match = await bcrypt.compare(password, user.password);
 
         if (!match) throw "Either the username or password is invalid!";
@@ -305,6 +305,20 @@ async function showInterestInProperty(studentEmail, brokerEmail, propertyId) {
 
 }
 
+async function getUsersByType(userType) {
+    const users = await usersCollection();
+
+    var userList = await users.findOne({
+        userType: userType == "student" ? 1 : 2,
+        isActive: true,
+    });
+
+    if (!userList)
+        throw "Invalid student user";
+
+    return userList;
+}
+
 module.exports = {
     login,
     createUser,
@@ -313,5 +327,6 @@ module.exports = {
     getUser,
     bookmarkProperty,
     addPropertyAsOwnedByBroker,
-    showInterestInProperty
+    showInterestInProperty,
+    getUsersByType
 };
