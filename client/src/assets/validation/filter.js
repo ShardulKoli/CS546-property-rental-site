@@ -1,7 +1,7 @@
 function filterData(propArr, map1) {
-  console.log("In validation :");
-  console.log(propArr);
-  console.log(map1);
+  // console.log("In validation :");
+  // console.log(propArr);
+  // console.log(map1);
 
   let idFlag = false;
   let filteredList = [];
@@ -41,7 +41,7 @@ function filterData(propArr, map1) {
       bedFlag = true;
       filterMap.set("beds", map1.get("beds"));
     }
-    if (null != map1.get("centralAir")) {
+    if (null != map1.get("centralAir")  && map1.get("centralAir") != false) {
       airFlag = true;
       filterMap.set("centralAir", map1.get("centralAir"));
     }
@@ -49,7 +49,7 @@ function filterData(propArr, map1) {
       cityFlag = true;
       filterMap.set("city", map1.get("city"));
     }
-    if (null != map1.get("garrage")) {
+    if (null != map1.get("garrage") &&  map1.get("garrage") !=false) {
       garrageFlag = true;
       filterMap.set("garrage", map1.get("garrage"));
     }
@@ -65,11 +65,11 @@ function filterData(propArr, map1) {
       schoolFlag = true;
       filterMap.set("nearBySchools", map1.get("nearBySchools"));
     }
-    if (null != map1.get("partyFriendly")) {
+    if (null != map1.get("partyFriendly") && map1.get("partyFriendly") != false) {
       partyFlag = true;
       filterMap.set("partyFriendly", map1.get("partyFriendly"));
     }
-    if (null != map1.get("petFriendly")) {
+    if (null != map1.get("petFriendly") && map1.get("petFriendly") !=false) {
       petFlag = true;
       filterMap.set("petFriendly", map1.get("petFriendly"));
     }
@@ -86,7 +86,7 @@ function filterData(propArr, map1) {
       filterMap.set("rent", map1.get("rent"));
     }
     //console.log("filterMap");
-    console.log(filterMap);
+    //console.log(filterMap);
     let count1 = 0,
       count2 = 0;
     for (let [key, value] of filterMap) {
@@ -97,33 +97,27 @@ function filterData(propArr, map1) {
       //     if(JSON.stringify(value) === JSON.stringify(propArr[i].address)) count2++;
       // }else
       if (key === "balcony") {
-        if (value === JSON.stringify(propArr[i].balcony)) count2++;
+        if (value === propArr[i].balcony) count2++;
       } else if (key === "baths") {
-        if (value === JSON.stringify(propArr[i].bath)) count2++;
+        if (value === propArr[i].bath) count2++;
       } else if (key === "beds") {
-        if (value === JSON.stringify(propArr[i].beds)) count2++;
+        if (value === propArr[i].beds) count2++;
       } else if (key === "centralAir") {
-        if (value === JSON.stringify(propArr[i].centralAir)) count2++;
+        if (value === propArr[i].centralAir) count2++;
       } else if (key === "city") {
-        if (value === JSON.stringify(propArr[i].city)) count2++;
+        if (value === propArr[i].city) count2++;
       } else if (key === "garrage") {
-        if (value === JSON.stringify(propArr[i].garrage)) count2++;
-      } else if (key === "nearByCommute") {
-        if (value === JSON.stringify(propArr[i].nearByCommute)) count2++;
-      } else if (key === "nearByMedical") {
-        if (value === JSON.stringify(propArr[i].nearByMedical)) count2++;
-      } else if (key === "nearBySchools") {
-        if (value === JSON.stringify(propArr[i].nearBySchools)) count2++;
+        if (value === propArr[i].garrage) count2++;
       } else if (key === "partyFriendly") {
-        if (value === JSON.stringify(propArr[i].partyFriendly)) count2++;
+        if (value === propArr[i].partyFriendly) count2++;
       } else if (key === "petFriendly") {
-        if (value === JSON.stringify(propArr[i].petFriendly)) count2++;
+        if (value === propArr[i].petFriendly) count2++;
       } else if (key === "pincode") {
-        if (value === JSON.stringify(propArr[i].pincode)) count2++;
+        if (value === propArr[i].pincode) count2++;
       } else if (key === "state") {
-        if (value === JSON.stringify(propArr[i].state)) count2++;
+        if (value.trim() === propArr[i].state.trim()) count2++;
       } else if (key === "rent") {
-        if (value === JSON.stringify(propArr[i].rent)) count2++;
+        if (value === propArr[i].rent) count2++;
       }
     }
     if (count1 == count2) {
@@ -133,7 +127,7 @@ function filterData(propArr, map1) {
     // else{
     //   console.log("FILTERED LIST EMPTY");
     // }
-    console.log(count1 + " = " + count2);
+    //console.log(count1 + " = " + count2);
   }
   return filteredList;
 
