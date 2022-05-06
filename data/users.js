@@ -24,7 +24,6 @@ async function login(username, password) {
         if (!match) throw "Either the username or password is invalid!";
 
         return user;
-        //return user with necessary data -- student data / broker data
     } else {
         throw "Either the username or password is invalid!";
     }
@@ -49,7 +48,7 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         throw "User with provided email already exists!";
     }
 
-    let userTypeNum = userType === "Student" ? 1 : 2;
+    let userTypeNum = userType === "student" ? 1 : 2;
 
     if (userTypeNum === 1) {
         if (email.split(".").slice(-1)[0] !== "edu")
@@ -82,7 +81,6 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
     } catch (error) {
         console.log(error);
     }
-    //return data if needed
 }
 
 async function updateUser(firstName, lastName, username, contact) {
@@ -129,6 +127,13 @@ async function removeUser(username) {
 
     if (!user) {
         throw "Invalid user";
+    }
+
+    if (user.userType === 2) {
+
+        for (const prop of user.ownedProp) {
+            var propFromDb = await propertyUtils.removePropertyById(prop);
+        }
     }
 
     var updatedUser = await users.updateOne({ email: username.toLowerCase() }, {
@@ -224,7 +229,7 @@ async function bookmarkProperty(studentEmail, propertyId) {
 
 //call this while broker adds new property
 async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
-    //check inputs
+
     brokerEmail = validation.validateEmail(brokerEmail);
     propertyId = validation.validatePropertyId(propertyId);
 
@@ -306,6 +311,8 @@ async function showInterestInProperty(studentEmail, brokerEmail, propertyId) {
 }
 
 async function getUsersByType(userType) {
+    userType = validation.validateUserType(userType);
+
     const users = await usersCollection();
 
     var userList = await users.find({
@@ -319,6 +326,18 @@ async function getUsersByType(userType) {
     return userList.toArray();
 }
 
+async function getUserById(id) {
+    id = validation.validateUserId(id);
+
+    const users = await usersCollection();
+    const user = await users.findOne({ _id: ObjectId(id) });
+
+    if (!user)
+        throw "User not found!";
+
+    return user;
+}
+
 module.exports = {
     login,
     createUser,
@@ -328,5 +347,6 @@ module.exports = {
     bookmarkProperty,
     addPropertyAsOwnedByBroker,
     showInterestInProperty,
-    getUsersByType
+    getUsersByType,
+    getUserById
 };

@@ -1,11 +1,8 @@
 const collections = require("../mongoCollections");
 const propertiesCollection = collections.properties;
 const usersCollection = collections.users;
-const bcrypt = require("bcrypt");
-const saltRounds = 12;
 const { ObjectId } = require("mongodb");
 const validations = require("../validation/validations");
-//const emailer = require("../autoemailer/autoEmailer");
 
 async function createProperty(propData) {
 
@@ -54,7 +51,6 @@ async function createProperty(propData) {
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add property!";
 
-    //insertedUser.password = password;
 
     try {
         var insertedUser = await getProperty(newProperty.name);
@@ -64,7 +60,6 @@ async function createProperty(propData) {
     } catch (error) {
         console.log(error);
     }
-    //return data if needed
 }
 
 async function updateProperty(propData) {
@@ -127,7 +122,8 @@ async function getAllProperties() {
 }
 
 async function removeProperty(name) {
-    //check inputs
+    name = validations.validateName(name);
+
     const properties = await propertiesCollection();
 
     var property = await properties.findOne({ name: name, isActive: true });
@@ -152,7 +148,7 @@ async function removeProperty(name) {
 }
 
 async function getProperty(name) {
-    //check username input
+    name = validations.validateName(name);
 
     const properties = await propertiesCollection();
 
@@ -161,13 +157,12 @@ async function getProperty(name) {
     if (!property)
         throw "Property not found!"
 
-
-
     return property;
-
 }
+
 async function getPropertyById(id) {
-    //check username input
+
+    id = validations.validatePropertyId(id);
 
     const properties = await propertiesCollection();
     const property = await properties.findOne({ _id: ObjectId(id) });
@@ -227,6 +222,33 @@ async function markAsRentedOut(brokerEmail, propertyId) {
 }
 
 
+async function removePropertyById(propId) {
+    propId = validations.validatePropertyId(propId);
+
+    const properties = await propertiesCollection();
+
+    var property = await properties.findOne({ _id: ObjectId(propId), isActive: true });
+
+    if (!property) {
+        throw "Invalid property";
+    }
+
+    var updatedProperty = await properties.updateOne({ _id: ObjectId(propId) }, {
+        $set: {
+            isActive: false
+        }
+    });
+
+    if (updatedProperty.modifiedCount > 0) {
+        //removed successful
+
+    } else {
+        throw "Could not update!";
+    }
+
+}
+
+
 module.exports = {
     getAllProperties,
     createProperty,
@@ -234,5 +256,6 @@ module.exports = {
     removeProperty,
     getProperty,
     getPropertyById,
-    markAsRentedOut
+    markAsRentedOut,
+    removePropertyById
 }
