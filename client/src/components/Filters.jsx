@@ -19,8 +19,28 @@ import axios from "axios";
 
 export const Filters = ({ getAllProperties, properties, setProperties }) => {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    setPet(false);
+    setParty(false);
+    setGarrage(false);
+    setcentralAir(false);
+    setBalcony(null);
+    setBath(null);
+    setBed(null);
+    setCity(null);
+    setLeasePeriod(null);
+    setRent(null);
+    setPincode(null);
+    setLeasePeriod(null);
+    
+    
+
+  };
+  const handleShow = () => {
+    getAllProperties();
+    setShow(true);
+    };
   // const [localProperties, setLocalProperties] = useState(properties);
   // const getAllProperties = () => {
   //   axios
@@ -43,7 +63,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   const [pincode, setPincode] = useState(null);
   const [city, setCity] = useState(null);
   const [state, setState] = useState(null);
-  const [leasePeriod, setLeasePeriod] = useState(0);
+  const [leasePeriod, setLeasePeriod] = useState(null);
   const [bed, setBed] = useState(null);
   const [bath, setBath] = useState(null);
   const [rent, setRent] = useState(null);
@@ -53,32 +73,32 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   // }, []);
 
   const handleSearch = () => {
+   
     const map1 = new Map();
     map1.set("balcony", balcony);
-    map1.set("baths", bath);
+    map1.set("baths",bath);
     map1.set("beds", bed);
-    map1.set("centralAir", null);
+    map1.set("centralAir", centralAir);
+
     map1.set("city", city);
-    map1.set("garrage", null);
-    map1.set("nearByCommute", null);
-    map1.set("nearByMedical", null);
-    map1.set("nearBySchools", null);
-    map1.set("partyFriendly", null);
-    map1.set("petFriendly", null);
+    map1.set("garrage", garrage);
+
+    map1.set("partyFriendly", party);
+    map1.set("petFriendly", pet);
+
     map1.set("pincode", pincode);
     map1.set("state", state);
     map1.set("rent", rent);
-    // map1.set('status',true);
-    // map1.set('isActive',true);
-    //console.log(map1);
+    console.log(map1);
     console.log("Properties");
     console.log(properties);
     // console.log(localProperties);
     // console.log(map1);
     let result = filter.filterData(properties, map1);
-    console.log(result);
-
-    // setProperties(result);
+    //console.log(result);
+    handleClose();
+    setProperties(result);
+    
   };
   //const [checked,setChecked]= useState(false);
 
@@ -104,7 +124,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="search">
+            {/* <Form.Group className="mb-3" controlId="search">
               <FloatingLabel
                 controlId="floatingInput"
                 label="Search"
@@ -116,7 +136,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </FloatingLabel>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group className="mb-3" controlId="petFriendly">
               <FloatingLabel
@@ -212,7 +232,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
                 />
               </FloatingLabel>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="lease">
+            {/* <Form.Group className="mb-3" controlId="lease">
               <FloatingLabel
                 controlId="floatingInput"
                 label="Lease Period"
@@ -224,7 +244,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
                   onChange={(e) => setLeasePeriod(e.target.value)}
                 />
               </FloatingLabel>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group className="mb-3" controlId="rent">
               <FloatingLabel
