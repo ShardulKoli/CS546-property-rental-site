@@ -3,6 +3,9 @@ import { Link, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import styles from "./CustomNavbar.module.css";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HomeIcon from "@mui/icons-material/Home";
 import { Login } from "./Login";
 
 export const CustomNavbar = ({ loginToken, setLoginToken }) => {
@@ -24,6 +27,13 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
           <Nav>
             <div className={styles.linkContainer}>
               <Link to="/" className={styles.linkchange}>
+                <HomeIcon
+                  // sx={{ }}
+                  style={{
+                    color: "white",
+                    marginRight: "5px",
+                  }}
+                ></HomeIcon>
                 Home
               </Link>
             </div>
@@ -33,14 +43,27 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
               </Link>
             </div> */}
             <div className={styles.linkContainer}>
-              <FilterListIcon sx={{ color: "white" }}></FilterListIcon>
               <Link to="/account/" className={styles.linkchange}>
+                <AccountCircleIcon
+                  // sx={{ }}
+                  style={{
+                    color: "white",
+                    marginRight: "5px",
+                  }}
+                ></AccountCircleIcon>
                 Account
               </Link>
             </div>
 
             <div className={styles.linkchange}>
               <Link to="/logout/" className={styles.linkchange}>
+                <LogoutIcon
+                  // sx={{ }}
+                  style={{
+                    color: "white",
+                    marginRight: "2px",
+                  }}
+                ></LogoutIcon>
                 Logout
               </Link>
             </div>

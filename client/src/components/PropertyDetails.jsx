@@ -33,6 +33,7 @@ export const PropertyDetails = ({ loginToken }) => {
     axios
       .get(`/property/getProperty/${id}`)
       .then((res) => {
+        console.log(res.data);
         setPropertyDetails(res.data);
         // Loading and error will be set to false when the user is set
       })
@@ -180,109 +181,73 @@ export const PropertyDetails = ({ loginToken }) => {
       <div>
         <div>
           <Card className={styles.cardStyle}>
-            <Carousel
+            {/* <Carousel
               // interval={null}
               activeIndex={index}
               onSelect={handleSelect}
               variant="dark"
               className={styles.carousel}
-            >
-              <Carousel.Item>
+            ></Carousel> */}
+
+            <div className={styles.buttonHolder}>
+              <div>
                 {propertyDetails.images && propertyDetails.images[0] ? (
                   // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
-                    width={500}
+                    width={400}
                     height={400}
                     src={propertyDetails.images[0]}
                   />
                 ) : (
-                  // <img
-                  //   alt="First slide"
-                  //   width={"500"}
-                  //   height={400}
-                  //   src={URL.createObjectURL(propertyDetails.images[0])}
-                  // />
-
                   <img
                     className="d-block w-100"
-                    width={500}
+                    width={400}
                     height={400}
                     alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
-
-                <Carousel.Caption>
-                  {/* <h3>First slide label</h3> */}
-                  <p>Image one</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
+              </div>
+              <div>
                 {propertyDetails.images && propertyDetails.images[1] ? (
                   // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
-                    width={500}
+                    width={400}
                     height={400}
                     src={propertyDetails.images[1]}
                   />
                 ) : (
                   <img
                     className="d-block w-100"
-                    width={500}
+                    width={400}
                     height={400}
                     alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
-
-                {/* <img
-                  // className="d-block w-100"
-                  width={500}
-                  height={400}
-                  src={require("../assets/logo192.png")}
-                  alt="Second slide"
-                /> */}
-
-                <Carousel.Caption>
-                  {/* <h3>Second slide label</h3> */}
-                  <p>Image two</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
+              </div>
+              <div>
                 {propertyDetails.images && propertyDetails.images[2] ? (
                   // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
-                    width={500}
+                    width={400}
                     height={400}
                     src={propertyDetails.images[2]}
                   />
                 ) : (
                   <img
                     className="d-block w-100"
-                    width={500}
+                    width={400}
                     height={400}
                     alt="not found"
                     src={require("../assets/logo192.png")}
                   />
                 )}
-
-                {/* <img
-                  // className="d-block w-100"
-                  width={500}
-                  height={400}
-                  src={require("../assets/logo192.png")}
-                  alt="Third slide"
-                /> */}
-
-                <Carousel.Caption>
-                  {/* <h3>Third slide label</h3> */}
-                  <p>Image Three</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
+              </div>
+            </div>
 
             <div className={styles.buttonHolder}>
               {/* {isBroker ? null : (
@@ -393,6 +358,24 @@ export const PropertyDetails = ({ loginToken }) => {
                 <div>Name:</div>
                 <div>Address:</div>
                 <div>Status:</div>
+                <div>Pincode:</div>
+                <div>City:</div>
+                <div>State:</div>
+                <div>Type:</div>
+                <div>Beds:</div>
+                <div>Baths:</div>
+                <div>Balcony:</div>
+                <div>Central Air:</div>
+                <div>Pet Friendly:</div>
+                <div>Party Friendly:</div>
+                <div>Garrage:</div>
+                <div>Nearby Schools:</div>
+                <div>Nearby Medical:</div>
+                <div>Nearby Commute:</div>
+                <div>Brokerage:</div>
+                <div>Deposit:</div>
+                <div>Minimum Lease Period:</div>
+                <div>Broker:</div>
               </div>
               <div>
                 <div>{propertyDetails.name}</div>
@@ -402,6 +385,24 @@ export const PropertyDetails = ({ loginToken }) => {
                 ) : (
                   <div>Available</div>
                 )}
+                <div>{propertyDetails.pincode}</div>
+                <div>{propertyDetails.city}</div>
+                <div>{propertyDetails.state}</div>
+                <div>{propertyDetails.type}</div>
+                <div>{propertyDetails.beds}</div>
+                <div>{propertyDetails.bath}</div>
+                <div>{propertyDetails.balcony}</div>
+                <div>{propertyDetails.centralAir ? "true" : "false"}</div>
+                <div>{propertyDetails.petFriendl ? "true" : "false"}</div>
+                <div>{propertyDetails.partyFriendly ? "true" : "false"}</div>
+                <div>{propertyDetails.garrage ? "true" : "false"}</div>
+                <div>{propertyDetails.nearBySchools}</div>
+                <div>{propertyDetails.nearByMedical}</div>
+                <div>{propertyDetails.nearByCommute}</div>
+                <div>{propertyDetails.brokerage}</div>
+                <div>{propertyDetails.deposit}</div>
+                <div>{propertyDetails.minimumLeasePeriod}</div>
+                <div>{propertyDetails.broker}</div>
               </div>
             </div>
           </Card>

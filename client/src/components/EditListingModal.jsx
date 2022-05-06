@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import axios from "axios";
+import { validateProperties } from "../assets/validation/validations";
 
 export const EditListingModal = ({
   show,
@@ -143,18 +144,30 @@ export const EditListingModal = ({
     //   setErrors(checks);
     // }
 
-    console.log(propertyDetails);
-    console.log(propertyDetails.images);
+    try {
+      propertyDetails.centralAir = propertyDetails.centralAir === "Y";
+      propertyDetails.petFriendly = propertyDetails.petFriendly === "Y";
+      propertyDetails.partyFriendly = propertyDetails.partyFriendly === "Y";
+      propertyDetails.garrage = propertyDetails.garrage === "Y";
 
-    axios
-      .put(`/property/updateProperty/${id}`, propertyDetails)
-      .then((res) => {
-        getPropertyDetails();
-        handleClose();
-      })
-      .catch((e) => {
-        setRequestMessage(e.response.data.errorMessage);
-      });
+      validateProperties(propertyDetails);
+
+      //   console.log(propertyDetails);
+      // console.log(propertyDetails.images);
+
+      axios
+        .put(`/property/updateProperty/${id}`, propertyDetails)
+        .then((res) => {
+          getPropertyDetails();
+          handleClose();
+        })
+        .catch((e) => {
+          setRequestMessage(e.response.data.errorMessage);
+        });
+    } catch (error) {
+      console.log(error);
+      setRequestMessage(error);
+    }
   };
 
   // const [radioValue, setRadioValue] = useState("1");
@@ -572,7 +585,7 @@ export const EditListingModal = ({
             {requestMessage ? (
               <Alert
                 key="primary"
-                variant="primary"
+                variant="danger"
                 style={{ marginTop: "10px" }}
               >
                 {requestMessage}
