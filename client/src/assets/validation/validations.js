@@ -283,5 +283,12 @@ const validateProperties = (property) => {
 };
 
 module.exports = {
+  checkId,
+  validateFirstName,
+  validateLastName,
+  validateEmail,
   validateProperties,
+  validateContact,
+  validatePassword,
+  validateUserType,
 };
