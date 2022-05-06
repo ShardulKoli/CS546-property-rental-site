@@ -90,11 +90,11 @@ const validatePassword = (password) => {
   return password;
 };
 const validatePincode = (pincode) => {
-  pincode = Number(pincode);
-  if (Number.isInteger(pincode) && pincode > 0) {
-    if (pincode === "" || pincode === undefined)
+  let pincode1 = Number(pincode);
+  if (Number.isInteger(pincode1) && pincode1 > 0) {
+    if (pincode1 === "" || pincode1 === undefined)
       throw "Error: You must provide Pincode";
-    if (pincode.length === 0)
+    if (pincode1.length === 0)
       throw "Error: Pincode cannot be an empty string or just spaces";
     return pincode;
   } else {
