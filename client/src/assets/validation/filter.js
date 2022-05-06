@@ -23,12 +23,11 @@ function filterData(propArr, map1) {
     rentFlag = false;
 
   for (let i = 0; i < propArr.length; i++) {
-    //Setting values of respective flags true if filters are present for those values.
+
+    /* Setting the data in the filter map and setting the respective flags to true 
+       if the filters are present for those values i.e.) value for the key is not null. */
     const filterMap = new Map();
-    // if(null!= map1.get('address')){
-    //     addrFlag=true;
-    //     filterMap.set('address',map1.get('address'));
-    // }
+    
     if (null != map1.get("balcony")) {
       balconyFlag = true;
       filterMap.set("balcony", map1.get("balcony"));
@@ -89,13 +88,11 @@ function filterData(propArr, map1) {
     //console.log(filterMap);
     let count1 = 0,
       count2 = 0;
+
+    // Comparing the values of filterMap with the array of properties for getting a filtered list
+
     for (let [key, value] of filterMap) {
-      //console.log(key + " :: "+ value);
-      //console.log(propArr[i].address + " :: "+propArr[i].centralAir + " :: "+ propArr[i].city+ " :: "+ propArr[i].nearBySchools);
       count1++;
-      // if(key==="address"){
-      //     if(JSON.stringify(value) === JSON.stringify(propArr[i].address)) count2++;
-      // }else
       if (key === "balcony") {
         if (value === propArr[i].balcony) count2++;
       } else if (key === "baths") {
@@ -120,8 +117,10 @@ function filterData(propArr, map1) {
         if (value === propArr[i].rent) count2++;
       }
     }
+    /* If count of filterMap data matches with count of property array data, 
+          we set that property into the filtered list for displaying it on screen. */
+
     if (count1 == count2) {
-      //console.log("PUSHING INTO FILTERED LIST");
       filteredList.push(propArr[i]);
     }
     // else{
@@ -130,11 +129,7 @@ function filterData(propArr, map1) {
     //console.log(count1 + " = " + count2);
   }
   return filteredList;
-
-  // /*for (let i = 0; i < filteredList.length; i++) {
-  //   console.log(filteredList[i]);
-  // }*/
 }
 module.exports = {
-  filterData,
+  filterData
 };
