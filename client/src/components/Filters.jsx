@@ -15,6 +15,7 @@ import {
 } from "react-bootstrap";
 import styles from "./Filters.module.css";
 import filter from "../assets/validation/filter";
+import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 
 export const Filters = ({ getAllProperties, properties, setProperties }) => {
@@ -40,7 +41,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   const handleShow = () => {
     getAllProperties();
     setShow(true);
-    };
+  };
   // const [localProperties, setLocalProperties] = useState(properties);
   // const getAllProperties = () => {
   //   axios
@@ -74,10 +75,9 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   // }, []);
 
   const handleSearch = () => {
-   
     const map1 = new Map();
     map1.set("balcony", balcony);
-    map1.set("baths",bath);
+    map1.set("baths", bath);
     map1.set("beds", bed);
     map1.set("centralAir", centralAir);
 
@@ -100,9 +100,12 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     //console.log(result);
     handleClose();
     setProperties(result);
-    
   };
   //const [checked,setChecked]= useState(false);
+
+  const clearFilters = () => {
+    getAllProperties();
+  };
 
   return (
     <div>
@@ -116,6 +119,13 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
                 onClick={handleShow}
                 sx={{ "&:hover": { color: "skyblue" } }}
               ></FilterListIcon>
+            </div>
+            <div style={{ marginLeft: "10px" }}>Clear Filters</div>
+            <div>
+              <ClearIcon
+                onClick={clearFilters}
+                sx={{ "&:hover": { color: "skyblue" } }}
+              ></ClearIcon>
             </div>
           </Nav>
         </Container>
@@ -318,9 +328,6 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
           <Button variant="primary" onClick={handleSearch}>
             Apply Filters
           </Button>

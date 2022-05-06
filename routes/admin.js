@@ -36,9 +36,20 @@ async function getUsers(req, res) {
 
         let users = await userUtils.getUsersByType(userType);
 
-        return res.json({ users: users });
+        return res.json({ users: users, status: true });
     } catch (error) {
-        return res.json({ errorMessage: error });
+        return res.json({ status: false, errorMessage: error });
+    }
+}
+
+async function getProperties(req, res) {
+    try {
+
+        let props = await propertyUtils.getAllProperties();
+
+        return res.json({ properties: props, status: true });
+    } catch (error) {
+        return res.json({ status: false, errorMessage: error });
     }
 }
 
@@ -46,7 +57,9 @@ router.route("/").get((req, res) => index(req, res));
 
 router.route("/").post((req, res) => verifyUser(req, res));
 
-router.route("/:type").get((req, res) => getUsers(req, res));
+router.route("/getUsers/:type").get((req, res) => getUsers(req, res));
+
+router.route("/getProperties").get((req, res) => getProperties(req, res));
 
 
 module.exports = router;

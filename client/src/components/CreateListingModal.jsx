@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import axios from "axios";
+import { validateProperties } from "../assets/validation/validations";
 
 // const property = {
 //     _id: 1,
@@ -76,15 +77,15 @@ export const CreateListingModal = ({
   const [errors, setErrors] = useState(null);
   const [requestMessage, setRequestMessage] = useState(null);
 
-  const checkPropertyDetails = (check) => {
-    if (check) {
-      return {
-        name: "enter a valid name",
-      };
-    } else {
-      return null;
-    }
-  };
+  // const checkPropertyDetails = (check) => {
+  //   if (check) {
+  //     return {
+  //       name: "enter a valid name",
+  //     };
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   const getBase64 = (file) => {
     return new Promise((resolve) => {
@@ -150,28 +151,36 @@ export const CreateListingModal = ({
       // isActive: true,
     };
 
-    // TODO: check for errors here with a valid function
-    // let checks = checkPropertyDetails(true);
-    // if (!checks) {
-    //   setErrors(null);
-    //   console.log(propertyDetials);
-    // } else {
-    //   setErrors(checks);
-    // }
+    try {
+      propertyDetails.centralAir = propertyDetails.centralAir === "Y";
+      propertyDetails.petFriendly = propertyDetails.petFriendly === "Y";
+      propertyDetails.partyFriendly = propertyDetails.partyFriendly === "Y";
+      propertyDetails.garrage = propertyDetails.garrage === "Y";
 
-    console.log(propertyDetails);
-    console.log(propertyDetails.images);
+      validateProperties(propertyDetails);
 
-    axios
-      .post("/property/createProperty", propertyDetails)
-      .then((res) => {
-        // setRequestMessage("Property created successfully");
-        getUser(loginToken.username);
-        handleClose();
-      })
-      .catch((e) => {
-        setRequestMessage(e.response.data.errorMessage);
-      });
+      // console.log(propertyDetails);
+      // console.log(propertyDetails.images);
+      // setRequestMessage(null);
+
+      axios
+        .post("/property/createProperty", propertyDetails)
+        .then((res) => {
+          // setRequestMessage("Property created successfully");
+          getUser(loginToken.username);
+          handleClose();
+        })
+        .catch((e) => {
+          setRequestMessage(e.response.data.errorMessage);
+        });
+
+      // create property
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+      setRequestMessage(error);
+      // setErrors(error);
+    }
   };
 
   // const [radioValue, setRadioValue] = useState("1");
@@ -573,7 +582,7 @@ export const CreateListingModal = ({
             {requestMessage ? (
               <Alert
                 key="primary"
-                variant="primary"
+                variant="danger"
                 style={{ marginTop: "10px" }}
               >
                 {requestMessage}

@@ -308,7 +308,7 @@ async function showInterestInProperty(studentEmail, brokerEmail, propertyId) {
 async function getUsersByType(userType) {
     const users = await usersCollection();
 
-    var userList = await users.findOne({
+    var userList = await users.find({
         userType: userType == "student" ? 1 : 2,
         isActive: true,
     });
@@ -316,7 +316,7 @@ async function getUsersByType(userType) {
     if (!userList)
         throw "Invalid student user";
 
-    return userList;
+    return userList.toArray();
 }
 
 module.exports = {

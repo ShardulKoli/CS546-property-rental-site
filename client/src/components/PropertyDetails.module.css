@@ -20,7 +20,12 @@
 }
 
 .detailsColumn {
-  margin-right: 10px;
+  margin-right: 50px;
+}
+
+.detailRow {
+  border-style: solid;
+  border: 10px;
 }
 
 .buttonHolder {
@@ -32,4 +37,9 @@
 
 .button {
   width: 350px;
+}
+
+.imageHolder {
+  display: flex;
+  flex-direction: row;
 }
