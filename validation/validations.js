@@ -75,7 +75,7 @@ module.exports = {
             throw "User type must be a string";
         if (userType.trim().length === 0)
             throw "User type cannot be an empty string or string with just spaces";
-        if (userType !== "Student" && userType !== "Broker")
+        if (userType.toLowerCase() !== "student" && userType.toLowerCase() !== "broker")
             throw "Invalid User type!";
 
         return userType.trim();
@@ -280,6 +280,18 @@ module.exports = {
             throw "Nearby Commute cannot be an empty string or string with just spaces";
 
         return nearByCommute;
+    },
+    validateUserId(id) {
+        if (!id)
+            throw "User id is not present.";
+        if (typeof id !== 'string')
+            throw "User id must be a string";
+        if (id.trim().length === 0)
+            throw "User id cannot be an empty string or string with just spaces";
+        if (!ObjectId.isValid(id)) {
+            throw `${id} is an invalid id!`;
+        }
+        return id.trim();
     },
     validateProperties(property) {
         if (property._id)
