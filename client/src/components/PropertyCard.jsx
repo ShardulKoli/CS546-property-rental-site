@@ -147,9 +147,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
 
           {propertyDetails.status ? (
             <Card style={{ marginTop: "5px" }}>
-              <div className={styles.rentedOutLabel}>
-                This property is rented out
-              </div>
+              <div className={styles.rentedOutLabel}>Rented out</div>
             </Card>
           ) : null}
 
