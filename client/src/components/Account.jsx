@@ -27,7 +27,7 @@ export const Account = ({ loginToken }) => {
       })
       .catch((e) => {
         // console.log(e.response.data.errorMessage);
-        setError(true);
+        setError(e.response.data.errorMessage);
         setIsLoading(false);
       });
     // setUserDetails(userBroker);
@@ -44,9 +44,7 @@ export const Account = ({ loginToken }) => {
       setBookMarkedProp(
         buildPropertyCardList(userDetails.bookmarkedPropertyDetails)
       );
-    }
-
-    if (userDetails && userDetails.brokerOwnedPropertyDetails) {
+    } else if (userDetails && userDetails.brokerOwnedPropertyDetails) {
       console.log(userDetails.brokerOwnedPropertyDetails);
       setOwnedProp(
         buildPropertyCardList(userDetails.brokerOwnedPropertyDetails)
@@ -77,7 +75,7 @@ export const Account = ({ loginToken }) => {
 
     properties.forEach((property) => {
       tempList.push(
-        <div key={property._id}>
+        <div key={property._id} id={`div_${property._id}`}>
           <PropertyCard propertyDetails={property} />
         </div>
       );
@@ -96,7 +94,7 @@ export const Account = ({ loginToken }) => {
   useEffect(() => {}, []);
 
   if (error) {
-    return <ErrorCommon></ErrorCommon>;
+    return <ErrorCommon message={error}></ErrorCommon>;
   }
 
   if (!isLoading) {

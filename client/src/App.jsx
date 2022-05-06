@@ -50,7 +50,7 @@ function App() {
         }}
       >
         <CustomNavbar loginToken={loginToken} setLoginToken={setLoginToken} />
-        <Filters />
+
         {/* <TestComponent /> */}
         <div>
           <Switch>

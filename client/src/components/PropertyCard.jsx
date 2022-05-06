@@ -29,38 +29,95 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
           onSelect={handleSelect}
           variant="dark"
         >
-          <Carousel.Item
-            onClick={() => loadProperyPage(propertyDetails._id)}
-            // className={styles.cardStyle}
-          >
-            <img
-              className="d-block w-100"
-              src={require("../assets/logo192.png")}
-              alt="First slide"
-            />
+          <Carousel.Item>
+            {propertyDetails.images && propertyDetails.images[0] ? (
+              // console.log(propertyDetails.images)
+              <img
+                alt="not fount"
+                width={500}
+                height={400}
+                src={propertyDetails.images[0]}
+              />
+            ) : (
+              // <img
+              //   alt="First slide"
+              //   width={"500"}
+              //   height={400}
+              //   src={URL.createObjectURL(propertyDetails.images[0])}
+              // />
+
+              <img
+                className="d-block w-100"
+                width={500}
+                height={400}
+                alt="not found"
+                src={require("../assets/logo192.png")}
+              />
+            )}
+
             <Carousel.Caption>
               {/* <h3>First slide label</h3> */}
               <p>Image one</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
-            <img
-              className="d-block w-100"
-              src={require("../assets/logo192.png")}
-              alt="Second slide"
-            />
+          <Carousel.Item>
+            {propertyDetails.images && propertyDetails.images[1] ? (
+              // console.log(propertyDetails.images)
+              <img
+                alt="not found"
+                width={500}
+                height={400}
+                src={propertyDetails.images[1]}
+              />
+            ) : (
+              <img
+                className="d-block w-100"
+                width={500}
+                height={400}
+                alt="not found"
+                src={require("../assets/logo192.png")}
+              />
+            )}
+
+            {/* <img
+                  // className="d-block w-100"
+                  width={500}
+                  height={400}
+                  src={require("../assets/logo192.png")}
+                  alt="Second slide"
+                /> */}
 
             <Carousel.Caption>
               {/* <h3>Second slide label</h3> */}
               <p>Image two</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
-            <img
-              className="d-block w-100"
-              src={require("../assets/logo192.png")}
-              alt="Third slide"
-            />
+          <Carousel.Item>
+            {propertyDetails.images && propertyDetails.images[2] ? (
+              // console.log(propertyDetails.images)
+              <img
+                alt="not fount"
+                width={500}
+                height={400}
+                src={propertyDetails.images[2]}
+              />
+            ) : (
+              <img
+                className="d-block w-100"
+                width={500}
+                height={400}
+                alt="not found"
+                src={require("../assets/logo192.png")}
+              />
+            )}
+
+            {/* <img
+                  // className="d-block w-100"
+                  width={500}
+                  height={400}
+                  src={require("../assets/logo192.png")}
+                  alt="Third slide"
+                /> */}
 
             <Carousel.Caption>
               {/* <h3>Third slide label</h3> */}
@@ -78,7 +135,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
           </Card.Subtitle>
           <div className={styles.detailsStyle}>
             <div>Beds: {propertyDetails.beds}</div>
-            <div>Baths: {propertyDetails.baths}</div>
+            <div>Baths: {propertyDetails.bath}</div>
           </div>
           <div>Type: {propertyDetails.type}</div>
 
