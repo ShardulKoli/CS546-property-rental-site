@@ -7,15 +7,13 @@ const { ObjectId } = require("mongodb");
 const validations = require("../validation/validations");
 //const emailer = require("../autoemailer/autoEmailer");
 
-async function createProperty(name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
-    petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
-    deposit, minimumLeasePeriod, images, broker) {
-    //check all inputs
-    //status field indicates rented or not!
+async function createProperty(propData) {
+
+    propData = validations.validateProperties(propData);
 
     const properties = await propertiesCollection();
 
-    var property = await properties.findOne({ name: name.toLowerCase(), isActive: true });
+    var property = await properties.findOne({ name: propData.name.toLowerCase(), isActive: true });
 
     if (property) {
         throw "Property with provided name already exists!";
@@ -23,30 +21,30 @@ async function createProperty(name, address, pincode, city, state, type, beds, b
 
     let newProperty = {
         _id: ObjectId(),
-        name: name,
-        address: address,
-        pincode: pincode,
-        city: city,
-        state: state,
-        type: type,
-        beds: beds,
-        bath: bath,
-        balcony: balcony,
-        centralAir: centralAir,
-        petFriendly: petFriendly,
-        partyFriendly: partyFriendly,
-        garrage: garrage,
-        nearByMedical: nearByMedical,
-        nearBySchools: nearBySchools,
-        partyFriendly: partyFriendly,
-        partyFriendly: partyFriendly,
-        nearByCommute: nearByCommute,
-        rent: rent,
-        brokerage: brokerage,
-        deposit: deposit,
-        minimumLeasePeriod: minimumLeasePeriod,
-        images: images,
-        broker: broker,
+        name: propData.name,
+        address: propData.address,
+        pincode: propData.pincode,
+        city: propData.city,
+        state: propData.state,
+        type: propData.type,
+        beds: propData.beds,
+        bath: propData.bath,
+        balcony: propData.balcony,
+        centralAir: propData.centralAir,
+        petFriendly: propData.petFriendly,
+        partyFriendly: propData.partyFriendly,
+        garrage: propData.garrage,
+        nearByMedical: propData.nearByMedical,
+        nearBySchools: propData.nearBySchools,
+        partyFriendly: propData.partyFriendly,
+        partyFriendly: propData.partyFriendly,
+        nearByCommute: propData.nearByCommute,
+        rent: propData.rent,
+        brokerage: propData.brokerage,
+        deposit: propData.deposit,
+        minimumLeasePeriod: propData.minimumLeasePeriod,
+        images: propData.images,
+        broker: propData.broker,
         status: false,
         isActive: true
     }
@@ -69,46 +67,44 @@ async function createProperty(name, address, pincode, city, state, type, beds, b
     //return data if needed
 }
 
-async function updateProperty(id, name, address, pincode, city, state, type, beds, bath, balcony, centralAir,
-    petFriendly, partyFriendly, garrage, nearBySchools, nearByMedical, nearByCommute, rent, brokerage,
-    deposit, minimumLeasePeriod, images, broker) {
+async function updateProperty(propData) {
+    propData = validations.validateProperties(propData);
 
-    //check inputs
     const properties = await propertiesCollection();
 
-    var property = await properties.findOne({ _id: ObjectId(id), isActive: true });
+    var property = await properties.findOne({ _id: ObjectId(propData._id), isActive: true });
 
     if (!property) {
         throw "Invalid property";
     }
 
-    var updatedProperty = await properties.updateOne({ _id: ObjectId(id) }, {
+    var updatedProperty = await properties.updateOne({ _id: ObjectId(propData._id) }, {
 
         $set: {
-            name: name,
-            address: address,
-            pincode: pincode,
-            city: city,
-            state: state,
-            type: type,
-            beds: beds,
-            bath: bath,
-            balcony: balcony,
-            centralAir: centralAir,
-            petFriendly: petFriendly,
-            partyFriendly: partyFriendly,
-            garrage: garrage,
-            nearByMedical: nearByMedical,
-            nearBySchools: nearBySchools,
-            partyFriendly: partyFriendly,
-            partyFriendly: partyFriendly,
-            nearByCommute: nearByCommute,
-            rent: rent,
-            brokerage: brokerage,
-            deposit: deposit,
-            minimumLeasePeriod: minimumLeasePeriod,
-            images: images,
-            broker: broker
+            name: propData.name,
+            address: propData.address,
+            pincode: propData.pincode,
+            city: propData.city,
+            state: propData.state,
+            type: propData.type,
+            beds: propData.beds,
+            bath: propData.bath,
+            balcony: propData.balcony,
+            centralAir: propData.centralAir,
+            petFriendly: propData.petFriendly,
+            partyFriendly: propData.partyFriendly,
+            garrage: propData.garrage,
+            nearByMedical: propData.nearByMedical,
+            nearBySchools: propData.nearBySchools,
+            partyFriendly: propData.partyFriendly,
+            partyFriendly: propData.partyFriendly,
+            nearByCommute: propData.nearByCommute,
+            rent: propData.rent,
+            brokerage: propData.brokerage,
+            deposit: propData.deposit,
+            minimumLeasePeriod: propData.minimumLeasePeriod,
+            images: propData.images,
+            broker: propData.broker
         }
     });
 

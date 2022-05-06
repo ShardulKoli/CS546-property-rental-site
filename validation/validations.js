@@ -1,11 +1,11 @@
-const { Double } = require("mongodb");
-const dummyData  = require("../client/src/assets/dummyData");
+const { ObjectId } = require("mongodb");
+
 module.exports = {
     checkId(id) {
         console.log("TYPE 1 OF ID :: " + typeof id);
         id = Number(id);
         if (Number.isInteger(id) && id > 0) {
-            if (!id || id === "" || id === undefined) throw 'Error: You must provide an id to search for';
+            if (id === undefined) throw 'Error: You must provide an id to search for';
             if (id.length === 0)
                 throw 'Error: id cannot be an empty string or just spaces';
             return id;
@@ -83,7 +83,7 @@ module.exports = {
     validateContact(contact) {
         contact = Number(contact);
         if (Number.isInteger(contact) && contact > 0) {
-            if (!contact || contact === "" || contact === undefined || contact.length === 0) throw 'Error: You must provide contact information';
+            if (contact === undefined || contact.length === 0) throw 'Error: You must provide contact information';
             if (contact.toString().length !== 10) throw "Contact number should be 10 digits!";
             return contact;
         } else {
@@ -102,119 +102,143 @@ module.exports = {
             throw "Password should be atleast 6 characters long.";
 
         return password;
-    }, 
-    validatePincode(pincode){
+    },
+    validatePincode(pincode) {
         pincode = Number(pincode);
         if (Number.isInteger(pincode) && pincode > 0) {
-            if (!pincode || pincode === "" || pincode === undefined) throw 'Error: You must provide Pincode';
+            if (pincode === "" || pincode === undefined) throw 'Error: You must provide Pincode';
             if (pincode.length === 0)
-            throw 'Error: Pincode cannot be an empty string or just spaces';
+                throw 'Error: Pincode cannot be an empty string or just spaces';
             return pincode;
-        }else{
+        } else {
             throw 'Error: Pincode must be a positive whole number';
         }
     },
-    validateCity(city){
+    validateCity(city) {
         if (!city)
             throw "You must provide a City";
         if (typeof city !== 'string')
             throw "City must be a string";
         if (city.trim().length === 0)
             throw "City cannot be an empty string or string with just spaces";
+
+        return city;
     },
-    validateState(state){
+    validateState(state) {
         if (!state)
             throw "You must provide a State";
         if (typeof state !== 'string')
             throw "State must be a string";
         if (state.trim().length === 0)
             throw "State cannot be an empty string or string with just spaces";
+
+        return state;
     },
-    validatePropertyType(propType){
+    validatePropertyType(propType) {
         if (!propType)
             throw "You must provide a Property Type";
         if (typeof propType !== 'string')
             throw "Property Type must be a string";
         if (propType.trim().length === 0)
             throw "Property Type cannot be an empty string or string with just spaces";
+
+        return propType;
     },
-    validateBeds(beds){
+    validateBeds(beds) {
         beds = Number(beds);
         if (Number.isInteger(beds) && beds > 0) {
-            if (!beds || beds === "" || beds === undefined) throw 'Error: You must provide number of beds';
+            if (beds === undefined) throw 'Error: You must provide number of beds';
             if (beds.length === 0)
-            throw 'Error: Beds cannot be an empty string or just spaces';
+                throw 'Error: Beds cannot be an empty string or just spaces';
+            if (beds > 20)
+                throw 'Error: Number of beds cannot be more than 20';
             return beds;
-        }else{
+        } else {
             throw 'Error: Beds must be a positive whole number';
         }
     },
-    validateBaths(baths){
+    validateBaths(baths) {
         baths = Number(baths);
         if (Number.isInteger(baths) && baths > 0) {
-            if (!baths || baths === "" || baths === undefined) throw 'Error: You must provide number of baths';
+            if (baths === undefined) throw 'Error: You must provide number of baths';
             if (baths.length === 0)
-            throw 'Error: Number of baths cannot be an empty string or just spaces';
+                throw 'Error: Number of baths cannot be an empty string or just spaces';
+            if (baths > 20)
+                throw 'Error: Number of baths cannot be more than 20';
             return baths;
-        }else{
+        } else {
             throw 'Error: Number of baths must be a positive whole number';
         }
     },
-    validateBalcony(balcony){
+    validateBalcony(balcony) {
         balcony = Number(balcony);
         if (Number.isInteger(balcony) && balcony > 0) {
-            if (!balcony || balcony === "" || balcony === undefined) throw 'Error: You must provide number of baths';
+            if (balcony === undefined) throw 'Error: You must provide number of baths';
             if (balcony.length === 0)
-            throw 'Error: Number of balcony cannot be an empty string or just spaces';
+                throw 'Error: Number of balcony cannot be an empty string or just spaces';
+            if (balcony > 20)
+                throw 'Error: Number of balcony cannot be more than 20';
             return balcony;
-        }else{
+        } else {
             throw 'Error: Number of balcony must be a positive whole number';
         }
     },
-    validateRent(rent){
+    validateRent(rent) {
         rent = Number(rent);
         if (Number.isInteger(rent) && rent > 0) {
-            if (!rent || rent === "" || rent === undefined) throw 'Error: You must provide rent';
+            if (rent === undefined) throw 'Error: You must provide rent';
             if (rent.length === 0)
-            throw 'Error: Rent cannot be an empty string or just spaces';
+                throw 'Error: Rent cannot be an empty string or just spaces';
             return rent;
-        }else{
+        } else {
             throw 'Error: Rent must be a positive whole number';
         }
     },
-    validateBrokerage(brokerage){
-        brokerage = Double(brokerage);
-        if (!brokerage || brokerage === "" || brokerage === undefined) throw 'Error: You must provide Brokerage';
+    validateBrokerage(brokerage) {
+        brokerage = Number(brokerage);
+        if (brokerage === undefined) throw 'Error: You must provide Brokerage';
         if (brokerage.length === 0)
-        throw 'Error: Brokerage cannot be an empty string or just spaces';
+            throw 'Error: Brokerage cannot be an empty string or just spaces';
+        if (brokerage < 0)
+            throw "Error : Brokerage cannot be less than 0";
         return brokerage;
     },
-    validateDeposit(deposit){
-        deposit = Double(deposit);
-        if (!deposit || deposit === "" || deposit === undefined) throw 'Error: You must provide Deposit';
+    validateDeposit(deposit) {
+        deposit = Number(deposit);
+        if (deposit === undefined) throw 'Error: You must provide Deposit';
         if (deposit.length === 0)
-        throw 'Error: Deposit cannot be an empty string or just spaces';
+            throw 'Error: Deposit cannot be an empty string or just spaces';
+        if (deposit < 0)
+            throw "Error : Deposit cannot be less than 0";
         return deposit;
     },
-    validateCentralAir(centralAir){
+    validateCentralAir(centralAir) {
         if (typeof centralAir != "boolean") {
             throw 'Error: Central air must be of a boolean type';
         }
+
+        return centralAir;
     },
-    validatePetFriendly(petFriendly){
+    validatePetFriendly(petFriendly) {
         if (typeof petFriendly != "boolean") {
             throw 'Error: Pet Friendly must be of a boolean type';
         }
+
+        return petFriendly;
     },
-    validatePartyFriendly(partyFriendly){
+    validatePartyFriendly(partyFriendly) {
         if (typeof partyFriendly != "boolean") {
             throw 'Error: Party Friendly must be of a boolean type';
         }
+
+        return partyFriendly;
     },
-    validateGarrage(garrage){
+    validateGarrage(garrage) {
         if (typeof garrage != "boolean") {
             throw 'Error: Garrage must be of a boolean type';
         }
+
+        return garrage;
     },
     validatePropertyId(propId) {
         if (!propId)
@@ -223,34 +247,63 @@ module.exports = {
             throw "Property id must be a string";
         if (propId.trim().length === 0)
             throw "Property id cannot be an empty string or string with just spaces";
-
+        if (!ObjectId.isValid(propId)) {
+            throw `${propId} is an invalid id!`;
+        }
         return propId.trim();
     },
-    validateProperties(dummyData){
-          checkId(dummyData.property._id)
-          validatePropertyId(dummyData.property._id)
-          validateFirstName(dummyData.userUser.firstName)
-          validateLastName(dummyData.userUser.lastName)
-          validateName(dummyData.property.name)
-          validateAddress(dummyData.property.address)
-          validateEmail(dummyData.userUser.email)
-          validateUserType(dummyData.userUser.userType)
-          validateContact(dummyData.userUser.contact)
-          validatePassword(dummyData.userUser.password)
-          validatePincode(dummyData.property.pincode)
-          validateCity(dummyData.property.city)
-          validateState(dummyData.property.state)
-          validatePropertyType(dummyData.property.propType)
-          validateBeds(dummyData.property.beds)
-          validateBaths(dummyData.property.baths)
-          validateBalcony(dummyData.property.balcony)
-          validateRent(dummyData.property.rent)
-          validateBrokerage(dummyData.property.broker)
-          validateDeposit(dummyData.property.deposit)
-          validateCentralAir(dummyData.property.centralAir)
-          validatePetFriendly(dummyData.property.petFriendly)
-          validatePartyFriendly(dummyData.property.partyFriendly)
-          validateGarrage(dummyData.property.garrage)
-        return true;
-  },
+    validateMinimumLeastPeriod(minimumLeasePeiod) {
+        minimumLeasePeiod = Number(minimumLeasePeiod);
+        if (Number.isInteger(minimumLeasePeiod) && minimumLeasePeiod > 0) {
+            if (!minimumLeasePeiod || minimumLeasePeiod === "" || minimumLeasePeiod === undefined) throw 'Error: You must provide minimum lease period';
+            if (minimumLeasePeiod.length === 0)
+                throw 'Error: Minimum lease Period cannot be an empty string or just spaces';
+            return minimumLeasePeiod;
+        } else {
+            throw 'Error: Minimum lease Period must be a positive whole number';
+        }
+    },
+    validateImages(images) {
+        if (!images)
+            throw "Images should not be null";
+        if (!Array.isArray(images))
+            throw "Images should be an array";
+
+        return images;
+    },
+    validateNearbyCommute(nearByCommute) {
+        if (!nearByCommute)
+            throw "You must provide a Nearby Commute";
+        if (typeof nearByCommute !== 'string')
+            throw "Nearby Commute must be a string";
+        if (nearByCommute.trim().length === 0)
+            throw "Nearby Commute cannot be an empty string or string with just spaces";
+
+        return nearByCommute;
+    },
+    validateProperties(property) {
+        if (property._id)
+            property._id = this.validatePropertyId(property._id);
+        property.name = this.validateName(property.name);
+        property.address = this.validateAddress(property.address);
+        property.broker = this.validateEmail(property.broker);
+        property.pincode = this.validatePincode(property.pincode);
+        property.city = this.validateCity(property.city);
+        property.state = this.validateState(property.state);
+        property.type = this.validatePropertyType(property.type);
+        property.beds = this.validateBeds(property.beds);
+        property.bath = this.validateBaths(property.bath);
+        property.balcony = this.validateBalcony(property.balcony);
+        property.rent = this.validateRent(property.rent);
+        property.brokerage = this.validateBrokerage(property.brokerage);
+        property.deposit = this.validateDeposit(property.deposit);
+        property.centralAir = this.validateCentralAir(property.centralAir);
+        property.petFriendly = this.validatePetFriendly(property.petFriendly);
+        property.partyFriendly = this.validatePartyFriendly(property.partyFriendly);
+        property.garrage = this.validateGarrage(property.garrage);
+        property.minimumLeasePeriod = this.validateMinimumLeastPeriod(property.minimumLeasePeriod);
+        property.images = this.validateImages(property.images);
+
+        return property;
+    },
 };
