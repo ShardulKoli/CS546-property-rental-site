@@ -29,7 +29,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
           onSelect={handleSelect}
           variant="dark"
         >
-          <Carousel.Item>
+          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[0] ? (
               // console.log(propertyDetails.images)
               <img
@@ -60,7 +60,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
               <p>Image one</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item>
+          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[1] ? (
               // console.log(propertyDetails.images)
               <img
@@ -92,7 +92,7 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
               <p>Image two</p>
             </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item>
+          <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[2] ? (
               // console.log(propertyDetails.images)
               <img
