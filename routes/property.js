@@ -17,8 +17,6 @@ async function getAllProperties(req, res) {
 
 async function createProperty(req, res) {
   try {
-    req.body;
-    //check inputs here
 
     var images = [];
 
@@ -31,30 +29,34 @@ async function createProperty(req, res) {
     let partyF = xss(req.body.partyFriendly);
     let garage = xss(req.body.garrage);
 
-    let createdProperty = await propertyData.createProperty(
-      xss(req.body.name),
-      xss(req.body.address),
-      xss(req.body.pincode),
-      xss(req.body.city),
-      xss(req.body.state),
-      xss(req.body.type),
-      xss(req.body.beds),
-      xss(req.body.bath),
-      xss(req.body.balcony),
-      centralA === "Y" ? true : false,
-      petF === "Y" ? true : false,
-      partyF === "Y" ? true : false,
-      garage === "Y" ? true : false,
-      xss(req.body.nearBySchools),
-      xss(req.body.nearByMedical),
-      xss(req.body.nearByCommute),
-      xss(req.body.rent),
-      xss(req.body.brokerage),
-      xss(req.body.deposit),
-      xss(req.body.minimumLeasePeriod),
-      images,
-      xss(req.body.broker)
-    );
+    var propData = {
+      name: xss(req.body.name),
+      address: xss(req.body.address),
+      pincode: xss(req.body.pincode),
+      city: xss(req.body.city),
+      state: xss(req.body.state),
+      type: xss(req.body.type),
+      beds: xss(req.body.beds),
+      bath: xss(req.body.bath),
+      balcony: xss(req.body.balcony),
+      centralAir: centralA === "Y" ? true : false,
+      petFriendly: petF === "Y" ? true : false,
+      partyFriendly: partyF === "Y" ? true : false,
+      garrage: garage == "Y" ? true : false,
+      nearBySchools: xss(req.body.nearBySchools),
+      nearByMedical: xss(req.body.nearByMedical),
+      nearByCommute: xss(req.body.nearByCommute),
+      rent: xss(req.body.rent),
+      brokerage: xss(req.body.brokerage),
+      deposit: xss(req.body.deposit),
+      minimumLeasePeriod: xss(req.body.minimumLeasePeriod),
+      broker: xss(req.body.broker),
+      images: images
+    };
+
+    var propData = validations.validateProperties(propData);
+
+    let createdProperty = await propertyData.createProperty(propData);
 
     let addPropertyToBroker = await userData.addPropertyAsOwnedByBroker(
       createdProperty.Property.broker,
@@ -70,7 +72,6 @@ async function createProperty(req, res) {
 async function updateProperty(req, res) {
   try {
     //check inputs here
-
     var images = [];
 
     req.body.images.forEach(x => {
@@ -82,31 +83,34 @@ async function updateProperty(req, res) {
     let partyF = xss(req.body.partyFriendly);
     let garage = xss(req.body.garrage);
 
-    let updatedProperty = await propertyData.updateProperty(
-      xss(req.params.id),
-      xss(req.body.name),
-      xss(req.body.address),
-      xss(req.body.pincode),
-      xss(req.body.city),
-      xss(req.body.state),
-      xss(req.body.type),
-      xss(req.body.beds),
-      xss(req.body.bath),
-      xss(req.body.balcony),
-      centralA === "Y" ? true : false,
-      petF === "Y" ? true : false,
-      partyF === "Y" ? true : false,
-      garage === "Y" ? true : false,
-      xss(req.body.nearBySchools),
-      xss(req.body.nearByMedical),
-      xss(req.body.nearByCommute),
-      xss(req.body.rent),
-      xss(req.body.brokerage),
-      xss(req.body.deposit),
-      xss(req.body.minimumLeasePeriod),
-      images,
-      xss(req.body.broker)
-    );
+    var propData = {
+      _id: xss(req.params.id),
+      name: xss(req.body.name),
+      address: xss(req.body.address),
+      pincode: xss(req.body.pincode),
+      city: xss(req.body.city),
+      state: xss(req.body.state),
+      type: xss(req.body.type),
+      beds: xss(req.body.beds),
+      bath: xss(req.body.bath),
+      balcony: xss(req.body.balcony),
+      centralAir: centralA === "Y" ? true : false,
+      petFriendly: petF === "Y" ? true : false,
+      partyFriendly: partyF === "Y" ? true : false,
+      garrage: garage == "Y" ? true : false,
+      nearBySchools: xss(req.body.nearBySchools),
+      nearByMedical: xss(req.body.nearByMedical),
+      nearByCommute: xss(req.body.nearByCommute),
+      rent: xss(req.body.rent),
+      brokerage: xss(req.body.brokerage),
+      deposit: xss(req.body.deposit),
+      minimumLeasePeriod: xss(req.body.minimumLeasePeriod),
+      broker: xss(req.body.broker),
+      images: images
+    };
+
+
+    let updatedProperty = await propertyData.updateProperty(propData);
 
     res.status(200).json({ status: true });
   } catch (e) {
