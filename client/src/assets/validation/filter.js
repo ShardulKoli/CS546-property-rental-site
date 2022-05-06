@@ -20,7 +20,8 @@ function filterData(propArr, map1) {
     petFlag = false,
     pinFlag = false,
     stateFlag = false,
-    rentFlag = false;
+    rentFlag = false,
+    rentedOutFlag=false;
 
   for (let i = 0; i < propArr.length; i++) {
 
@@ -84,6 +85,10 @@ function filterData(propArr, map1) {
       rentFlag = true;
       filterMap.set("rent", map1.get("rent"));
     }
+    if (null != map1.get("rentedOut") && map1.get("rentedOut") == true) {
+      rentedOutFlag = true;
+      filterMap.set("rentedOut", map1.get("rentedOut"));
+    }
     //console.log("filterMap");
     //console.log(filterMap);
     let count1 = 0,
@@ -94,11 +99,11 @@ function filterData(propArr, map1) {
     for (let [key, value] of filterMap) {
       count1++;
       if (key === "balcony") {
-        if (value === propArr[i].balcony) count2++;
+        if (value === JSON.stringify(propArr[i].balcony)) count2++;
       } else if (key === "baths") {
-        if (value === propArr[i].bath) count2++;
+        if (value === JSON.stringify(propArr[i].bath)) count2++;
       } else if (key === "beds") {
-        if (value === propArr[i].beds) count2++;
+        if (value === JSON.stringify(propArr[i].beds)) count2++;
       } else if (key === "centralAir") {
         if (value === propArr[i].centralAir) count2++;
       } else if (key === "city") {
@@ -110,11 +115,13 @@ function filterData(propArr, map1) {
       } else if (key === "petFriendly") {
         if (value === propArr[i].petFriendly) count2++;
       } else if (key === "pincode") {
-        if (value === propArr[i].pincode) count2++;
+        if (value === JSON.stringify(propArr[i].pincode)) count2++;
       } else if (key === "state") {
         if (value.trim() === propArr[i].state.trim()) count2++;
       } else if (key === "rent") {
-        if (value === propArr[i].rent) count2++;
+        if (value === JSON.stringify(propArr[i].rent)) count2++;
+      }else if (key === "rentedOut") {
+        if (value !== propArr[i].status) count2++;
       }
     }
     /* If count of filterMap data matches with count of property array data, 
