@@ -90,11 +90,11 @@ const validatePassword = (password) => {
   return password;
 };
 const validatePincode = (pincode) => {
-  pincode = Number(pincode);
-  if (Number.isInteger(pincode) && pincode > 0) {
-    if (pincode === "" || pincode === undefined)
+  let pincode1 = Number(pincode);
+  if (Number.isInteger(pincode1) && pincode1 > 0) {
+    if (pincode1 === "" || pincode1 === undefined)
       throw "Error: You must provide Pincode";
-    if (pincode.length === 0)
+    if (pincode1.length === 0)
       throw "Error: Pincode cannot be an empty string or just spaces";
     return pincode;
   } else {
@@ -256,7 +256,7 @@ const validateNearbyCommute = (nearByCommute) => {
   return nearByCommute;
 };
 const validateProperties = (property) => {
-  if (property._id) property._id = this.validatePropertyId(property._id);
+  if (property._id) property._id = validatePropertyId(property._id);
   property.name = validateName(property.name);
   property.address = validateAddress(property.address);
   property.broker = validateEmail(property.broker);
@@ -278,6 +278,7 @@ const validateProperties = (property) => {
     property.minimumLeasePeriod
   );
   property.images = validateImages(property.images);
+  property.nearByCommute = validateNearbyCommute(property.nearByCommute);
 
   return property;
 };

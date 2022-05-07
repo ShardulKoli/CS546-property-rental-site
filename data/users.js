@@ -100,7 +100,7 @@ async function updateUser(firstName, lastName, username, contact) {
         throw "Invalid user";
     }
 
-    var updatedUser = await users.updateOne({ email: username.toLowerCase() }, {
+    var updatedUser = await users.updateOne({ email: username.toLowerCase(), isActive: true }, {
         $set: {
             firstName: firstName,
             lastName: lastName,
@@ -136,7 +136,7 @@ async function removeUser(username) {
         }
     }
 
-    var updatedUser = await users.updateOne({ email: username.toLowerCase() }, {
+    var updatedUser = await users.updateOne({ email: username.toLowerCase(), isActive: true }, {
         $set: {
             isActive: false
         }
@@ -218,7 +218,7 @@ async function bookmarkProperty(studentEmail, propertyId) {
         };
     }
 
-    var updatedUser = await users.updateOne({ email: studentEmail.toLowerCase() }, bookMarkOperation);
+    var updatedUser = await users.updateOne({ email: studentEmail.toLowerCase(), isActive: true }, bookMarkOperation);
 
     if (updatedUser.modifiedCount > 0) {
         return true;
@@ -258,7 +258,7 @@ async function addPropertyAsOwnedByBroker(brokerEmail, propertyId) {
         };
     }
 
-    var updatedUser = await users.updateOne({ email: brokerEmail.toLowerCase() }, addToOwnedOperation);
+    var updatedUser = await users.updateOne({ email: brokerEmail.toLowerCase(), isActive: true }, addToOwnedOperation);
 
     if (updatedUser.modifiedCount > 0) {
         return true;

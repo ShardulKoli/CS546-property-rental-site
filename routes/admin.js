@@ -80,6 +80,50 @@ async function removeUser(req, res) {
     }
 }
 
+async function getProperty(req, res) {
+    try {
+        id = validation.validatePropertyId(xss(req.params.id));
+
+        let prop = await propertyUtils.getPropertyById(id);
+
+        return res.json({ prop: prop, status: true });
+    } catch (error) {
+        return res.json({ status: false, errorMessage: error });
+    }
+}
+
+async function removeProperty(req, res) {
+    try {
+        id = validation.validatePropertyId(xss(req.params.id));
+
+        let prop = await propertyUtils.removePropertyById(id);
+
+        let removeOwnedFromBroker = await userUtils.addPropertyAsOwnedByBroker(
+            prop.broker,
+            prop.propertyId
+        );
+
+        return res.json({ status: true });
+
+    } catch (error) {
+        res.status(400).json({ status: false, errorMessage: error });
+    }
+}
+
+async function getInsights(req, res) {
+    try {
+
+        let insights = await adminData.getInsightsData();
+
+        return res.json({ status: true, insights: insights });
+
+    } catch (error) {
+        res.status(400).json({ status: false, errorMessage: error });
+    }
+}
+
+
+
 router.route("/").get((req, res) => index(req, res));
 
 router.route("/").post((req, res) => verifyUser(req, res));
@@ -92,6 +136,11 @@ router.route("/getUser/:username").get((req, res) => getUser(req, res));
 
 router.route("/removeUser/:username").delete((req, res) => removeUser(req, res));
 
+router.route("/getProperty/:id").get((req, res) => getProperty(req, res));
+
+router.route("/removeProperty/:id").delete((req, res) => removeProperty(req, res));
+
+router.route("/getInsights").get((req, res) => getInsights(req, res));
 
 
 module.exports = router;

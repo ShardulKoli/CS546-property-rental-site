@@ -51,15 +51,10 @@ async function createProperty(propData) {
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add property!";
 
+    var prop = await getProperty(newProperty.name);
 
-    try {
-        var insertedUser = await getProperty(newProperty.name);
+    return { Property: prop };
 
-        return { Property: insertedUser };
-
-    } catch (error) {
-        console.log(error);
-    }
 }
 
 async function updateProperty(propData) {
@@ -217,7 +212,7 @@ async function markAsRentedOut(brokerEmail, propertyId) {
     if (updatedProperty.modifiedCount > 0) {
         return true;
     } else {
-        throw "Could not update to rented out!";
+        throw "Could not update to rented out!'";
     }
 }
 
@@ -241,6 +236,7 @@ async function removePropertyById(propId) {
 
     if (updatedProperty.modifiedCount > 0) {
         //removed successful
+        return { isDeleted: true, propertyId: propId, broker: property.broker }
 
     } else {
         throw "Could not update!";
