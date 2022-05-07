@@ -59,6 +59,7 @@ export const Home = ({ loginToken }) => {
           getAllProperties={getAllProperties}
           properties={properties}
           setProperties={setProperties}
+          setIsLoading={setIsLoading}
         />
 
         <div className={styles.cardContainer}>
