@@ -40,19 +40,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     getAllProperties();
     setShow(true);
   };
-  // const [localProperties, setLocalProperties] = useState(properties);
-  // const getAllProperties = () => {
-  //   axios
-  //     .get("/property/getAllProperties")
-  //     .then((res) => {
-  //       console.log("Properties");
-  //       console.log(res.data);
-  //       setProperties(res.data);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e.response.data.errorMessage);
-  //     });
-  // };
+
   const [genericSearch, setSearch] = useState("");
   const [pet, setPet] = useState(false);
   const [party, setParty] = useState(false);
@@ -67,10 +55,6 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   const [bath, setBath] = useState(null);
   const [rent, setRent] = useState(null);
   const [rented, setRented] = useState(false);
-
-  // useEffect(() => {
-  //   setLocalProperties(homePropertyList);
-  // }, []);
 
   const handleSearch = () => {
     const map1 = new Map();
@@ -89,17 +73,12 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     map1.set("state", state);
     map1.set("rent", rent);
     map1.set("rentedOut", rented);
-    //console.log(map1);
-    //console.log("Properties");
-    //console.log(properties);
-    // console.log(localProperties);
-    // console.log(map1);
+
     let result = filter.filterData(properties, map1);
-    //console.log(result);
+
     handleClose();
     setProperties(result);
   };
-  //const [checked,setChecked]= useState(false);
 
   const clearFilters = () => {
     getAllProperties();

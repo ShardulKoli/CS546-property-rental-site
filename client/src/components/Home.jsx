@@ -17,13 +17,10 @@ export const Home = ({ loginToken }) => {
     axios
       .get("/property/getAllProperties")
       .then((res) => {
-        // console.log("Properties");
-        console.log(res.data);
         setProperties(res.data);
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(e.response.data.errorMessage);
         setError(e.response.data.errorMessage);
         setIsLoading(false);
       });

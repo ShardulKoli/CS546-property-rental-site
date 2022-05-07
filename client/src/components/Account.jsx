@@ -7,46 +7,38 @@ import { CreateListingModal } from "./CreateListingModal";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import { ErrorCommon } from "./ErrorCommon";
+import { CustomSpinner } from "./CustomSpinner";
 
 export const Account = ({ loginToken }) => {
-  // console.log(loginToken);
   const [userDetails, setUserDetails] = useState(null);
   const [isBroker, setIsBroker] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const getUser = (username) => {
-    // TODO: make axios call here to set content dynamically
-    // console.log(username);
     axios
       .get(`/user/${username}`)
       .then((res) => {
-        console.log(res.data.user);
         setUserDetails(res.data.user);
         setIsBroker(res.data.user.userType === 2 ? true : false);
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(e.response.data.errorMessage);
         setError(e.response.data.errorMessage);
         setIsLoading(false);
       });
-    // setUserDetails(userBroker);
   };
 
   useEffect(() => {
     getUser(loginToken.username);
-    // buildCardList();
   }, []);
 
   useEffect(() => {
     if (userDetails && userDetails.bookmarkedPropertyDetails) {
-      console.log(userDetails.bookmarkedPropertyDetails);
       setBookMarkedProp(
         buildPropertyCardList(userDetails.bookmarkedPropertyDetails)
       );
     } else if (userDetails && userDetails.brokerOwnedPropertyDetails) {
-      console.log(userDetails.brokerOwnedPropertyDetails);
       setOwnedProp(
         buildPropertyCardList(userDetails.brokerOwnedPropertyDetails)
       );
@@ -98,7 +90,6 @@ export const Account = ({ loginToken }) => {
   }
 
   if (!isLoading) {
-    console.log(userDetails);
     return (
       <div className={styles.mainContainer}>
         <Card className={styles.detailsCard}>
@@ -170,15 +161,6 @@ export const Account = ({ loginToken }) => {
       </div>
     );
   } else {
-    return (
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "15%" }}
-      >
-        <Spinner
-          animation="grow"
-          style={{ alignItems: "center", height: "200px", width: "200px" }}
-        />
-      </div>
-    );
+    return <CustomSpinner />;
   }
 };

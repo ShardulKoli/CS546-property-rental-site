@@ -47,25 +47,21 @@ export const Login = ({ setLoginToken }) => {
       axios
         .post("/login", logginInData)
         .then((res) => {
-          console.log(res.data);
           setToken(res.data);
           setLoginToken(res.data);
         })
         .catch((e) => {
-          console.log(e.response.data.errorMessage);
           setSaveMessage(e.response.data.errorMessage);
           setLoginToken(null);
           handleShow();
         });
     } catch (error) {
-      console.log(error);
       setSaveMessage(error);
       handleShow();
     }
   };
 
   const signup = () => {
-    console.log("signingup");
     const signUpData = {
       firstName: firstName,
       lastName: lastName,
@@ -83,23 +79,18 @@ export const Login = ({ setLoginToken }) => {
       signUpData.contact = validateContact(signUpData.contact);
       signUpData.password = validatePassword(signUpData.password);
 
-      console.log(signUpData);
-
       axios
         .post("/signup", signUpData)
         .then((res) => {
-          console.log("Done");
           setSaveMessage("Your account has been successfully created");
           handleShow();
           setIsRegistered(true);
         })
         .catch((e) => {
-          console.log(e.response.data.errorMessage);
           setSaveMessage(e.response.data.errorMessage);
           handleShow();
         });
     } catch (error) {
-      console.log(error);
       setSaveMessage(error);
       handleShow();
     }
@@ -120,7 +111,6 @@ export const Login = ({ setLoginToken }) => {
                 <option value="Broker">Broker</option>
               </Form.Select>
             </FloatingLabel>
-            {/* <Form.Label>Username</Form.Label> */}
           </Form.Group>
         ) : null}
 
@@ -210,9 +200,6 @@ export const Login = ({ setLoginToken }) => {
       <div>
         <Modal show={show} onHide={handleClose}>
           <Modal.Body>{saveMessage}</Modal.Body>
-          {/* <Modal.Body>
-          Please check your inbox/spam for your account details email
-        </Modal.Body> */}
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
