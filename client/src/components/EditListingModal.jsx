@@ -199,7 +199,6 @@ export const EditListingModal = ({
           ) : null} */}
 
           <Form>
-            <div>{name}</div>
             <Form.Group className="mb-3">
               <FloatingLabel
                 controlId="floatingInput"
@@ -282,7 +281,9 @@ export const EditListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  tmin={0}
+                  max={20}
                   value={beds}
                   onChange={(e) => setBeds(e.target.value)}
                   placeholder="Enter Number of Beds"
@@ -294,7 +295,9 @@ export const EditListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  tmin={0}
+                  max={20}
                   value={baths}
                   onChange={(e) => setBaths(e.target.value)}
                   placeholder="Enter Number of Baths"
@@ -306,7 +309,9 @@ export const EditListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  tmin={0}
+                  max={20}
                   value={balcony}
                   onChange={(e) => setBalcony(e.target.value)}
                   placeholder="Enter Number of Balconies"
