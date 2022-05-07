@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { property, userBroker, userUser } from "../assets/dummyData";
 import { PropertyCard } from "./PropertyCard";
-import { Card, Tabs, Tab, Button } from "react-bootstrap";
+import { Card, Tabs, Tab, Button, Spinner } from "react-bootstrap";
 import styles from "./Account.module.css";
 import { CreateListingModal } from "./CreateListingModal";
+import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import { ErrorCommon } from "./ErrorCommon";
 
@@ -102,12 +103,15 @@ export const Account = ({ loginToken }) => {
       <div className={styles.mainContainer}>
         <Card className={styles.detailsCard}>
           <Card.Body>
-            <Card.Title className={styles.detailsCard}>
-              {userDetails.firstName} {userDetails.lastName}
-            </Card.Title>
+            {/* <Card.Title className={styles.detailsCard}>
+              
+            </Card.Title> */}
             {/* <Card.Subtitle className="mb-2 text-muted">
               Card Subtitle
             </Card.Subtitle> */}
+            <Card.Text>
+              Name : {userDetails.firstName} {userDetails.lastName}
+            </Card.Text>
             <Card.Text>Email : {userDetails.email}</Card.Text>
             <Card.Text>
               User Type : {userDetails.userType === 1 ? "Student" : "Broker"}
@@ -115,7 +119,8 @@ export const Account = ({ loginToken }) => {
             <Card.Text>Contact : {userDetails.contact}</Card.Text>
             {isBroker ? (
               <Button variant="primary" onClick={handleShow}>
-                Create Listing{" "}
+                <AddIcon style={{ marginRight: "5px" }}></AddIcon>
+                Create Listing
               </Button>
             ) : null}
           </Card.Body>
@@ -145,13 +150,6 @@ export const Account = ({ loginToken }) => {
                 id="uncontrolled-tab-example"
                 className="mb-3"
               >
-                {/* <Tab
-                  eventKey="home"
-                  title="Rented Properties"
-                  className={styles.tab}
-                >
-                  <div className={styles.cardContainer}>{rentedProp}</div>
-                </Tab> */}
                 <Tab
                   eventKey="profile"
                   title="Book Marked Properties"
@@ -172,6 +170,15 @@ export const Account = ({ loginToken }) => {
       </div>
     );
   } else {
-    return <div>Loading User Data</div>;
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "15%" }}
+      >
+        <Spinner
+          animation="grow"
+          style={{ alignItems: "center", height: "200px", width: "200px" }}
+        />
+      </div>
+    );
   }
 };

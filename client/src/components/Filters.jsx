@@ -35,8 +35,6 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     setPincode(null);
     setLeasePeriod(null);
     setRented(null);
-    
-
   };
   const handleShow = () => {
     getAllProperties();

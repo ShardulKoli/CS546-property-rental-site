@@ -510,7 +510,7 @@ export const EditListingModal = ({
 
               <FloatingLabel
                 controlId="floatingInput"
-                label="Minimum Lease Period of the Property"
+                label="Minimum Lease Period of the Property (in Months)"
                 className="mb-3"
               >
                 <Form.Control
