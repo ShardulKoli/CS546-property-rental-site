@@ -152,7 +152,7 @@ module.exports = {
   },
   validateBalcony(balcony) {
     balcony = Number(balcony);
-    if (Number.isInteger(balcony) && balcony > 0) {
+    if (Number.isInteger(balcony) && balcony >= 0) {
       if (balcony === undefined)
         throw "Error: You must provide number of baths";
       if (balcony.length === 0)
