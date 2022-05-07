@@ -104,7 +104,7 @@ export const EditListingModal = ({
       address: address,
       pincode: pincode,
       city: city,
-      state: "New Jersey",
+      state: state,
       type: type,
       beds: beds,
       bath: baths,
@@ -166,18 +166,6 @@ export const EditListingModal = ({
         </Modal.Header>
         <Modal.Body>
           {/* Form stuff */}
-
-          {/* {imageOne ? (
-            <img
-              alt="not fount"
-              width={"250px"}
-              src={URL.createObjectURL(imageOne)}
-            />
-          ) : null} */}
-
-          {/* {imageOne ? (
-            <img alt="not fount" width={"250px"} src={imageOne} />
-          ) : null} */}
 
           <Form>
             <Form.Group className="mb-3">
@@ -505,30 +493,6 @@ export const EditListingModal = ({
                   {errors ? errors.minimumLeasePeriod : null}
                 </Form.Text>
               </FloatingLabel>
-              {/* 
-              <div style={{ marginTop: "20px" }}>
-                <div>Status</div>
-                <ButtonGroup id="status">
-                  {radios.map((radio, idx) => (
-                    <ToggleButton
-                      key={`status-${idx}`}
-                      id={`status-${idx}`}
-                      type="radio"
-                      variant={idx === 0 ? "outline-success" : "outline-danger"}
-                      name="status"
-                      value={radio.value}
-                      checked={status === radio.value}
-                      onChange={(e) => {
-                        setStatus(
-                          e.currentTarget.value === "true" ? true : false
-                        );
-                      }}
-                    >
-                      {radio.name}
-                    </ToggleButton>
-                  ))}
-                </ButtonGroup>
-              </div> */}
 
               <div>
                 <div>Image One</div>
