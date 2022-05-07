@@ -34,6 +34,9 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     setRent(null);
     setPincode(null);
     setLeasePeriod(null);
+    setRented(null);
+    
+
   };
   const handleShow = () => {
     getAllProperties();
@@ -65,6 +68,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   const [bed, setBed] = useState(null);
   const [bath, setBath] = useState(null);
   const [rent, setRent] = useState(null);
+  const [rented, setRented] = useState(false);
 
   // useEffect(() => {
   //   setLocalProperties(homePropertyList);
@@ -86,9 +90,10 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
     map1.set("pincode", pincode);
     map1.set("state", state);
     map1.set("rent", rent);
-    console.log(map1);
-    console.log("Properties");
-    console.log(properties);
+    map1.set("rentedOut", rented);
+    //console.log(map1);
+    //console.log("Properties");
+    //console.log(properties);
     // console.log(localProperties);
     // console.log(map1);
     let result = filter.filterData(properties, map1);
@@ -144,7 +149,19 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
                 />
               </FloatingLabel>
             </Form.Group> */}
-
+            <Form.Group className="mb-3" controlId="rentedOut">
+              <FloatingLabel
+                controlId="floatingInput"
+                label=""
+                className="mb-3"
+              >
+                <Form.Check
+                  label="Hide Rented Out"
+                  value={rented}
+                  onChange={(e) => setRented(!rented)}
+                />
+              </FloatingLabel>
+            </Form.Group>
             <Form.Group className="mb-3" controlId="petFriendly">
               <FloatingLabel
                 controlId="floatingInput"
