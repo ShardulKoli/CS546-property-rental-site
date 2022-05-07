@@ -418,6 +418,6 @@ export const PropertyDetails = ({ loginToken }) => {
       </div>
     );
   } else {
-    return <div>Loading User Data</div>;
+    return <div>Loading Property Data</div>;
   }
 };

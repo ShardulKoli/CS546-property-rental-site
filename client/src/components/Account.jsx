@@ -87,7 +87,6 @@ export const Account = ({ loginToken }) => {
   // modal states
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   //
 
@@ -166,8 +165,8 @@ export const Account = ({ loginToken }) => {
         </div>
         <CreateListingModal
           show={show}
-          handleClose={handleClose}
           loginToken={loginToken}
+          setShow={setShow}
           getUser={getUser}
         />
       </div>

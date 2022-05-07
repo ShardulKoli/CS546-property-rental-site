@@ -39,12 +39,7 @@ import { validateProperties } from "../assets/validation/validations";
 //     isActive: true,
 //   };
 
-export const CreateListingModal = ({
-  show,
-  handleClose,
-  loginToken,
-  getUser,
-}) => {
+export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
   // console.log(loginToken);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -71,11 +66,21 @@ export const CreateListingModal = ({
   const [imageTwo, setImageTwo] = useState(null);
   const [imageThree, setImageThree] = useState(null);
   const [broker, setBroker] = useState(loginToken.username);
-  const [status, setStatus] = useState(true);
 
   // handle errors
   const [errors, setErrors] = useState(null);
   const [requestMessage, setRequestMessage] = useState(null);
+
+  const handleClose = () => {
+    setDefaults();
+    setShow(false);
+  };
+
+  console.log(imageOne);
+  console.log(imageTwo);
+  console.log(imageThree);
+
+  console.log(centralAir);
 
   // const checkPropertyDetails = (check) => {
   //   if (check) {
@@ -113,6 +118,33 @@ export const CreateListingModal = ({
     getBase64(file).then((res) => {
       imageSetter(res);
     });
+  };
+
+  const setDefaults = () => {
+    setName("");
+    setAddress("");
+    setPincode("");
+    setCity("");
+    setState("");
+    setType("");
+    setBeds("");
+    setBaths("");
+    setBalcony("");
+    setCentralAir(false);
+    setPetFriendly(false);
+    setPartyFriendly(false);
+    setGarrage(false);
+    setNearBySchools("");
+    setNearByMedical("");
+    setNearByCommute("");
+    setRent("");
+    setBrokerage("");
+    setDeposit("");
+    setMinimumLeasePeriod("");
+    setImageOne(null);
+    setImageTwo(null);
+    setImageThree(null);
+    setBroker(loginToken.username);
   };
 
   const createPropertyDetails = () => {
@@ -173,7 +205,7 @@ export const CreateListingModal = ({
         .catch((e) => {
           setRequestMessage(e.response.data.errorMessage);
         });
-
+      setDefaults();
       // create property
     } catch (error) {
       console.log("error");
@@ -212,7 +244,6 @@ export const CreateListingModal = ({
           ) : null} */}
 
           <Form>
-            <div>{name}</div>
             <Form.Group className="mb-3">
               <FloatingLabel
                 controlId="floatingInput"
@@ -221,6 +252,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter Property Name"
                 />
@@ -235,6 +267,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter Property Address"
                 />
@@ -246,6 +279,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
                   placeholder="Enter Pincode"
                 />
@@ -257,6 +291,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Enter City"
                 />
@@ -268,6 +303,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={state}
                   onChange={(e) => setState(e.target.value)}
                   placeholder="Enter State"
                 />
@@ -278,7 +314,8 @@ export const CreateListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  value={type}
                   onChange={(e) => setType(e.target.value)}
                   placeholder="Enter Type"
                 />
@@ -289,7 +326,10 @@ export const CreateListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  value={beds}
+                  min={0}
+                  max={20}
                   onChange={(e) => setBeds(e.target.value)}
                   placeholder="Enter Number of Beds"
                 />
@@ -300,7 +340,10 @@ export const CreateListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  value={baths}
+                  min={0}
+                  max={20}
                   onChange={(e) => setBaths(e.target.value)}
                   placeholder="Enter Number of Baths"
                 />
@@ -311,7 +354,10 @@ export const CreateListingModal = ({
                 className="mb-3"
               >
                 <Form.Control
-                  type="text"
+                  type="number"
+                  value={balcony}
+                  min={0}
+                  max={20}
                   onChange={(e) => setBalcony(e.target.value)}
                   placeholder="Enter Number of Balconies"
                 />
@@ -420,6 +466,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearBySchools}
                   onChange={(e) => setNearBySchools(e.target.value)}
                   placeholder="Enter Nearby Schools"
                 />
@@ -434,6 +481,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearByMedical}
                   onChange={(e) => setNearByMedical(e.target.value)}
                   placeholder="Enter Nearby Medical"
                 />
@@ -449,6 +497,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="text"
+                  value={nearByCommute}
                   onChange={(e) => setNearByCommute(e.target.value)}
                   placeholder="Enter Nearby Commute"
                 />
@@ -463,6 +512,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={rent}
                   onChange={(e) => setRent(e.target.value)}
                   placeholder="Enter Rent"
                 />
@@ -478,6 +528,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={brokerage}
                   onChange={(e) => setBrokerage(e.target.value)}
                   placeholder="Enter Brokerage"
                 />
@@ -493,6 +544,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={deposit}
                   onChange={(e) => setDeposit(e.target.value)}
                   placeholder="Enter Deposit"
                 />
@@ -508,6 +560,7 @@ export const CreateListingModal = ({
               >
                 <Form.Control
                   type="number"
+                  value={minimumLeasePeriod}
                   onChange={(e) => setMinimumLeasePeriod(e.target.value)}
                   placeholder="Enter Minimum Lease Period"
                 />
