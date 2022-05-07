@@ -5,6 +5,7 @@ import axios from "axios";
 import { ErrorCommon } from "./ErrorCommon";
 import { Filters } from "./Filters";
 import { Spinner } from "react-bootstrap";
+import { CustomSpinner } from "./CustomSpinner";
 
 export const Home = ({ loginToken }) => {
   const [cardList, setCardlist] = useState([]);
@@ -53,16 +54,7 @@ export const Home = ({ loginToken }) => {
   }
 
   if (isLoading) {
-    return (
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "15%" }}
-      >
-        <Spinner
-          animation="grow"
-          style={{ alignItems: "center", height: "200px", width: "200px" }}
-        />
-      </div>
-    );
+    return <CustomSpinner />;
   } else {
     return (
       <div>

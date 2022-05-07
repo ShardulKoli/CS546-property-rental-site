@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
-import { Carousel, Card, Button } from "react-bootstrap";
+import { Carousel, Card, Button, Spinner } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
 import { ErrorCommon } from "./ErrorCommon";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -13,6 +13,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import axios from "axios";
 import { EditListingModal } from "./EditListingModal";
+import { CustomSpinner } from "./CustomSpinner";
 
 export const PropertyDetails = ({ loginToken }) => {
   const [propertyDetails, setPropertyDetails] = useState({});
@@ -46,7 +47,7 @@ export const PropertyDetails = ({ loginToken }) => {
         setIsLoading(false);
       });
 
-    setPropertyDetails(property);
+    // setPropertyDetails(property);
   };
 
   const getUser = (username) => {
@@ -443,6 +444,6 @@ export const PropertyDetails = ({ loginToken }) => {
       </div>
     );
   } else {
-    return <div>Loading Property Data</div>;
+    return <CustomSpinner />;
   }
 };

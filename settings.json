@@ -1,6 +1,6 @@
 {
-    "mongoConfig": {
-        "serverUrl": "mongodb://localhost:27017/",
-        "database": "Studyroom"
-    }
+  "mongoConfig": {
+    "serverUrl": "mongodb+srv://StudyRoomAdmin:studyroom123@cluster0.rg7mx.mongodb.net/StudyRoomDB?retryWrites=true&w=majority",
+    "database": "StudyRoomDB"
+  }
 }

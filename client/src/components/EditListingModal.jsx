@@ -418,6 +418,7 @@ export const EditListingModal = ({
                 controlId="floatingInput"
                 label="Nearby Schools"
                 className="mb-3"
+                style={{ marginTop: "20px" }}
               >
                 <Form.Control
                   type="text"
