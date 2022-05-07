@@ -28,7 +28,6 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
             <div className={styles.linkContainer}>
               <Link to="/" className={styles.linkchange}>
                 <HomeIcon
-                  // sx={{ }}
                   style={{
                     color: "white",
                     marginRight: "5px",
@@ -45,7 +44,6 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
             <div className={styles.linkContainer}>
               <Link to="/account/" className={styles.linkchange}>
                 <AccountCircleIcon
-                  // sx={{ }}
                   style={{
                     color: "white",
                     marginRight: "5px",
@@ -58,7 +56,6 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
             <div className={styles.linkchange}>
               <Link to="/logout/" className={styles.linkchange}>
                 <LogoutIcon
-                  // sx={{ }}
                   style={{
                     color: "white",
                     marginRight: "2px",

@@ -1,5 +1,4 @@
 const checkId = (id) => {
-  console.log("TYPE 1 OF ID :: " + typeof id);
   id = Number(id);
   if (Number.isInteger(id) && id > 0) {
     if (id === undefined) throw "Error: You must provide an id to search for";
@@ -11,7 +10,6 @@ const checkId = (id) => {
   }
 };
 const validateFirstName = (fname) => {
-  console.log("TYPE 1 OF Name :: " + typeof fname);
   if (!fname) throw "First name is not present.";
   if (typeof fname !== "string") throw "First name must be a string";
   if (fname.trim().length === 0)
@@ -20,7 +18,6 @@ const validateFirstName = (fname) => {
   return fname.trim();
 };
 const validateLastName = (lname) => {
-  console.log("TYPE 1 OF Name :: " + typeof lname);
   if (!lname) throw "Last name is not present.";
   if (typeof lname !== "string") throw "Last name must be a string";
   if (lname.trim().length === 0)
@@ -29,7 +26,6 @@ const validateLastName = (lname) => {
   return lname.trim();
 };
 const validateName = (name) => {
-  console.log("TYPE 1 OF Name :: " + typeof name);
   if (!name) throw "Property name is not present.";
   if (typeof name !== "string") throw "Property name must be a string";
   if (name.trim().length === 0)
@@ -38,7 +34,6 @@ const validateName = (name) => {
   return name.trim();
 };
 const validateAddress = (addr) => {
-  console.log("TYPE 1 OF Address :: " + typeof addr);
   if (!addr) throw "Property Address is not present.";
   if (typeof addr !== "string") throw "Property Address must be a string";
   if (addr.trim().length === 0)
@@ -151,7 +146,7 @@ const validateBaths = (baths) => {
 };
 const validateBalcony = (balcony) => {
   balcony = Number(balcony);
-  if (Number.isInteger(balcony) && balcony > 0) {
+  if (Number.isInteger(balcony) && balcony >= 0) {
     if (balcony === undefined) throw "Error: You must provide number of baths";
     if (balcony.length === 0)
       throw "Error: Number of balcony cannot be an empty string or just spaces";

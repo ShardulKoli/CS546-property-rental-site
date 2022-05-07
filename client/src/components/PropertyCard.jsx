@@ -5,7 +5,6 @@ import styles from "./PropertyCard.module.css";
 
 export const PropertyCard = ({ propertyDetails, loginToken }) => {
   const [index, setIndex] = useState(0);
-  // const [propertyDetails, setPropertyDetails] = useState(propertyData);
   const navigate = useHistory();
 
   const handleSelect = (selectedIndex, e) => {
@@ -31,7 +30,6 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
         >
           <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[0] ? (
-              // console.log(propertyDetails.images)
               <img
                 alt="not fount"
                 width={500}
@@ -39,30 +37,21 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 src={propertyDetails.images[0]}
               />
             ) : (
-              // <img
-              //   alt="First slide"
-              //   width={"500"}
-              //   height={400}
-              //   src={URL.createObjectURL(propertyDetails.images[0])}
-              // />
-
               <img
                 className="d-block w-100"
                 width={500}
                 height={400}
                 alt="not found"
-                src={require("../assets/logo192.png")}
+                src={require("../assets/no_image.jpeg")}
               />
             )}
 
             <Carousel.Caption>
-              {/* <h3>First slide label</h3> */}
               <p>Image one</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[1] ? (
-              // console.log(propertyDetails.images)
               <img
                 alt="not found"
                 width={500}
@@ -75,26 +64,16 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 width={500}
                 height={400}
                 alt="not found"
-                src={require("../assets/logo192.png")}
+                src={require("../assets/no_image.jpeg")}
               />
             )}
 
-            {/* <img
-                  // className="d-block w-100"
-                  width={500}
-                  height={400}
-                  src={require("../assets/logo192.png")}
-                  alt="Second slide"
-                /> */}
-
             <Carousel.Caption>
-              {/* <h3>Second slide label</h3> */}
               <p>Image two</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item onClick={() => loadProperyPage(propertyDetails._id)}>
             {propertyDetails.images && propertyDetails.images[2] ? (
-              // console.log(propertyDetails.images)
               <img
                 alt="not fount"
                 width={500}
@@ -107,28 +86,16 @@ export const PropertyCard = ({ propertyDetails, loginToken }) => {
                 width={500}
                 height={400}
                 alt="not found"
-                src={require("../assets/logo192.png")}
+                src={require("../assets/no_image.jpeg")}
               />
             )}
 
-            {/* <img
-                  // className="d-block w-100"
-                  width={500}
-                  height={400}
-                  src={require("../assets/logo192.png")}
-                  alt="Third slide"
-                /> */}
-
             <Carousel.Caption>
-              {/* <h3>Third slide label</h3> */}
               <p>Image Three</p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
-        <Card.Body
-          onClick={() => loadProperyPage(propertyDetails._id)}
-          // className={styles.cardBody}
-        >
+        <Card.Body onClick={() => loadProperyPage(propertyDetails._id)}>
           <Card.Title>{propertyDetails.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
             {propertyDetails.address}

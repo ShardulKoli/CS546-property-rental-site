@@ -11,36 +11,7 @@ import {
 import axios from "axios";
 import { validateProperties } from "../assets/validation/validations";
 
-// const property = {
-//     _id: 1,
-//     name: "Property 1",
-//     address: "Some Address in Heights",
-//     pincode: "07307",
-//     city: "Jersey City",
-//     state: "New Jersey",
-//     type: "Apartment",
-//     beds: 3,
-//     baths: 2,
-//     balcony: 1,
-//     centralAir: false,
-//     petFriendly: true,
-//     partyFriendly: true,
-//     garrage: false,
-//     nearBySchools: "Stevens",
-//     nearByMedical: "Pharmacy",
-//     nearByCommute: "Commute list",
-//     rent: 2000,
-//     brokerage: 500,
-//     deposit: 500,
-//     minimumLeasePeriod: 12,
-//     images: [],
-//     broker: 1,
-//     status: true,
-//     isActive: true,
-//   };
-
 export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
-  // console.log(loginToken);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
@@ -61,7 +32,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
   const [brokerage, setBrokerage] = useState("");
   const [deposit, setDeposit] = useState("");
   const [minimumLeasePeriod, setMinimumLeasePeriod] = useState("");
-  // const [images, setImages] = useState(null);
   const [imageOne, setImageOne] = useState(null);
   const [imageTwo, setImageTwo] = useState(null);
   const [imageThree, setImageThree] = useState(null);
@@ -76,22 +46,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
     setShow(false);
   };
 
-  console.log(imageOne);
-  console.log(imageTwo);
-  console.log(imageThree);
-
-  console.log(centralAir);
-
-  // const checkPropertyDetails = (check) => {
-  //   if (check) {
-  //     return {
-  //       name: "enter a valid name",
-  //     };
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   const getBase64 = (file) => {
     return new Promise((resolve) => {
       let fileInfo;
@@ -105,12 +59,11 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object
-        // console.log("Called", reader);
+
         baseURL = reader.result;
-        // console.log(baseURL);
+
         resolve(baseURL);
       };
-      // console.log(fileInfo);
     });
   };
 
@@ -150,12 +103,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
   const createPropertyDetails = () => {
     // convert images to base 64 to store in the db
 
-    // getBase64(imageOne).then((res) => {
-    //   console.log("Base 64");
-    //   console.log(res);
-    //   setImageOne(res);
-    // });
-
     const propertyDetails = {
       name: name,
       address: address,
@@ -179,8 +126,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
       minimumLeasePeriod: minimumLeasePeriod,
       images: [imageOne, imageTwo, imageThree],
       broker: broker,
-      // status: false,
-      // isActive: true,
     };
 
     try {
@@ -191,14 +136,14 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
 
       validateProperties(propertyDetails);
 
-      // console.log(propertyDetails);
-      // console.log(propertyDetails.images);
-      // setRequestMessage(null);
+      propertyDetails.centralAir = propertyDetails.centralAir ? "Y" : "N";
+      propertyDetails.petFriendly = propertyDetails.petFriendly ? "Y" : "N";
+      propertyDetails.partyFriendly = propertyDetails.partyFriendly ? "Y" : "N";
+      propertyDetails.garrage = propertyDetails.garrage ? "Y" : "N";
 
       axios
         .post("/property/createProperty", propertyDetails)
         .then((res) => {
-          // setRequestMessage("Property created successfully");
           getUser(loginToken.username);
           handleClose();
         })
@@ -206,16 +151,10 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
           setRequestMessage(e.response.data.errorMessage);
         });
       setDefaults();
-      // create property
     } catch (error) {
-      console.log("error");
-      console.log(error);
       setRequestMessage(error);
-      // setErrors(error);
     }
   };
-
-  // const [radioValue, setRadioValue] = useState("1");
 
   const radios = [
     { name: "Yes", value: true },
@@ -230,18 +169,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
         </Modal.Header>
         <Modal.Body>
           {/* Form stuff */}
-
-          {/* {imageOne ? (
-            <img
-              alt="not fount"
-              width={"250px"}
-              src={URL.createObjectURL(imageOne)}
-            />
-          ) : null} */}
-
-          {/* {imageOne ? (
-            <img alt="not fount" width={"250px"} src={imageOne} />
-          ) : null} */}
 
           <Form>
             <Form.Group className="mb-3">
@@ -569,30 +496,6 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
                   {errors ? errors.minimumLeasePeriod : null}
                 </Form.Text>
               </FloatingLabel>
-              {/* 
-              <div style={{ marginTop: "20px" }}>
-                <div>Status</div>
-                <ButtonGroup id="status">
-                  {radios.map((radio, idx) => (
-                    <ToggleButton
-                      key={`status-${idx}`}
-                      id={`status-${idx}`}
-                      type="radio"
-                      variant={idx === 0 ? "outline-success" : "outline-danger"}
-                      name="status"
-                      value={radio.value}
-                      checked={status === radio.value}
-                      onChange={(e) => {
-                        setStatus(
-                          e.currentTarget.value === "true" ? true : false
-                        );
-                      }}
-                    >
-                      {radio.name}
-                    </ToggleButton>
-                  ))}
-                </ButtonGroup>
-              </div> */}
 
               <div>
                 <div>Image One</div>
@@ -600,9 +503,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
                   type="file"
                   name="ImageOne"
                   onChange={(e) => {
-                    // console.log(e.target.files[0]);
                     setImageToBase64(e.target.files[0], setImageOne);
-                    // console.log(imageOne);
                   }}
                 />
               </div>

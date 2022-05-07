@@ -1,8 +1,4 @@
 function filterData(propArr, map1) {
-  // console.log("In validation :");
-  // console.log(propArr);
-  // console.log(map1);
-
   let idFlag = false;
   let filteredList = [];
   let addrFlag = false,
@@ -21,14 +17,13 @@ function filterData(propArr, map1) {
     pinFlag = false,
     stateFlag = false,
     rentFlag = false,
-    rentedOutFlag=false;
+    rentedOutFlag = false;
 
   for (let i = 0; i < propArr.length; i++) {
-
     /* Setting the data in the filter map and setting the respective flags to true 
        if the filters are present for those values i.e.) value for the key is not null. */
     const filterMap = new Map();
-    
+
     if (null != map1.get("balcony")) {
       balconyFlag = true;
       filterMap.set("balcony", map1.get("balcony"));
@@ -41,7 +36,7 @@ function filterData(propArr, map1) {
       bedFlag = true;
       filterMap.set("beds", map1.get("beds"));
     }
-    if (null != map1.get("centralAir")  && map1.get("centralAir") != false) {
+    if (null != map1.get("centralAir") && map1.get("centralAir") != false) {
       airFlag = true;
       filterMap.set("centralAir", map1.get("centralAir"));
     }
@@ -49,7 +44,7 @@ function filterData(propArr, map1) {
       cityFlag = true;
       filterMap.set("city", map1.get("city"));
     }
-    if (null != map1.get("garrage") &&  map1.get("garrage") !=false) {
+    if (null != map1.get("garrage") && map1.get("garrage") != false) {
       garrageFlag = true;
       filterMap.set("garrage", map1.get("garrage"));
     }
@@ -65,11 +60,14 @@ function filterData(propArr, map1) {
       schoolFlag = true;
       filterMap.set("nearBySchools", map1.get("nearBySchools"));
     }
-    if (null != map1.get("partyFriendly") && map1.get("partyFriendly") != false) {
+    if (
+      null != map1.get("partyFriendly") &&
+      map1.get("partyFriendly") != false
+    ) {
       partyFlag = true;
       filterMap.set("partyFriendly", map1.get("partyFriendly"));
     }
-    if (null != map1.get("petFriendly") && map1.get("petFriendly") !=false) {
+    if (null != map1.get("petFriendly") && map1.get("petFriendly") != false) {
       petFlag = true;
       filterMap.set("petFriendly", map1.get("petFriendly"));
     }
@@ -89,8 +87,6 @@ function filterData(propArr, map1) {
       rentedOutFlag = true;
       filterMap.set("rentedOut", map1.get("rentedOut"));
     }
-    //console.log("filterMap");
-    //console.log(filterMap);
     let count1 = 0,
       count2 = 0;
 
@@ -120,7 +116,7 @@ function filterData(propArr, map1) {
         if (value.trim().toLowerCase() === propArr[i].state.trim().toLowerCase()) count2++;
       } else if (key === "rent") {
         if (value === JSON.stringify(propArr[i].rent)) count2++;
-      }else if (key === "rentedOut") {
+      } else if (key === "rentedOut") {
         if (value !== propArr[i].status) count2++;
       }
     }
@@ -130,13 +126,9 @@ function filterData(propArr, map1) {
     if (count1 == count2) {
       filteredList.push(propArr[i]);
     }
-    // else{
-    //   console.log("FILTERED LIST EMPTY");
-    // }
-    //console.log(count1 + " = " + count2);
   }
   return filteredList;
 }
 module.exports = {
-  filterData
+  filterData,
 };

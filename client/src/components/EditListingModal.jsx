@@ -19,7 +19,6 @@ export const EditListingModal = ({
   propertyDetails,
   id,
 }) => {
-  // console.log(loginToken);
   const [name, setName] = useState(propertyDetails.name);
   const [address, setAddress] = useState(propertyDetails.address);
   const [pincode, setPincode] = useState(propertyDetails.pincode);
@@ -50,12 +49,11 @@ export const EditListingModal = ({
   const [minimumLeasePeriod, setMinimumLeasePeriod] = useState(
     propertyDetails.minimumLeasePeriod
   );
-  // const [images, setImages] = useState(null);
+
   const [imageOne, setImageOne] = useState(propertyDetails.images[0]);
   const [imageTwo, setImageTwo] = useState(propertyDetails.images[1]);
   const [imageThree, setImageThree] = useState(propertyDetails.images[2]);
   const [broker, setBroker] = useState(loginToken.username);
-  //   const [status, setStatus] = useState(true);
 
   // handle errors
   const [errors, setErrors] = useState(null);
@@ -84,12 +82,11 @@ export const EditListingModal = ({
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object
-        // console.log("Called", reader);
+
         baseURL = reader.result;
-        // console.log(baseURL);
+
         resolve(baseURL);
       };
-      // console.log(fileInfo);
     });
   };
 
@@ -101,12 +98,6 @@ export const EditListingModal = ({
 
   const editPropertyDetails = () => {
     // convert images to base 64 to store in the db
-
-    // getBase64(imageOne).then((res) => {
-    //   console.log("Base 64");
-    //   console.log(res);
-    //   setImageOne(res);
-    // });
 
     const propertyDetails = {
       name: name,
@@ -135,15 +126,6 @@ export const EditListingModal = ({
       isActive: true,
     };
 
-    // TODO: check for errors here with a valid function
-    // let checks = checkPropertyDetails(true);
-    // if (!checks) {
-    //   setErrors(null);
-    //   console.log(propertyDetials);
-    // } else {
-    //   setErrors(checks);
-    // }
-
     try {
       propertyDetails.centralAir = propertyDetails.centralAir === "Y";
       propertyDetails.petFriendly = propertyDetails.petFriendly === "Y";
@@ -152,8 +134,10 @@ export const EditListingModal = ({
 
       validateProperties(propertyDetails);
 
-      //   console.log(propertyDetails);
-      // console.log(propertyDetails.images);
+      propertyDetails.centralAir = propertyDetails.centralAir ? "Y" : "N";
+      propertyDetails.petFriendly = propertyDetails.petFriendly ? "Y" : "N";
+      propertyDetails.partyFriendly = propertyDetails.partyFriendly ? "Y" : "N";
+      propertyDetails.garrage = propertyDetails.garrage ? "Y" : "N";
 
       axios
         .put(`/property/updateProperty/${id}`, propertyDetails)
@@ -165,12 +149,9 @@ export const EditListingModal = ({
           setRequestMessage(e.response.data.errorMessage);
         });
     } catch (error) {
-      console.log(error);
       setRequestMessage(error);
     }
   };
-
-  // const [radioValue, setRadioValue] = useState("1");
 
   const radios = [
     { name: "Yes", value: true },
@@ -555,9 +536,7 @@ export const EditListingModal = ({
                   type="file"
                   name="ImageOne"
                   onChange={(e) => {
-                    // console.log(e.target.files[0]);
                     setImageToBase64(e.target.files[0], setImageOne);
-                    // console.log(imageOne);
                   }}
                 />
               </div>

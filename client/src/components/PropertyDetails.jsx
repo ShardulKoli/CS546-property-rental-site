@@ -33,30 +33,22 @@ export const PropertyDetails = ({ loginToken }) => {
   const { id } = useParams();
 
   const getPropertyDetails = () => {
-    // TODO: Fetch the property details based on the id of the property
-
     axios
       .get(`/property/getProperty/${id}`)
       .then((res) => {
-        console.log(res.data);
         setPropertyDetails(res.data);
-        // Loading and error will be set to false when the user is set
+        getUser(loginToken.username);
       })
       .catch((e) => {
         setError(e.response.data.errorMessage);
         setIsLoading(false);
       });
-
-    // setPropertyDetails(property);
   };
 
   const getUser = (username) => {
-    // TODO: make axios call here to set content dynamically
-    // console.log(username);
     axios
       .get(`/user/${username}`)
       .then((res) => {
-        console.log(res.data.user);
         setUserDetails(res.data.user);
         setIsBroker(res.data.user.userType === 2 ? true : false);
         setIsLoading(false);
@@ -65,7 +57,6 @@ export const PropertyDetails = ({ loginToken }) => {
         setError(e.response.data.errorMessage);
         setIsLoading(false);
       });
-    // setUserDetails(userBroker);
   };
 
   const bookmarkProperty = () => {
@@ -74,12 +65,9 @@ export const PropertyDetails = ({ loginToken }) => {
       propertyId: id,
     };
 
-    console.log(bookmarkDetails);
-
     axios
       .post(`/property/bookmark`, bookmarkDetails)
       .then((res) => {
-        console.log(res.data);
         getUser(userDetails.email);
       })
       .catch((e) => {
@@ -98,11 +86,9 @@ export const PropertyDetails = ({ loginToken }) => {
     axios
       .post(`/property/showInterestInProperty`, showInterestDetails)
       .then((res) => {
-        console.log(res.data);
         setInterestShown(true);
       })
       .catch((e) => {
-        console.log(e.response.data.errorMessage);
         setError(e.response.data.errorMessage);
         setIsLoading(false);
       });
@@ -115,13 +101,9 @@ export const PropertyDetails = ({ loginToken }) => {
   };
 
   const deleteListing = (propertyName) => {
-    console.log("Deleting listing");
-    console.log(propertyName);
-
     axios
       .put(`/property/removeProperty`, { name: propertyName })
       .then((res) => {
-        console.log(res.data);
         loadHomepage();
       })
       .catch((e) => {
@@ -139,7 +121,6 @@ export const PropertyDetails = ({ loginToken }) => {
     axios
       .post(`/property/markPropertyAsRentedOut`, markedAsRentedDetails)
       .then((res) => {
-        console.log(res.data);
         getPropertyDetails(id);
       })
       .catch((e) => {
@@ -157,7 +138,6 @@ export const PropertyDetails = ({ loginToken }) => {
     axios
       .post(`/property/markPropertyAsRentedOut`, markedAsRentedDetails)
       .then((res) => {
-        console.log(res.data);
         getPropertyDetails(id);
       })
       .catch((e) => {
@@ -168,7 +148,6 @@ export const PropertyDetails = ({ loginToken }) => {
 
   useEffect(() => {
     getPropertyDetails(id);
-    getUser(loginToken.username);
   }, []);
 
   // Carousel index
@@ -186,18 +165,9 @@ export const PropertyDetails = ({ loginToken }) => {
       <div>
         <div>
           <Card className={styles.cardStyle}>
-            {/* <Carousel
-              // interval={null}
-              activeIndex={index}
-              onSelect={handleSelect}
-              variant="dark"
-              className={styles.carousel}
-            ></Carousel> */}
-
             <div className={styles.imageHolder}>
               <div>
                 {propertyDetails.images && propertyDetails.images[0] ? (
-                  // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
                     width={400}
@@ -210,13 +180,12 @@ export const PropertyDetails = ({ loginToken }) => {
                     width={400}
                     height={400}
                     alt="not found"
-                    src={require("../assets/logo192.png")}
+                    src={require("../assets/no_image.jpeg")}
                   />
                 )}
               </div>
               <div>
                 {propertyDetails.images && propertyDetails.images[1] ? (
-                  // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
                     width={400}
@@ -229,13 +198,12 @@ export const PropertyDetails = ({ loginToken }) => {
                     width={400}
                     height={400}
                     alt="not found"
-                    src={require("../assets/logo192.png")}
+                    src={require("../assets/no_image.jpeg")}
                   />
                 )}
               </div>
               <div>
                 {propertyDetails.images && propertyDetails.images[2] ? (
-                  // console.log(propertyDetails.images)
                   <img
                     alt="not fount"
                     width={400}
@@ -248,16 +216,13 @@ export const PropertyDetails = ({ loginToken }) => {
                     width={400}
                     height={400}
                     alt="not found"
-                    src={require("../assets/logo192.png")}
+                    src={require("../assets/no_image.jpeg")}
                   />
                 )}
               </div>
             </div>
 
             <div className={styles.buttonHolder}>
-              {/* {isBroker ? null : (
-              <Button onClick={() => bookmarkProperty()}>BookMark</Button>
-            )} */}
               {isBroker ? null : (
                 <div>
                   {userDetails.bookmarkedProp.includes(id) ? (
@@ -417,10 +382,10 @@ export const PropertyDetails = ({ loginToken }) => {
                   <div>{propertyDetails.beds}</div>
                   <div>{propertyDetails.bath}</div>
                   <div>{propertyDetails.balcony}</div>
-                  <div>{propertyDetails.centralAir ? "true" : "false"}</div>
-                  <div>{propertyDetails.petFriendl ? "true" : "false"}</div>
-                  <div>{propertyDetails.partyFriendly ? "true" : "false"}</div>
-                  <div>{propertyDetails.garrage ? "true" : "false"}</div>
+                  <div>{propertyDetails.centralAir ? "Yes" : "No"}</div>
+                  <div>{propertyDetails.petFriendly ? "Yes" : "No"}</div>
+                  <div>{propertyDetails.partyFriendly ? "Yes" : "No"}</div>
+                  <div>{propertyDetails.garrage ? "Yes" : "No"}</div>
                   <div>{propertyDetails.nearBySchools}</div>
                   <div>{propertyDetails.nearByMedical}</div>
                   <div>{propertyDetails.nearByCommute}</div>

@@ -1,10 +1,6 @@
 function filterData(propArr, map1) {
   // Method to filter out the data as per client requirements.
 
-  console.log("In filterData :");
-  console.log(propArr);
-  console.log(map1);
-
   let idFlag = false;
   let filteredList = [];
   let addrFlag = false,
@@ -25,11 +21,10 @@ function filterData(propArr, map1) {
     rentFlag = false;
 
   for (let i = 0; i < propArr.length; i++) {
-
     /* Setting the data in the filter map and setting the respective flags to true 
        if the filters are present for those values i.e.) value for the key is not null. */
     const filterMap = new Map();
-    
+
     if (null != map1.get("balcony")) {
       balconyFlag = true;
       filterMap.set("balcony", map1.get("balcony"));
@@ -87,7 +82,6 @@ function filterData(propArr, map1) {
       filterMap.set("rent", map1.get("rent"));
     }
 
-    console.log(filterMap);
     let count1 = 0,
       count2 = 0;
 
@@ -135,5 +129,5 @@ function filterData(propArr, map1) {
   return filteredList;
 }
 module.exports = {
-  filterData
+  filterData,
 };
