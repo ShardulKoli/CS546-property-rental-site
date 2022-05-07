@@ -314,7 +314,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
                 className="mb-3"
               >
                 <Form.Control
-                  type="number"
+                  type="text"
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                   placeholder="Enter Type"
@@ -462,6 +462,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
               <FloatingLabel
                 controlId="floatingInput"
                 label="Nearby Schools"
+                style={{ marginTop: "20px" }}
                 className="mb-3"
               >
                 <Form.Control
@@ -555,7 +556,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
 
               <FloatingLabel
                 controlId="floatingInput"
-                label="Minimum Lease Period of the Property"
+                label="Minimum Lease Period of the Property (in Months)"
                 className="mb-3"
               >
                 <Form.Control

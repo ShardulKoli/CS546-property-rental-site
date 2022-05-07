@@ -15,9 +15,9 @@ export const CustomNavbar = ({ loginToken, setLoginToken }) => {
         <Container>
           <Navbar.Brand>
             <img
-              src={require("../assets/logo192.png")}
-              width="40"
-              height="40"
+              src={require("../assets/StudyRoom.png")}
+              width="100"
+              height="70"
               className="d-inline-block align-top"
               alt="React Bootstrap logo"
             />

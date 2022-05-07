@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { property } from "../assets/dummyData";
-import { Carousel, Card, Button } from "react-bootstrap";
+import { Carousel, Card, Button, Spinner } from "react-bootstrap";
 import styles from "./PropertyDetails.module.css";
 import { ErrorCommon } from "./ErrorCommon";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EmailIcon from "@mui/icons-material/Email";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import axios from "axios";
 import { EditListingModal } from "./EditListingModal";
+import { CustomSpinner } from "./CustomSpinner";
 
 export const PropertyDetails = ({ loginToken }) => {
   const [propertyDetails, setPropertyDetails] = useState({});
@@ -42,7 +47,7 @@ export const PropertyDetails = ({ loginToken }) => {
         setIsLoading(false);
       });
 
-    setPropertyDetails(property);
+    // setPropertyDetails(property);
   };
 
   const getUser = (username) => {
@@ -189,7 +194,7 @@ export const PropertyDetails = ({ loginToken }) => {
               className={styles.carousel}
             ></Carousel> */}
 
-            <div className={styles.buttonHolder}>
+            <div className={styles.imageHolder}>
               <div>
                 {propertyDetails.images && propertyDetails.images[0] ? (
                   // console.log(propertyDetails.images)
@@ -261,7 +266,7 @@ export const PropertyDetails = ({ loginToken }) => {
                       variant="warning"
                       className={styles.button}
                     >
-                      <BookmarkIcon></BookmarkIcon>
+                      <BookmarkIcon className={styles.icon}></BookmarkIcon>
                       Remove Bookmark
                     </Button>
                   ) : (
@@ -270,7 +275,9 @@ export const PropertyDetails = ({ loginToken }) => {
                       variant="warning"
                       className={styles.button}
                     >
-                      <BookmarkBorderIcon></BookmarkBorderIcon>
+                      <BookmarkBorderIcon
+                        className={styles.icon}
+                      ></BookmarkBorderIcon>
                       Bookmark this property
                     </Button>
                   )}
@@ -281,7 +288,10 @@ export const PropertyDetails = ({ loginToken }) => {
                 <div>
                   {interestShown ? (
                     <div className={styles.button}>
-                      An email has been sent to the broker
+                      <Button disabled={true} className={styles.button}>
+                        <EmailIcon className={styles.icon}></EmailIcon>
+                        Broker has recieved your mail
+                      </Button>
                     </div>
                   ) : (
                     <Button
@@ -290,6 +300,7 @@ export const PropertyDetails = ({ loginToken }) => {
                       }}
                       className={styles.button}
                     >
+                      <EmailIcon className={styles.icon}></EmailIcon>
                       Show interest by sendind a mail!
                     </Button>
                   )}
@@ -307,7 +318,7 @@ export const PropertyDetails = ({ loginToken }) => {
                         variant="danger"
                         className={styles.button}
                       >
-                        <DeleteIcon></DeleteIcon>
+                        <DeleteIcon className={styles.icon}></DeleteIcon>
                         Delete This Listing
                       </Button>
                     </div>
@@ -324,12 +335,22 @@ export const PropertyDetails = ({ loginToken }) => {
                         onClick={() => {
                           markedAsRentedOut();
                         }}
-                        variant={propertyDetails.status ? "success" : "danger"}
+                        variant={propertyDetails.status ? "success" : "warning"}
                         className={styles.button}
                       >
-                        {propertyDetails.status
-                          ? "Mark as Available"
-                          : "Mark as rented out"}
+                        {propertyDetails.status ? (
+                          <div>
+                            <DoneIcon className={styles.icon}></DoneIcon>
+                            Mark as Available
+                          </div>
+                        ) : (
+                          <div>
+                            <DoNotDisturbIcon
+                              className={styles.icon}
+                            ></DoNotDisturbIcon>
+                            Mark as rented out
+                          </div>
+                        )}
                       </Button>
                     </div>
                   ) : null}
@@ -341,6 +362,7 @@ export const PropertyDetails = ({ loginToken }) => {
                   {userDetails.ownedProp.includes(id) ? (
                     <div>
                       <Button onClick={handleShow} className={styles.button}>
+                        <EditIcon className={styles.icon}></EditIcon>
                         Edit This Listing
                       </Button>
                     </div>
@@ -352,59 +374,63 @@ export const PropertyDetails = ({ loginToken }) => {
               <div>isBookmarked</div>
             ) : null} */}
             </div>
-
-            <div className={styles.detailsHolder}>
-              <div className={styles.detailsColumn}>
-                <div>Name:</div>
-                <div>Address:</div>
-                <div>Status:</div>
-                <div>Pincode:</div>
-                <div>City:</div>
-                <div>State:</div>
-                <div>Type:</div>
-                <div>Beds:</div>
-                <div>Baths:</div>
-                <div>Balcony:</div>
-                <div>Central Air:</div>
-                <div>Pet Friendly:</div>
-                <div>Party Friendly:</div>
-                <div>Garrage:</div>
-                <div>Nearby Schools:</div>
-                <div>Nearby Medical:</div>
-                <div>Nearby Commute:</div>
-                <div>Brokerage:</div>
-                <div>Deposit:</div>
-                <div>Minimum Lease Period:</div>
-                <div>Broker:</div>
+            <Card
+              className={styles.detailsCard}
+              style={{ background: "whitesmoke" }}
+            >
+              <div className={styles.detailsHolder}>
+                <div className={styles.detailsColumn}>
+                  <div>Name:</div>
+                  <div>Address:</div>
+                  <div>Status:</div>
+                  <div>Pincode:</div>
+                  <div>City:</div>
+                  <div>State:</div>
+                  <div>Type:</div>
+                  <div>Beds:</div>
+                  <div>Baths:</div>
+                  <div>Balcony:</div>
+                  <div>Central Air:</div>
+                  <div>Pet Friendly:</div>
+                  <div>Party Friendly:</div>
+                  <div>Garrage:</div>
+                  <div>Nearby Schools:</div>
+                  <div>Nearby Medical:</div>
+                  <div>Nearby Commute:</div>
+                  <div>Brokerage:</div>
+                  <div>Deposit:</div>
+                  <div>Minimum Lease Period:</div>
+                  <div>Broker:</div>
+                </div>
+                <div>
+                  <div>{propertyDetails.name}</div>
+                  <div>{propertyDetails.address}</div>
+                  {propertyDetails.status ? (
+                    <div>This Property is rented out</div>
+                  ) : (
+                    <div>Available</div>
+                  )}
+                  <div>{propertyDetails.pincode}</div>
+                  <div>{propertyDetails.city}</div>
+                  <div>{propertyDetails.state}</div>
+                  <div>{propertyDetails.type}</div>
+                  <div>{propertyDetails.beds}</div>
+                  <div>{propertyDetails.bath}</div>
+                  <div>{propertyDetails.balcony}</div>
+                  <div>{propertyDetails.centralAir ? "true" : "false"}</div>
+                  <div>{propertyDetails.petFriendl ? "true" : "false"}</div>
+                  <div>{propertyDetails.partyFriendly ? "true" : "false"}</div>
+                  <div>{propertyDetails.garrage ? "true" : "false"}</div>
+                  <div>{propertyDetails.nearBySchools}</div>
+                  <div>{propertyDetails.nearByMedical}</div>
+                  <div>{propertyDetails.nearByCommute}</div>
+                  <div>{propertyDetails.brokerage}</div>
+                  <div>{propertyDetails.deposit}</div>
+                  <div>{propertyDetails.minimumLeasePeriod}</div>
+                  <div>{propertyDetails.broker}</div>
+                </div>
               </div>
-              <div>
-                <div>{propertyDetails.name}</div>
-                <div>{propertyDetails.address}</div>
-                {propertyDetails.status ? (
-                  <div>This Property is rented out</div>
-                ) : (
-                  <div>Available</div>
-                )}
-                <div>{propertyDetails.pincode}</div>
-                <div>{propertyDetails.city}</div>
-                <div>{propertyDetails.state}</div>
-                <div>{propertyDetails.type}</div>
-                <div>{propertyDetails.beds}</div>
-                <div>{propertyDetails.bath}</div>
-                <div>{propertyDetails.balcony}</div>
-                <div>{propertyDetails.centralAir ? "true" : "false"}</div>
-                <div>{propertyDetails.petFriendl ? "true" : "false"}</div>
-                <div>{propertyDetails.partyFriendly ? "true" : "false"}</div>
-                <div>{propertyDetails.garrage ? "true" : "false"}</div>
-                <div>{propertyDetails.nearBySchools}</div>
-                <div>{propertyDetails.nearByMedical}</div>
-                <div>{propertyDetails.nearByCommute}</div>
-                <div>{propertyDetails.brokerage}</div>
-                <div>{propertyDetails.deposit}</div>
-                <div>{propertyDetails.minimumLeasePeriod}</div>
-                <div>{propertyDetails.broker}</div>
-              </div>
-            </div>
+            </Card>
           </Card>
         </div>
         <EditListingModal
@@ -418,6 +444,6 @@ export const PropertyDetails = ({ loginToken }) => {
       </div>
     );
   } else {
-    return <div>Loading Property Data</div>;
+    return <CustomSpinner />;
   }
 };

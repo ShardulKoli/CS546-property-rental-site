@@ -418,6 +418,7 @@ export const EditListingModal = ({
                 controlId="floatingInput"
                 label="Nearby Schools"
                 className="mb-3"
+                style={{ marginTop: "20px" }}
               >
                 <Form.Control
                   type="text"
@@ -510,7 +511,7 @@ export const EditListingModal = ({
 
               <FloatingLabel
                 controlId="floatingInput"
-                label="Minimum Lease Period of the Property"
+                label="Minimum Lease Period of the Property (in Months)"
                 className="mb-3"
               >
                 <Form.Control
