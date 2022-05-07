@@ -256,7 +256,7 @@ const validateNearbyCommute = (nearByCommute) => {
   return nearByCommute;
 };
 const validateProperties = (property) => {
-  if (property._id) property._id = this.validatePropertyId(property._id);
+  if (property._id) property._id = validatePropertyId(property._id);
   property.name = validateName(property.name);
   property.address = validateAddress(property.address);
   property.broker = validateEmail(property.broker);
@@ -278,6 +278,7 @@ const validateProperties = (property) => {
     property.minimumLeasePeriod
   );
   property.images = validateImages(property.images);
+  property.nearByCommute = validateNearbyCommute(property.nearByCommute);
 
   return property;
 };

@@ -1,6 +1,5 @@
 // Referenced from the code base: https://github.com/stevens-cs546-cs554/CS-546/blob/master/lecture_05/code/routes/index.js
 
-const testRoutes = require("./test");
 const loginRoutes = require("./login");
 const signUpRoutes = require("./signup");
 const propertyRoutes = require("./property");
@@ -9,7 +8,6 @@ const adminRoutes = require("./admin");
 const logoutRoutes = require("./logout");
 
 const constructorMethod = (app) => {
-  app.use("/test", testRoutes);
   app.use("/login", loginRoutes);
   app.use("/signup", signUpRoutes);
   app.use("/property", propertyRoutes);

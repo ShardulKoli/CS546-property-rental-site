@@ -315,6 +315,7 @@ module.exports = {
         property.garrage = this.validateGarrage(property.garrage);
         property.minimumLeasePeriod = this.validateMinimumLeastPeriod(property.minimumLeasePeriod);
         property.images = this.validateImages(property.images);
+        property.nearByCommute = this.validateNearbyCommute(property.nearByCommute);
 
         return property;
     },
