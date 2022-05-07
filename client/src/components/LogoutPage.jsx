@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const LogoutPage = ({ setLoginToken }) => {
   // logout
@@ -11,6 +12,7 @@ export const LogoutPage = ({ setLoginToken }) => {
     localStorage.removeItem("token");
     setLoginToken(null);
     loadLoginPage();
+    axios.get("/logout").then();
   };
 
   useEffect(() => {

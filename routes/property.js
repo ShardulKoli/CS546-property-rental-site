@@ -71,7 +71,6 @@ async function createProperty(req, res) {
 
 async function updateProperty(req, res) {
   try {
-    //check inputs here
     var images = [];
 
     req.body.images.forEach(x => {
@@ -109,6 +108,7 @@ async function updateProperty(req, res) {
       images: images
     };
 
+    var propData = validations.validateProperties(propData);
 
     let updatedProperty = await propertyData.updateProperty(propData);
 
@@ -120,9 +120,9 @@ async function updateProperty(req, res) {
 
 async function removeProperty(req, res) {
   try {
-    //check inputs here
+    propname = validations.validateName(xss(req.body.name));
 
-    let isRemoved = await propertyData.removeProperty(xss(req.body.name));
+    let isRemoved = await propertyData.removeProperty(propname);
 
     let removeOwnedFromBroker = await userData.addPropertyAsOwnedByBroker(
       isRemoved.broker,
@@ -137,9 +137,9 @@ async function removeProperty(req, res) {
 
 async function getProperty(req, res) {
   try {
-    //check inputs here
+    propId = validations.validatePropertyId(xss(req.params.id))
 
-    let property = await propertyData.getPropertyById(xss(req.params.id));
+    let property = await propertyData.getPropertyById(propId);
 
     res.status(200).json(property);
   } catch (e) {

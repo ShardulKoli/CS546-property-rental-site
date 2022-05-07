@@ -6,6 +6,7 @@ const signUpRoutes = require("./signup");
 const propertyRoutes = require("./property");
 const userRoutes = require("./userProfile");
 const adminRoutes = require("./admin");
+const logoutRoutes = require("./logout");
 
 const constructorMethod = (app) => {
   app.use("/test", testRoutes);
@@ -14,6 +15,7 @@ const constructorMethod = (app) => {
   app.use("/property", propertyRoutes);
   app.use("/user", userRoutes);
   app.use("/admin", adminRoutes);
+  app.use("/logout", logoutRoutes);
 
   app.use("*", (req, res) => {
     res.status(404).json({ error: "Not found" });

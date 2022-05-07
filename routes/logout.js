@@ -5,12 +5,8 @@ const router = express.Router();
 async function logout(req, res) {
 
     try {
-        if (req.session.user) {
-            req.session.destroy();
-            //send data to client if client session needs to be destroyed too
-        }
+        req.session.destroy();
 
-        res.status(200).redirect("/");
     }
     catch (e) {
         res.status(400).json({ errorMessage: e });
