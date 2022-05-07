@@ -1,16 +1,14 @@
 const collections = require("../mongoCollections");
 const usersCollection = collections.users;
-const propCollection = collections.properties;
 const bcrypt = require("bcrypt");
-const saltRounds = 12;
-const { ObjectId } = require("mongodb");
-const emailer = require("../autoemailer/autoEmailer");
 const validation = require("../validation/validations");
 const propertyUtils = require("./properties");
 const userUtils = require("./users");
 
 
 async function verifyPassword(password) {
+    password = validation.validatePassword(password);
+
     var users = await usersCollection();
 
     var user = await users.findOne({
@@ -59,7 +57,6 @@ async function getInsightsData() {
             cityCounter.push(city);
         }
     }
-
 
     return insightsObj;
 }
