@@ -18,7 +18,12 @@ import filter from "../assets/validation/filter";
 import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 
-export const Filters = ({ getAllProperties, properties, setProperties }) => {
+export const Filters = ({
+  getAllProperties,
+  properties,
+  setProperties,
+  setIsLoading,
+}) => {
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
@@ -81,6 +86,7 @@ export const Filters = ({ getAllProperties, properties, setProperties }) => {
   };
 
   const clearFilters = () => {
+    setIsLoading(true);
     getAllProperties();
   };
 

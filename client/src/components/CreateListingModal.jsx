@@ -98,6 +98,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
     setImageTwo(null);
     setImageThree(null);
     setBroker(loginToken.username);
+    setRequestMessage(null);
   };
 
   const createPropertyDetails = () => {
@@ -108,7 +109,7 @@ export const CreateListingModal = ({ show, loginToken, getUser, setShow }) => {
       address: address,
       pincode: pincode,
       city: city,
-      state: "New Jersey",
+      state: state,
       type: type,
       beds: beds,
       bath: baths,

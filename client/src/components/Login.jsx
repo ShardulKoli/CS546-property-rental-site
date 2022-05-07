@@ -25,6 +25,15 @@ export const Login = ({ setLoginToken }) => {
     localStorage.setItem("token", JSON.stringify(data));
   };
 
+  const setDefaults = () => {
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+    setContact("");
+    setPassword("");
+    setType("Student");
+  };
+
   // Modal States
   const [show, setShow] = useState(false);
 
@@ -116,12 +125,13 @@ export const Login = ({ setLoginToken }) => {
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <FloatingLabel
-            controlId="floatingInput"
+            controlId="email"
             label="Email address"
             className="mb-3"
           >
             <Form.Control
               type="email"
+              value={email}
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -135,9 +145,10 @@ export const Login = ({ setLoginToken }) => {
           {!isRegistered ? (
             <div>
               <Form.Group className="mb-3" controlId="firstName">
-                <FloatingLabel controlId="floatingInput" label="First Name">
+                <FloatingLabel controlId="firstName" label="First Name">
                   <Form.Control
                     type="input"
+                    value={firstName}
                     placeholder="Enter First Name"
                     onChange={(e) => setFirstName(e.target.value)}
                   />
@@ -145,9 +156,10 @@ export const Login = ({ setLoginToken }) => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="lastName">
-                <FloatingLabel controlId="floatingInput" label="Last Name">
+                <FloatingLabel controlId="lastName" label="Last Name">
                   <Form.Control
                     type="input"
+                    value={lastName}
                     placeholder="Enter Last Name"
                     onChange={(e) => setLastName(e.target.value)}
                   />
@@ -155,9 +167,10 @@ export const Login = ({ setLoginToken }) => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="contact">
-                <FloatingLabel controlId="floatingInput" label="Contact">
+                <FloatingLabel controlId="contact" label="Contact">
                   <Form.Control
                     type="input"
+                    value={contact}
                     placeholder="Enter Contact Details"
                     onChange={(e) => setContact(e.target.value)}
                   />
@@ -168,10 +181,11 @@ export const Login = ({ setLoginToken }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <FloatingLabel controlId="floatingPassword" label="Password">
+          <FloatingLabel controlId="formBasicPassword" label="Password">
             <Form.Control
               type="password"
               placeholder="Password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </FloatingLabel>
@@ -192,7 +206,12 @@ export const Login = ({ setLoginToken }) => {
           <div>Have an account already?</div>
         )}
 
-        <Button onClick={() => setIsRegistered(!isRegistered)}>
+        <Button
+          onClick={() => {
+            setIsRegistered(!isRegistered);
+            setDefaults();
+          }}
+        >
           {isRegistered ? <div>Signup</div> : <div>Login</div>}
         </Button>
       </Form>
