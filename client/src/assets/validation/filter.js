@@ -107,7 +107,7 @@ function filterData(propArr, map1) {
       } else if (key === "centralAir") {
         if (value === propArr[i].centralAir) count2++;
       } else if (key === "city") {
-        if (value === propArr[i].city) count2++;
+        if (value.trim().toLowerCase() === propArr[i].city.trim().toLowerCase()) count2++;
       } else if (key === "garrage") {
         if (value === propArr[i].garrage) count2++;
       } else if (key === "partyFriendly") {
@@ -117,7 +117,7 @@ function filterData(propArr, map1) {
       } else if (key === "pincode") {
         if (value === JSON.stringify(propArr[i].pincode)) count2++;
       } else if (key === "state") {
-        if (value.trim() === propArr[i].state.trim()) count2++;
+        if (value.trim().toLowerCase() === propArr[i].state.trim().toLowerCase()) count2++;
       } else if (key === "rent") {
         if (value === JSON.stringify(propArr[i].rent)) count2++;
       }else if (key === "rentedOut") {
