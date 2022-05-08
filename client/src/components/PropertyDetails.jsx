@@ -346,6 +346,7 @@ export const PropertyDetails = ({ loginToken }) => {
               <div className={styles.detailsHolder}>
                 <div className={styles.detailsColumn}>
                   <div>Name:</div>
+                  <div>Rent:</div>
                   <div>Address:</div>
                   <div>Status:</div>
                   <div>Pincode:</div>
@@ -369,6 +370,7 @@ export const PropertyDetails = ({ loginToken }) => {
                 </div>
                 <div>
                   <div>{propertyDetails.name}</div>
+                  <div>${propertyDetails.rent}</div>
                   <div>{propertyDetails.address}</div>
                   {propertyDetails.status ? (
                     <div>This Property is rented out</div>
