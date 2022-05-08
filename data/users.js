@@ -48,7 +48,7 @@ async function createUser(firstName, lastName, email, userType, contact, passwor
         throw "User with provided email already exists!";
     }
 
-    let userTypeNum = userType === "student" ? 1 : 2;
+    let userTypeNum = userType.toLowerCase() === "student" ? 1 : 2;
 
     if (userTypeNum === 1) {
         if (email.split(".").slice(-1)[0] !== "edu")
