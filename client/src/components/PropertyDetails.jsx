@@ -266,7 +266,7 @@ export const PropertyDetails = ({ loginToken }) => {
                       className={styles.button}
                     >
                       <EmailIcon className={styles.icon}></EmailIcon>
-                      Show interest by sendind a mail!
+                      Show interest by sending a mail!
                     </Button>
                   )}
                 </div>
