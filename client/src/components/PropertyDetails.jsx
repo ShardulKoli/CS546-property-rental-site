@@ -375,24 +375,62 @@ export const PropertyDetails = ({ loginToken }) => {
                   ) : (
                     <div>Available</div>
                   )}
-                  <div>{propertyDetails.pincode}</div>
-                  <div>{propertyDetails.city}</div>
-                  <div>{propertyDetails.state}</div>
-                  <div>{propertyDetails.type}</div>
-                  <div>{propertyDetails.beds}</div>
-                  <div>{propertyDetails.bath}</div>
-                  <div>{propertyDetails.balcony}</div>
+                  <div>
+                    {propertyDetails.pincode ? propertyDetails.pincode : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.city ? propertyDetails.city : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.state ? propertyDetails.state : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.type ? propertyDetails.type : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.beds ? propertyDetails.beds : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.bath ? propertyDetails.bath : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.balcony ? propertyDetails.balcony : "N/A"}
+                  </div>
                   <div>{propertyDetails.centralAir ? "Yes" : "No"}</div>
                   <div>{propertyDetails.petFriendly ? "Yes" : "No"}</div>
                   <div>{propertyDetails.partyFriendly ? "Yes" : "No"}</div>
                   <div>{propertyDetails.garrage ? "Yes" : "No"}</div>
-                  <div>{propertyDetails.nearBySchools}</div>
-                  <div>{propertyDetails.nearByMedical}</div>
-                  <div>{propertyDetails.nearByCommute}</div>
-                  <div>{propertyDetails.brokerage}</div>
-                  <div>{propertyDetails.deposit}</div>
-                  <div>{propertyDetails.minimumLeasePeriod}</div>
-                  <div>{propertyDetails.broker}</div>
+                  <div>
+                    {propertyDetails.nearBySchools
+                      ? propertyDetails.nearBySchools
+                      : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.nearByMedical
+                      ? propertyDetails.nearByMedical
+                      : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.nearByCommute
+                      ? propertyDetails.nearByCommute
+                      : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.brokerage
+                      ? propertyDetails.brokerage
+                      : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.deposit ? propertyDetails.deposit : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.minimumLeasePeriod
+                      ? propertyDetails.minimumLeasePeriod
+                      : "N/A"}
+                  </div>
+                  <div>
+                    {propertyDetails.broker ? propertyDetails.broker : "N/A"}
+                  </div>
                 </div>
               </div>
             </Card>
