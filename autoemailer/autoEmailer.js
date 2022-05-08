@@ -26,7 +26,7 @@ function sendAccoutConfirmationEmail(user) {
     } else if (user.userType === 2) {
         mailOptions.text = `Hello ${user.firstName}, we are pleased to have you on board!\n Your password is: ${user.password}. \nPlease keep this information for your further reference in a secured place.\n Thousands of brokers are using Studyroom for uploading rental properties and are having a smooth sailing experience.\n You are all set to showcase your rentals!`;
 
-        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${user.password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of students are using <b><span style="color: blue;">Studyroom</span></b> for uploading rental properties and are having a smooth sailing experience.<br/>You are all set to showcase your rentals!</div>`;
+        mailOptions.html = `<div style="text-align: center;">Hello <b>${user.firstName}</b>, we are pleased to have you on board! <br/>Your password is: <b>${user.password}</b>. <br/>Please keep this information for your further reference in a secured place. <br/>Thousands of brokers are using <b><span style="color: blue;">Studyroom</span></b> for uploading rental properties and are having a smooth sailing experience.<br/>You are all set to showcase your rentals!</div>`;
     }
 
     var emailResponse = sendEmail(mailOptions);
